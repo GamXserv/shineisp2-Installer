@@ -105,7 +105,7 @@ $(document).ready(function()
 		{
 			
 			$("#spinner").show();
-			$.post("install.php?' . http_build_query ( $_GET ) . '",
+			$.post("composer.php?' . http_build_query ( $_GET ) . '",
 			{
 				action: c,
 				name: $(this).data("name")
@@ -242,7 +242,7 @@ if (isset ( $_GET ['logout'] )) {
 
 if (! file_exists ( 'composer.phar' )) {
 	download ( 'https://getcomposer.org/installer', 'composer-dl.inc' );
-	echo $html [0] . '<h3>composer downloaded</h3><a href="install.php">please reload</a><pre>';
+	echo $html [0] . '<h3>composer downloaded</h3><a href="composer.php">please reload</a><pre>';
 	chmod ( 'composer-dl.inc', 0777 );
 	include 'composer-dl.inc';
 	exit ( '</pre>' . $html [1] );
@@ -296,7 +296,7 @@ if (! empty ( $_POST ['action'] )) {
 		exit ();
 	
 }
-$body .= '<table class="table table-striped table-condensed table-hover"><tbody><form id="packageheader" method="get" action="install.php">' . '<span style="float:right">' . (! empty ( $suggestions ['stat'] ['back'] ) ? '<button type="button" rel="circle-triangle-w" type="button">' . L ( 'back' ) . '</button>' : '') . (! empty ( $suggestions ['stat'] ['next'] ) ? '<button type="button" rel="circle-triangle-e" type="button">' . L ( 'next' ) . '</button>' : '') . '</span>' . '</form>';
+$body .= '<table class="table table-striped table-condensed table-hover"><tbody><form id="packageheader" method="get" action="composer.php">' . '<span style="float:right">' . (! empty ( $suggestions ['stat'] ['back'] ) ? '<button type="button" rel="circle-triangle-w" type="button">' . L ( 'back' ) . '</button>' : '') . (! empty ( $suggestions ['stat'] ['next'] ) ? '<button type="button" rel="circle-triangle-e" type="button">' . L ( 'next' ) . '</button>' : '') . '</span>' . '</form>';
 
 
 	$body .= '<tr><td>' . '<button class="package btn btn-lg btn-default pull-left" id="cb' . $suggestions ['name'] . '" type="button" ' . 'data-name="' . $suggestions ['name'] . '" data-version="' . $suggestions ['version'] . '" ' . 'rel="' . (isset ( $composerJson ['require'] [$k] ) ? 'trash">' . L ( 'uninstall' ) : 'disk">' . L ( 'install' )) . '</button>' . '</td> <td>' . (empty ( $suggestions ['description']  ) ? L ( 'no_description_available' ) : $suggestions  ['description']) . '</td></tr>';
