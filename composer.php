@@ -152,9 +152,9 @@ $(document).ready(function()
 	</div>
 </div>				<div class="container muph-flat-bg">
     <div class="page-header">
-      <h1> Welcome to ShineISP 2 Installer </h1>
+      <h1> ShineISP 2 Composer Installer </h1>
     </div>
-    <p class="lead">Checked the minimum system requirments. Please make sure all the things evaluated are checked correctly. If so, click the start button and go ahead with the installation process</p>
+    <p class="lead">Checked to see if composer was installed. If so, click the Icon Button and go ahead with the installation process. After Composer installed or updated click the next button to continue.</p>
     
 ',
 		'
@@ -239,7 +239,7 @@ if (version_compare ( PHP_VERSION, '5.3.3' ) == - 1) {
 if (isset ( $_GET ['logout'] )) {
 	unset ( $_SESSION ['ACCEPTED'] );
 }
-
+$installedPackages = array ();
 if (! file_exists ( 'composer.phar' )) {
 	download ( 'https://getcomposer.org/installer', 'composer-dl.inc' );
 	echo $html [0] . '<h3>composer downloaded</h3><a href="composer.php">please reload</a><pre>';
@@ -247,6 +247,9 @@ if (! file_exists ( 'composer.phar' )) {
 	include 'composer-dl.inc';
 	exit ( '</pre>' . $html [1] );
 } else {
+	$installAction = 'self-update';
+	passthru ( 'php composer.phar ' . $installAction . ' --no-interaction', $out );
+	echo $out;
 	@unlink ( 'composer-dl.inc' );
 }
 if (file_exists ( 'composer.json' )) {
@@ -259,7 +262,7 @@ if (file_exists ( 'composer.json' )) {
 			) 
 	);
 }
-$installedPackages = array ();
+
 //$suggestions = json_decode ( download ( $serviceUrl . '/?' . http_build_query ( $_GET ) ), true );
 $suggestions = json_decode ( file_get_contents ( 'composer.json' ), true );
 if (! empty ( $_POST ['action'] )) {
@@ -272,10 +275,14 @@ if (! empty ( $_POST ['action'] )) {
 			}
 		}
 		$installAction = 'update';
+		putenv ( 'PATH=' . $_SERVER ['PATH'] );
+		putenv ( 'COMPOSER_HOME=' . __DIR__ );
+		putenv ( 'HOME=' . __DIR__ );
+		passthru ( 'php composer.phar ' . $installAction . ' --no-interaction', $out );
+		echo $out;
 	}else{
 		$installAction = 'install';
 	}
-		// not in use still playing around
 		//$json = stripslashes ( json_encode ( $composerJson ) );
 		//file_put_contents ( 'composer.json', $json );
 		//chmod ( 'composer.json', 0777 );

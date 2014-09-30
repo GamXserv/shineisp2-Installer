@@ -53,13 +53,19 @@ class Lang {
 					"STEP2_ADMINPASS" => "ADMIN PASSWORD",
 					"STEP2_ADMINPASS_PLACEHOLDER" => "The admin password",
 					"STEP2_ADMINPASS_SUGGESTION" => "The password for the admin username.",
+					"STEP2_ADMINEMAIL" => "ADMIN EMAIL",
+					"STEP2_ADMINEMAIL_PLACEHOLDER" => "The admin email address",
+					"STEP2_ADMINEMAIL_SUGGESTION" => "The email address for the admin username.",
+					"STEP2_ADMINNAME" => "ADMIN PASSWORD",
+					"STEP2_ADMINNAME_PLACEHOLDER" => "The admin Full Name",
+					"STEP2_ADMINNAME_SUGGESTION" => "The full name for the admin username.",
 					"BUTTON_NEXT" => "Next" 
 			),
 			
 			"STEP_3" => array (
 					
 					"STEP3_TITLE" => "All done! The tables for the app have been updated.",
-					"STEP3_MSG" => "The installation process has finished. Please, remember to remove the installation folder.Removal button???" 
+					"STEP3_MSG" => "The installation process has finished. Please, remember to remove the installation folder." 
 			) 
 	);
 }
