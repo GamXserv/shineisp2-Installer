@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,86 +41,91 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Dummy\Entity;
+
 use DateTime;
 
 class Dummy implements DummyInterface {
-
-    public $id;
-    public $name;
-    public $createdat;
-    public $updatedat;
-    
-    /**
+	public $id;
+	public $name;
+	public $createdat;
+	public $updatedat;
+	
+	/**
+	 *
 	 * @return the $id
 	 */
 	public function getId() {
 		return $this->id;
 	}
-
+	
 	/**
-	 * @param field_type $id
+	 *
+	 * @param field_type $id        	
 	 */
 	public function setId($id) {
 		$this->id = $id;
 	}
-
+	
 	/**
+	 *
 	 * @return the $name
 	 */
 	public function getName() {
 		return $this->name;
 	}
-
+	
 	/**
-	 * @param field_type $name
+	 *
+	 * @param field_type $name        	
 	 */
 	public function setName($name) {
 		$this->name = $name;
 	}
-
+	
 	/**
+	 *
 	 * @return the $createdat
 	 */
 	public function getCreatedat() {
 		return $this->createdat;
 	}
-
+	
 	/**
-	 * @param field_type $createdat
+	 *
+	 * @param field_type $createdat        	
 	 */
 	public function setCreatedat(DateTime $createdat = null) {
 		$this->createdat = $createdat;
 	}
-
+	
 	/**
+	 *
 	 * @return the $updatedat
 	 */
 	public function getUpdatedat() {
 		return $this->updatedat;
 	}
-
+	
 	/**
-	 * @param field_type $updatedat
+	 *
+	 * @param field_type $updatedat        	
 	 */
 	public function setUpdatedat(DateTime $updatedat = null) {
 		$this->updatedat = $updatedat;
 	}
-
+	
 	/**
-     * This method get the array posted and assign the values to the table
-     * object
-     *
-     * @param array $data
-     */
-    public function exchangeArray ($data)
-    {
-    	foreach ($data as $field => $value) {
-    		$this->$field = (isset($value)) ? $value : null;
-    	}
-    
-    	return true;
-    }
-    
+	 * This method get the array posted and assign the values to the table
+	 * object
+	 *
+	 * @param array $data        	
+	 */
+	public function exchangeArray($data) {
+		foreach ( $data as $field => $value ) {
+			$this->$field = (isset ( $value )) ? $value : null;
+		}
+		
+		return true;
+	}
 }

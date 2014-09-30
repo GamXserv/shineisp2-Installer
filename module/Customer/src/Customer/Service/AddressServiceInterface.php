@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,48 +41,51 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Customer\Service;
 
-interface AddressServiceInterface
-{
-    /**
-     * Should return all the records 
-     *
-     * @return array|\Traversable
-     */
-    public function findAll();
-
-    /**
-     * Should return a single record
-     *
-     * @param  int $id Identifier of the Record that should be returned
-     * @return \Customer\Entity\Address
-     */
-    public function find($id);
-
-    /**
-     * Should return a single record
-     *
-     * @param  string $paramenter fieldname where find the value
-     * @param  string $value the value
-     * @return \Customer\Entity\Address collection
-     */
-    public function findByParameter($paramenter, $value);
-    
-    /**
-     * Should delete a single record
-     *
-     * @param  int $id Identifier of the Record that should be deleted
-     * @return \Customer\Entity\Address
-     */
-    public function delete($id);
-    
-    /**
-     * Should save a single record
-     *
-     * @param  \Customer\Model\Address $record object that should be saved
-     * @return \Customer\Entity\Address
-     */
-    public function save(\Customer\Entity\Address $record);
+interface AddressServiceInterface {
+	/**
+	 * Should return all the records
+	 *
+	 * @return array|\Traversable
+	 */
+	public function findAll();
+	
+	/**
+	 * Should return a single record
+	 *
+	 * @param int $id
+	 *        	Identifier of the Record that should be returned
+	 * @return \Customer\Entity\Address
+	 */
+	public function find($id);
+	
+	/**
+	 * Should return a single record
+	 *
+	 * @param string $paramenter
+	 *        	fieldname where find the value
+	 * @param string $value
+	 *        	the value
+	 * @return \Customer\Entity\Address collection
+	 */
+	public function findByParameter($paramenter, $value);
+	
+	/**
+	 * Should delete a single record
+	 *
+	 * @param int $id
+	 *        	Identifier of the Record that should be deleted
+	 * @return \Customer\Entity\Address
+	 */
+	public function delete($id);
+	
+	/**
+	 * Should save a single record
+	 *
+	 * @param \Customer\Model\Address $record
+	 *        	object that should be saved
+	 * @return \Customer\Entity\Address
+	 */
+	public function save(\Customer\Entity\Address $record);
 }

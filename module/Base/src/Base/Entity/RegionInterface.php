@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,14 +41,12 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Base\Entity;
 
-interface RegionInterface
-{
-    public function getId();
-    public function getName();
-    public function setName($name);
-    public function getCountryId();
-    public function setCountryId($country_id);
+interface RegionInterface {
+	public function getId();
+	public function getName();
+	public function setName($name);
+	public function getCountryId();
+	public function setCountryId($country_id);
 }

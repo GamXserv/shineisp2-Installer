@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,7 +41,6 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Product\Service;
 
 use Product\Entity\ProductAttributeSetIdx;
@@ -48,115 +48,114 @@ use Zend\EventManager\EventManager;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Stdlib\Hydrator\ClassMethods;
 use Zend\EventManager\EventManagerAwareInterface;
-use Zend\EventManager\EventManagerInterface; 
+use Zend\EventManager\EventManagerInterface;
 
-class ProductAttributeSetIdxService implements ProductAttributeSetIdxServiceInterface, EventManagerAwareInterface
-{
+class ProductAttributeSetIdxService implements ProductAttributeSetIdxServiceInterface, EventManagerAwareInterface {
 	protected $tableGateway;
 	protected $translator;
 	protected $eventManager;
-	
-	public function __construct(TableGateway $tableGateway, \Zend\Mvc\I18n\Translator $translator ){
+	public function __construct(TableGateway $tableGateway, \Zend\Mvc\I18n\Translator $translator) {
 		$this->tableGateway = $tableGateway;
 		$this->translator = $translator;
 	}
 	
-    /**
-     * @inheritDoc
-     */
-    public function findAll()
-    {
-    	$records = $this->tableGateway->select(function (\Zend\Db\Sql\Select $select) {
-        });
-        
-        return $records;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function findByAttributeId($id)
-    {
-    	if(!is_numeric($id)){
-    		return false;
-    	}
-    	$rowset = $this->tableGateway->select(array('attribute_id' => $id));
-    	$row = $rowset->current();
-    	
-    	return $row;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function findByAttributeSetId($id)
-    {
-    	if(!is_numeric($id)){
-    		return false;
-    	}
-    	$rowset = $this->tableGateway->select(array('attribute_set_id' => $id));
-    	$row = $rowset->current();
-    	
-    	return $row;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function delete($id)
-    {
-    	$this->tableGateway->delete(array(
-    			'id' => $id
-    	));
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function clearAttributeSet($idx)
-    {
-    	$this->tableGateway->delete(array(
-    			'attribute_set_id' => $idx
-    	));
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function save(\Product\Entity\ProductAttributeSetIdx $record)
-    {
-    	$hydrator = new ClassMethods();
-    	
-    	// extract the data from the object
-    	$data = $hydrator->extract($record);
-    	
-    	$this->getEventManager()->trigger(__FUNCTION__ . '.pre', null, array('data' => $data));  // Trigger an event
-    	    	
+	/**
+	 * @inheritDoc
+	 */
+	public function findAll() {
+		$records = $this->tableGateway->select ( function (\Zend\Db\Sql\Select $select) {
+		} );
+		
+		return $records;
+	}
+	
+	/**
+	 * @inheritDoc
+	 */
+	public function findByAttributeId($id) {
+		if (! is_numeric ( $id )) {
+			return false;
+		}
+		$rowset = $this->tableGateway->select ( array (
+				'attribute_id' => $id 
+		) );
+		$row = $rowset->current ();
+		
+		return $row;
+	}
+	
+	/**
+	 * @inheritDoc
+	 */
+	public function findByAttributeSetId($id) {
+		if (! is_numeric ( $id )) {
+			return false;
+		}
+		$rowset = $this->tableGateway->select ( array (
+				'attribute_set_id' => $id 
+		) );
+		$row = $rowset->current ();
+		
+		return $row;
+	}
+	
+	/**
+	 * @inheritDoc
+	 */
+	public function delete($id) {
+		$this->tableGateway->delete ( array (
+				'id' => $id 
+		) );
+	}
+	
+	/**
+	 * @inheritDoc
+	 */
+	public function clearAttributeSet($idx) {
+		$this->tableGateway->delete ( array (
+				'attribute_set_id' => $idx 
+		) );
+	}
+	
+	/**
+	 * @inheritDoc
+	 */
+	public function save(\Product\Entity\ProductAttributeSetIdx $record) {
+		$hydrator = new ClassMethods ();
+		
+		// extract the data from the object
+		$data = $hydrator->extract ( $record );
+		
+		$this->getEventManager ()->trigger ( __FUNCTION__ . '.pre', null, array (
+				'data' => $data 
+		) ); // Trigger an event
+		                                                                                        
 		// Save the data
-		$this->tableGateway->insert($data); 
-    	
-    	$this->getEventManager()->trigger(__FUNCTION__ . '.post', null, array('data' => $data, 'record' => $record));  // Trigger an event
-    	return $record;
-    }
-    
-    
-	/* (non-PHPdoc)
-     * @see \Zend\EventManager\EventManagerAwareInterface::setEventManager()
-     */
-     public function setEventManager (EventManagerInterface $eventManager){
-         $eventManager->addIdentifiers(get_called_class());
-         $this->eventManager = $eventManager;
-     }
-
-	/* (non-PHPdoc)
-     * @see \Zend\EventManager\EventsCapableInterface::getEventManager()
-     */
-     public function getEventManager (){
-       if (null === $this->eventManager) {
-            $this->setEventManager(new EventManager());
-        }
-
-        return $this->eventManager;
-     }
-
+		$this->tableGateway->insert ( $data );
+		
+		$this->getEventManager ()->trigger ( __FUNCTION__ . '.post', null, array (
+				'data' => $data,
+				'record' => $record 
+		) ); // Trigger an event
+		return $record;
+	}
+	
+	/*
+	 * (non-PHPdoc) @see \Zend\EventManager\EventManagerAwareInterface::setEventManager()
+	 */
+	public function setEventManager(EventManagerInterface $eventManager) {
+		$eventManager->addIdentifiers ( get_called_class () );
+		$this->eventManager = $eventManager;
+	}
+	
+	/*
+	 * (non-PHPdoc) @see \Zend\EventManager\EventsCapableInterface::getEventManager()
+	 */
+	public function getEventManager() {
+		if (null === $this->eventManager) {
+			$this->setEventManager ( new EventManager () );
+		}
+		
+		return $this->eventManager;
+	}
 }

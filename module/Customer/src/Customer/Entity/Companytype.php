@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,87 +41,88 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Customer\Entity;
 
 class Companytype implements CompanytypeInterface {
-
-    public $id;
-    public $name;
-    public $legalform_id;
-    public $active;
-    
-    /**
-     * This method get the array posted and assign the values to the table
-     * object
-     *
-     * @param array $data
-     */
-    public function exchangeArray ($data)
-    {
-    	foreach ($data as $field => $value) {
-    		$this->$field = (isset($value)) ? $value : null;
-    	}
-    
-    	return true;
-    }
+	public $id;
+	public $name;
+	public $legalform_id;
+	public $active;
+	
 	/**
+	 * This method get the array posted and assign the values to the table
+	 * object
+	 *
+	 * @param array $data        	
+	 */
+	public function exchangeArray($data) {
+		foreach ( $data as $field => $value ) {
+			$this->$field = (isset ( $value )) ? $value : null;
+		}
+		
+		return true;
+	}
+	/**
+	 *
 	 * @return the $id
 	 */
 	public function getId() {
 		return $this->id;
 	}
-
+	
 	/**
-	 * @param field_type $id
+	 *
+	 * @param field_type $id        	
 	 */
 	public function setId($id) {
 		$this->id = $id;
 	}
-
+	
 	/**
+	 *
 	 * @return the $name
 	 */
 	public function getName() {
 		return $this->name;
 	}
-
+	
 	/**
-	 * @param field_type $name
+	 *
+	 * @param field_type $name        	
 	 */
 	public function setName($name) {
 		$this->name = $name;
 	}
-
+	
 	/**
+	 *
 	 * @return the $legalform_id
 	 */
 	public function getLegalformId() {
 		return $this->legalform_id;
 	}
-
+	
 	/**
-	 * @param field_type $legalform_id
+	 *
+	 * @param field_type $legalform_id        	
 	 */
 	public function setLegalformId($legalform_id) {
 		$this->legalform_id = $legalform_id;
 	}
-
+	
 	/**
+	 *
 	 * @return the $active
 	 */
 	public function getActive() {
 		return $this->active;
 	}
-
+	
 	/**
-	 * @param field_type $active
+	 *
+	 * @param field_type $active        	
 	 */
 	public function setActive($active) {
 		$this->active = $active;
 	}
-
-    
-    
-
 }

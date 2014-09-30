@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,39 +41,40 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Product\Service;
 
-interface ProductAttributeGroupServiceInterface
-{
-    /**
-     * Should return all the records 
-     *
-     * @return array|\Traversable
-     */
-    public function findAll();
-    
-    /**
-     * Should return a single record
-     *
-     * @param  int $id Identifier of the Record that should be returned
-     * @return \Product\Entity\ProductAttributeGroups
-     */
-    public function find($id);
-    
-    /**
-     * Should delete a single record
-     *
-     * @param  int $id Identifier of the Record that should be deleted
-     * @return \Product\Entity\ProductAttributeGroups
-     */
-    public function delete($id);
-    
-    /**
-     * Should save a single record
-     *
-     * @param  \Product\Model\Page $record object that should be saved
-     * @return \Product\Entity\ProductAttributeGroups
-     */
-    public function save(\Product\Entity\ProductAttributeGroups $record);
+interface ProductAttributeGroupServiceInterface {
+	/**
+	 * Should return all the records
+	 *
+	 * @return array|\Traversable
+	 */
+	public function findAll();
+	
+	/**
+	 * Should return a single record
+	 *
+	 * @param int $id
+	 *        	Identifier of the Record that should be returned
+	 * @return \Product\Entity\ProductAttributeGroups
+	 */
+	public function find($id);
+	
+	/**
+	 * Should delete a single record
+	 *
+	 * @param int $id
+	 *        	Identifier of the Record that should be deleted
+	 * @return \Product\Entity\ProductAttributeGroups
+	 */
+	public function delete($id);
+	
+	/**
+	 * Should save a single record
+	 *
+	 * @param \Product\Model\Page $record
+	 *        	object that should be saved
+	 * @return \Product\Entity\ProductAttributeGroups
+	 */
+	public function save(\Product\Entity\ProductAttributeGroups $record);
 }

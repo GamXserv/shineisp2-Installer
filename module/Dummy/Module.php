@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,7 +41,6 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Dummy;
 
 use Dummy\Entity\Dummy;
@@ -52,7 +52,6 @@ use Dummy\Entity\Companytype;
 use Dummy\Service\DummyService;
 use Dummy\Service\LegalformService;
 use Dummy\Listeners\DummyListener;
-
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Db\TableGateway\TableGateway;
@@ -60,7 +59,6 @@ use Zend\Db\ResultSet\ResultSet;
 use Zend\ModuleManager\Feature\DependencyIndicatorInterface;
 
 class Module implements DependencyIndicatorInterface {
-	
 	public function onBootstrap(MvcEvent $e) {
 		$eventManager = $e->getApplication ()->getEventManager ();
 		$moduleRouteListener = new ModuleRouteListener ();
@@ -77,74 +75,68 @@ class Module implements DependencyIndicatorInterface {
 		return array (
 				'factories' => array (
 						'DummyService' => function ($sm) {
-								$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
-								$translator = $sm->get ( 'translator' );
-								$resultSetPrototype = new ResultSet ();
-								$resultSetPrototype->setArrayObjectPrototype ( new Dummy () );
-								$personaldata = new TableGateway ( 'dummy', $dbAdapter, null, $resultSetPrototype );
-								$service = new \Dummy\Service\DummyService ( $personaldata, $translator );
-								return $service;
-						 }, 
+							$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
+							$translator = $sm->get ( 'translator' );
+							$resultSetPrototype = new ResultSet ();
+							$resultSetPrototype->setArrayObjectPrototype ( new Dummy () );
+							$personaldata = new TableGateway ( 'dummy', $dbAdapter, null, $resultSetPrototype );
+							$service = new \Dummy\Service\DummyService ( $personaldata, $translator );
+							return $service;
+						},
 						
 						'AdminDummyForm' => function ($sm) {
 							$form = new \DummyAdmin\Form\DummyForm ();
 							$form->setInputFilter ( $sm->get ( 'AdminDummyFilter' ) );
 							return $form;
-						}, 
+						},
 						
 						'AdminDummyFilter' => function ($sm) {
 							return new \DummyAdmin\Form\DummyFilter ();
-						}, 
-						
+						} 
 				)
-
-		 );
+				 
+		)
+		;
 	}
-	
 	
 	/**
 	 * Get the form elements
 	 */
-	public function getFormElementConfig ()
-	{
+	public function getFormElementConfig() {
 		return array (
 				'factories' => array (
-						'Dummy\Form\Element\Legalform' => function  ($sm)
-						{
-							$serviceLocator = $sm->getServiceLocator();
-							$translator = $sm->getServiceLocator()->get('translator');
-							$service = $serviceLocator->get('LegalformService');
-							$element = new \Dummy\Form\Element\Legalform($service, $translator);
+						'Dummy\Form\Element\Legalform' => function ($sm) {
+							$serviceLocator = $sm->getServiceLocator ();
+							$translator = $sm->getServiceLocator ()->get ( 'translator' );
+							$service = $serviceLocator->get ( 'LegalformService' );
+							$element = new \Dummy\Form\Element\Legalform ( $service, $translator );
 							return $element;
-						},
-				),
-			);
+						} 
+				) 
+		);
 	}
 	
 	/**
 	 * Check the dependency of the module
 	 * (non-PHPdoc)
-	 * 
+	 *
 	 * @see Zend\ModuleManager\Feature.DependencyIndicatorInterface::getModuleDependencies()
 	 */
 	public function getModuleDependencies() {
 		return array ();
 	}
-	
 	public function getConfig() {
 		return include __DIR__ . '/config/module.config.php';
 	}
-	
-	public function getAutoloaderConfig()
-	{
-		return array(
-				'Zend\Loader\StandardAutoloader' => array(
-						'namespaces' => array(
+	public function getAutoloaderConfig() {
+		return array (
+				'Zend\Loader\StandardAutoloader' => array (
+						'namespaces' => array (
 								__NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
 								__NAMESPACE__ . "Admin" => __DIR__ . '/src/' . __NAMESPACE__ . "Admin",
-								__NAMESPACE__ . "Settings" => __DIR__ . '/src/' . __NAMESPACE__ . "Settings",
-						),
-				),
+								__NAMESPACE__ . "Settings" => __DIR__ . '/src/' . __NAMESPACE__ . "Settings" 
+						) 
+				) 
 		);
 	}
 }

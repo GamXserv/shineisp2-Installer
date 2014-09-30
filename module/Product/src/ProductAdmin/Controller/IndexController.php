@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,15 +41,13 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace ProductAdmin\Controller;
 
 use Zend\InputFilter\InputFilter;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class IndexController extends AbstractActionController
-{
+class IndexController extends AbstractActionController {
 	protected $recordService;
 	protected $datagrid;
 	protected $form;
@@ -59,23 +58,16 @@ class IndexController extends AbstractActionController
 	
 	/**
 	 * Class Constructor
-	 * 
-	 * @param \Product\Service\ProductServiceInterface $recordService
-	 * @param \ProductAdmin\Form\ProductNewForm $newform
-	 * @param \ProductAdmin\Form\ProductNewFilter $newformfilter
-	 * @param \ProductAdmin\Form\ProductForm $form
-	 * @param \ProductAdmin\Form\ProductFilter $formfilter
-	 * @param \ZfcDatagrid\Datagrid $datagrid
-	 * @param \Base\Service\SettingsServiceInterface $settings
+	 *
+	 * @param \Product\Service\ProductServiceInterface $recordService        	
+	 * @param \ProductAdmin\Form\ProductNewForm $newform        	
+	 * @param \ProductAdmin\Form\ProductNewFilter $newformfilter        	
+	 * @param \ProductAdmin\Form\ProductForm $form        	
+	 * @param \ProductAdmin\Form\ProductFilter $formfilter        	
+	 * @param \ZfcDatagrid\Datagrid $datagrid        	
+	 * @param \Base\Service\SettingsServiceInterface $settings        	
 	 */
-	public function __construct(\Product\Service\ProductServiceInterface $recordService,
-                    	        \ProductAdmin\Form\ProductNewForm $newform, 
-								\ProductAdmin\Form\ProductNewFilter $newformfilter, 
-								\ProductAdmin\Form\ProductForm $form, 
-								\ProductAdmin\Form\ProductFilter $formfilter, 
-								\ZfcDatagrid\Datagrid $datagrid, 
-								\Base\Service\SettingsServiceInterface $settings)
-	{
+	public function __construct(\Product\Service\ProductServiceInterface $recordService, \ProductAdmin\Form\ProductNewForm $newform, \ProductAdmin\Form\ProductNewFilter $newformfilter, \ProductAdmin\Form\ProductForm $form, \ProductAdmin\Form\ProductFilter $formfilter, \ZfcDatagrid\Datagrid $datagrid, \Base\Service\SettingsServiceInterface $settings) {
 		$this->productService = $recordService;
 		$this->datagrid = $datagrid;
 		$this->newform = $newform;
@@ -85,236 +77,232 @@ class IndexController extends AbstractActionController
 		$this->settings = $settings;
 	}
 	
-	
 	/**
 	 * List of all records
 	 */
-	public function indexAction ()
-	{
+	public function indexAction() {
 		// prepare the datagrid
-		$this->datagrid->render();
+		$this->datagrid->render ();
 		
 		// get the datagrid ready to be shown in the template view
-		$response = $this->datagrid->getResponse();
+		$response = $this->datagrid->getResponse ();
 		
-		if ($this->datagrid->isHtmlInitReponse()) {
-			$view = new ViewModel();
-			$view->addChild($response, 'grid');
+		if ($this->datagrid->isHtmlInitReponse ()) {
+			$view = new ViewModel ();
+			$view->addChild ( $response, 'grid' );
 			return $view;
 		} else {
 			return $response;
 		}
 	}
 	
-    /**
-     * Add new information
-     */
-    public function addAction ()
-    {
-    	 
-    	$form = $this->newform;
-    
-    	$viewModel = new ViewModel(array (
-    			'form' => $form,
-    	));
-    
-    	$viewModel->setTemplate('product-admin/index/new');
-    	return $viewModel;
-    }
-    
-    /**
-     * Add new information
-     */
-    public function setAction ()
-    {
-    	$request = $this->getRequest();
-    	$post = $this->request->getPost();
-    	$typeId = $post->get('type_id');
-    	$attrSetId = $post->get('attribute_set_id');
-    	$attributes = array();
-    	
-    	if(!empty($attrSetId) && is_numeric($attrSetId)){
-    	    $form = $this->form->createAttributesElements($this->productService->getAttributes($attrSetId));
-    	    
-    	    // get the entity of the product in order to fill the main form with the attribute set id and the type id value. 
-    	    $product = new \Product\Entity\Product();
-    	    $product->setAttributeSetId($attrSetId);
-    	    $product->setTypeId($typeId);
-    	    
-    	    $form->bind($product);
-    	    $form->setData($product->getArrayCopy());
-    	    
-    	    $attrGroups = $this->productService->getAttributeGroups($product->getAttributeSetId());
-    	    $attributes = $this->productService->getAttributeGroupsData($product->getAttributeSetId());
-    	}else{
-    	    return $this->redirect()->toRoute('zfcadmin/product/default');
-    	}
-    	
-    	$viewModel = new ViewModel(array (
-    			'form' => $form,
-    			'attrgroups' => $attrGroups,
-    	        'attributes' => $attributes,
-    	));
-    
-    	$viewModel->setTemplate('product-admin/index/edit');
-    	return $viewModel;
-    }
-    
-    /**
-     * Delete the file from the product
-     */
-    public function delFileAction ()
-    {
-    	$id = $this->params()->fromRoute('id');
-    	$file = $this->params()->fromRoute('file');
-    	$attributeId = $this->params()->fromRoute('attribute');
-    	
-    	if($this->productService->deleteFilefromAttribute($id, $attributeId, $file)){
-    		$this->flashMessenger()->setNamespace('success')->addMessage('The information have been saved.');
-    	}else{
-    		$this->flashMessenger()->setNamespace('danger')->addMessage('The record has been not found!');
-    	}
-
-    	return $this->redirect()->toRoute('zfcadmin/product/default', array ('action' => 'edit', 'id' => $id));
-    }
-    
-    /**
-     * Edit the main product information
-     */
-    public function editAction ()
-    {
-    	$id = $this->params()->fromRoute('id');
-    	$form = $this->form;
-    	$attributes = array();
-    	$attrGroups = array();
-    	$attrValues = array();
-    	
-    	// Get the record by its id
-    	$product = $this->productService->find($id);
-    	
-    	if(!empty($product) && $product->getId()){
-
-    	    // Get the attribute group names by the attribute set Id for instance [Main, Price, Metadata, etc ...]
-    		$attrGroups = $this->productService->getAttributeGroups($product->getAttributeSetId());
-    		
-    		// then I get the complex array data that includes Groups, Attributes and its data
-    		$attributes = $this->productService->getAttributeGroupsData($product->getAttributeSetId());
-    		
-    		// here I create every single input html element using the attributes information
-    	    $form = $this->form->createAttributesElements($this->productService->getAttributes($product->getAttributeSetId()));
-    	}else{
-    		$this->flashMessenger()->setNamespace('danger')->addMessage('The record has been not found!');
-    		return $this->redirect()->toRoute('zfcadmin/product/default');
-    	}
-    	
-    	// Bind the MAIN data in the form and the attributes by the setData() method using a simple array of attribute data
-    	if (! empty($product)) {
-    	    $form->bind($product);
-    	    
-    	    $arrProduct = $product->getArrayCopy();
-    	    
-    	    // TODO: improve the hydrator strategy
-    	    if(!empty($arrProduct['attributes']))
-    	        $hydrator = new \Base\Hydrator\Strategy\DateTimeStrategy();
-
-    	        // extract the array parsing all the form values 
-    	        foreach ($arrProduct['attributes'] as $key => $attribute)
-                    $arrProduct['attributes'][$key] =  $hydrator->extract($attribute);
-    	        
-    	        // set the attribute data into the form
-    	        $form->setData($arrProduct);
-    	}
-    	
-    	$viewModel = new ViewModel(array (
-    			'form' => $form,
-    			'data' => $product,
-    			'attrgroups' => $attrGroups,
-    			'attributes' => $attributes,
-    	));
-    
-    	return $viewModel;
-    }
-    
-    /**
-     * Prepare the data and then save them
-     *
-     * @return \Zend\View\Model\ViewModel
-     */
-    public function processAction ()
-    {
-    	$attrGroups = array();
-        $attributes = array();
-        
-    	if (! $this->request->isPost()) {
-    		return $this->redirect()->toRoute(NULL, array (
-    				'controller' => 'product',
-    				'action' => 'index'
-    		));
-    	}
-    	
-    	$request = $this->getRequest();
-    	$post = $this->request->getPost();
-    	$form = $this->form;
-    	
-    	$post = array_merge_recursive( $request->getPost()->toArray(), $request->getFiles()->toArray() );
-    	
-    	if(!empty($post['attribute_set_id']) && is_numeric($post['attribute_set_id']))
-        	$attributeSetId = $post['attribute_set_id'];
-        	$attrGroups = $this->productService->getAttributeGroups($attributeSetId);
-        	$attributes = $this->productService->getAttributeGroupsData($attributeSetId);
-        	
-        	// build on the fly the attributes fieldset 
-        	$form = $this->form->createAttributesElements($this->productService->getAttributes($attributeSetId));
-
-    	// bind the main form values 
-    	$form->setData($post);
-    	
-    	if (!$form->isValid()) {
-    		$viewModel = new ViewModel(array (
-    				'error' => true,
-    				'form' => $form,
-    				'attrgroups' => $attrGroups,
-    				'attributes' => $attributes,
-    		));
-    		
-    		$viewModel->setTemplate('product-admin/index/edit');
-    		return $viewModel;
-    	}
-        	
-    	// Get the posted vars
-    	$product = $form->getData();
-    	$product->setAttributes(new \Zend\Stdlib\ArrayObject($post['attributes']));
-    	
-    	// Save the data in the database
-    	$record = $this->productService->save($product);
-    	
-    	// set a message to inform the operator about the success of the saving process
-    	$this->flashMessenger()->setNamespace('success')->addMessage('The information have been saved.');
-    
-    	return $this->redirect()->toRoute('zfcadmin/product/default', array ('action' => 'edit', 'id' => $record->getId()));
-    }
-    
-    /**
-     * Delete the records 
-     *
-     * @return \Zend\Http\Response
-     */
-    public function deleteAction ()
-    {
-    	$id = $this->params()->fromRoute('id');
-    
-    	if (is_numeric($id)) {
-    
-    		// Delete the record informaiton
-    		$this->productService->delete($id);
-    
-    		// Go back showing a message
-    		$this->flashMessenger()->setNamespace('success')->addMessage('The record has been deleted!');
-    		return $this->redirect()->toRoute('zfcadmin/product/default');
-    	}
-    
-    	$this->flashMessenger()->setNamespace('danger')->addMessage('The record has been not deleted!');
-    	return $this->redirect()->toRoute('zfcadmin/product/default');
-    }
-    
+	/**
+	 * Add new information
+	 */
+	public function addAction() {
+		$form = $this->newform;
+		
+		$viewModel = new ViewModel ( array (
+				'form' => $form 
+		) );
+		
+		$viewModel->setTemplate ( 'product-admin/index/new' );
+		return $viewModel;
+	}
+	
+	/**
+	 * Add new information
+	 */
+	public function setAction() {
+		$request = $this->getRequest ();
+		$post = $this->request->getPost ();
+		$typeId = $post->get ( 'type_id' );
+		$attrSetId = $post->get ( 'attribute_set_id' );
+		$attributes = array ();
+		
+		if (! empty ( $attrSetId ) && is_numeric ( $attrSetId )) {
+			$form = $this->form->createAttributesElements ( $this->productService->getAttributes ( $attrSetId ) );
+			
+			// get the entity of the product in order to fill the main form with the attribute set id and the type id value.
+			$product = new \Product\Entity\Product ();
+			$product->setAttributeSetId ( $attrSetId );
+			$product->setTypeId ( $typeId );
+			
+			$form->bind ( $product );
+			$form->setData ( $product->getArrayCopy () );
+			
+			$attrGroups = $this->productService->getAttributeGroups ( $product->getAttributeSetId () );
+			$attributes = $this->productService->getAttributeGroupsData ( $product->getAttributeSetId () );
+		} else {
+			return $this->redirect ()->toRoute ( 'zfcadmin/product/default' );
+		}
+		
+		$viewModel = new ViewModel ( array (
+				'form' => $form,
+				'attrgroups' => $attrGroups,
+				'attributes' => $attributes 
+		) );
+		
+		$viewModel->setTemplate ( 'product-admin/index/edit' );
+		return $viewModel;
+	}
+	
+	/**
+	 * Delete the file from the product
+	 */
+	public function delFileAction() {
+		$id = $this->params ()->fromRoute ( 'id' );
+		$file = $this->params ()->fromRoute ( 'file' );
+		$attributeId = $this->params ()->fromRoute ( 'attribute' );
+		
+		if ($this->productService->deleteFilefromAttribute ( $id, $attributeId, $file )) {
+			$this->flashMessenger ()->setNamespace ( 'success' )->addMessage ( 'The information have been saved.' );
+		} else {
+			$this->flashMessenger ()->setNamespace ( 'danger' )->addMessage ( 'The record has been not found!' );
+		}
+		
+		return $this->redirect ()->toRoute ( 'zfcadmin/product/default', array (
+				'action' => 'edit',
+				'id' => $id 
+		) );
+	}
+	
+	/**
+	 * Edit the main product information
+	 */
+	public function editAction() {
+		$id = $this->params ()->fromRoute ( 'id' );
+		$form = $this->form;
+		$attributes = array ();
+		$attrGroups = array ();
+		$attrValues = array ();
+		
+		// Get the record by its id
+		$product = $this->productService->find ( $id );
+		
+		if (! empty ( $product ) && $product->getId ()) {
+			
+			// Get the attribute group names by the attribute set Id for instance [Main, Price, Metadata, etc ...]
+			$attrGroups = $this->productService->getAttributeGroups ( $product->getAttributeSetId () );
+			
+			// then I get the complex array data that includes Groups, Attributes and its data
+			$attributes = $this->productService->getAttributeGroupsData ( $product->getAttributeSetId () );
+			
+			// here I create every single input html element using the attributes information
+			$form = $this->form->createAttributesElements ( $this->productService->getAttributes ( $product->getAttributeSetId () ) );
+		} else {
+			$this->flashMessenger ()->setNamespace ( 'danger' )->addMessage ( 'The record has been not found!' );
+			return $this->redirect ()->toRoute ( 'zfcadmin/product/default' );
+		}
+		
+		// Bind the MAIN data in the form and the attributes by the setData() method using a simple array of attribute data
+		if (! empty ( $product )) {
+			$form->bind ( $product );
+			
+			$arrProduct = $product->getArrayCopy ();
+			
+			// TODO: improve the hydrator strategy
+			if (! empty ( $arrProduct ['attributes'] ))
+				$hydrator = new \Base\Hydrator\Strategy\DateTimeStrategy ();
+				
+				// extract the array parsing all the form values
+			foreach ( $arrProduct ['attributes'] as $key => $attribute )
+				$arrProduct ['attributes'] [$key] = $hydrator->extract ( $attribute );
+				
+				// set the attribute data into the form
+			$form->setData ( $arrProduct );
+		}
+		
+		$viewModel = new ViewModel ( array (
+				'form' => $form,
+				'data' => $product,
+				'attrgroups' => $attrGroups,
+				'attributes' => $attributes 
+		) );
+		
+		return $viewModel;
+	}
+	
+	/**
+	 * Prepare the data and then save them
+	 *
+	 * @return \Zend\View\Model\ViewModel
+	 */
+	public function processAction() {
+		$attrGroups = array ();
+		$attributes = array ();
+		
+		if (! $this->request->isPost ()) {
+			return $this->redirect ()->toRoute ( NULL, array (
+					'controller' => 'product',
+					'action' => 'index' 
+			) );
+		}
+		
+		$request = $this->getRequest ();
+		$post = $this->request->getPost ();
+		$form = $this->form;
+		
+		$post = array_merge_recursive ( $request->getPost ()->toArray (), $request->getFiles ()->toArray () );
+		
+		if (! empty ( $post ['attribute_set_id'] ) && is_numeric ( $post ['attribute_set_id'] ))
+			$attributeSetId = $post ['attribute_set_id'];
+		$attrGroups = $this->productService->getAttributeGroups ( $attributeSetId );
+		$attributes = $this->productService->getAttributeGroupsData ( $attributeSetId );
+		
+		// build on the fly the attributes fieldset
+		$form = $this->form->createAttributesElements ( $this->productService->getAttributes ( $attributeSetId ) );
+		
+		// bind the main form values
+		$form->setData ( $post );
+		
+		if (! $form->isValid ()) {
+			$viewModel = new ViewModel ( array (
+					'error' => true,
+					'form' => $form,
+					'attrgroups' => $attrGroups,
+					'attributes' => $attributes 
+			) );
+			
+			$viewModel->setTemplate ( 'product-admin/index/edit' );
+			return $viewModel;
+		}
+		
+		// Get the posted vars
+		$product = $form->getData ();
+		$product->setAttributes ( new \Zend\Stdlib\ArrayObject ( $post ['attributes'] ) );
+		
+		// Save the data in the database
+		$record = $this->productService->save ( $product );
+		
+		// set a message to inform the operator about the success of the saving process
+		$this->flashMessenger ()->setNamespace ( 'success' )->addMessage ( 'The information have been saved.' );
+		
+		return $this->redirect ()->toRoute ( 'zfcadmin/product/default', array (
+				'action' => 'edit',
+				'id' => $record->getId () 
+		) );
+	}
+	
+	/**
+	 * Delete the records
+	 *
+	 * @return \Zend\Http\Response
+	 */
+	public function deleteAction() {
+		$id = $this->params ()->fromRoute ( 'id' );
+		
+		if (is_numeric ( $id )) {
+			
+			// Delete the record informaiton
+			$this->productService->delete ( $id );
+			
+			// Go back showing a message
+			$this->flashMessenger ()->setNamespace ( 'success' )->addMessage ( 'The record has been deleted!' );
+			return $this->redirect ()->toRoute ( 'zfcadmin/product/default' );
+		}
+		
+		$this->flashMessenger ()->setNamespace ( 'danger' )->addMessage ( 'The record has been not deleted!' );
+		return $this->redirect ()->toRoute ( 'zfcadmin/product/default' );
+	}
 }

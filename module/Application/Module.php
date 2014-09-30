@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -6,64 +7,62 @@
  * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
-
 namespace Application;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\ModuleManager\Feature\DependencyIndicatorInterface;
 
-class Module implements DependencyIndicatorInterface{
+class Module implements DependencyIndicatorInterface {
 	
 	/**
-	 * Instatiate the module 
-	 * 
-	 * @param MvcEvent $e
+	 * Instatiate the module
+	 *
+	 * @param MvcEvent $e        	
 	 */
-    public function onBootstrap(MvcEvent $e)
-    {
-        $eventManager        = $e->getApplication()->getEventManager();
-        $moduleRouteListener = new ModuleRouteListener();
-        $moduleRouteListener->attach($eventManager);
-        
-        $sm = $e->getApplication()->getServiceManager();
-        $headLink = $sm->get('viewhelpermanager')->get('headLink');
-        $headLink->appendStylesheet('/css/application/carousel.css', 'all');
-        $headLink->appendStylesheet('/css/application/frontend.css', 'all');
-        
-        $inlineScript = $sm->get('viewhelpermanager')->get('inlineScript');
-        $inlineScript->appendFile('/js/application/frontend.js');
-    }
-    
-    /**
-     * Check the dependency of the module
-     * (non-PHPdoc)
-     * @see Zend\ModuleManager\Feature.DependencyIndicatorInterface::getModuleDependencies()
-     */
-    public function getModuleDependencies()
-    {
-    	return array('Base');
-    }
+	public function onBootstrap(MvcEvent $e) {
+		$eventManager = $e->getApplication ()->getEventManager ();
+		$moduleRouteListener = new ModuleRouteListener ();
+		$moduleRouteListener->attach ( $eventManager );
+		
+		$sm = $e->getApplication ()->getServiceManager ();
+		$headLink = $sm->get ( 'viewhelpermanager' )->get ( 'headLink' );
+		$headLink->appendStylesheet ( '/css/application/carousel.css', 'all' );
+		$headLink->appendStylesheet ( '/css/application/frontend.css', 'all' );
+		
+		$inlineScript = $sm->get ( 'viewhelpermanager' )->get ( 'inlineScript' );
+		$inlineScript->appendFile ( '/js/application/frontend.js' );
+	}
 	
-    /**
-     * Get the config file array from the module
-     */
-    public function getConfig()
-    {
-        return include __DIR__ . '/config/module.config.php';
-    }
-
-    /**
-     * Set the autoloader paths for this module
-     */
-    public function getAutoloaderConfig()
-    {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
-                ),
-            ),
-        );
-    }
+	/**
+	 * Check the dependency of the module
+	 * (non-PHPdoc)
+	 * 
+	 * @see Zend\ModuleManager\Feature.DependencyIndicatorInterface::getModuleDependencies()
+	 */
+	public function getModuleDependencies() {
+		return array (
+				'Base' 
+		);
+	}
+	
+	/**
+	 * Get the config file array from the module
+	 */
+	public function getConfig() {
+		return include __DIR__ . '/config/module.config.php';
+	}
+	
+	/**
+	 * Set the autoloader paths for this module
+	 */
+	public function getAutoloaderConfig() {
+		return array (
+				'Zend\Loader\StandardAutoloader' => array (
+						'namespaces' => array (
+								__NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__ 
+						) 
+				) 
+		);
+	}
 }

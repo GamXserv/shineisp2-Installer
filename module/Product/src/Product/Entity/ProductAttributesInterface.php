@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,28 +41,26 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Product\Entity;
 
-interface ProductAttributesInterface
-{
-    public function getId();
-    public function getName();
-    public function setName($name);
-    public function getType();
-    public function setType($type);
-    public function getInput();
-    public function setInput($input);
-    public function getLabel();
-    public function setLabel($label);
-    public function getCss();
-    public function setCss($css);
-    public function getSourceModel();
-    public function setSourceModel($source_model);
-    public function getFilters();
-    public function setFilters($filters);
-    public function getIsRequired();
-    public function setIsRequired($is_required);
-    public function getIsUserDefined();
-    public function setIsUserDefined($is_user_defined);
+interface ProductAttributesInterface {
+	public function getId();
+	public function getName();
+	public function setName($name);
+	public function getType();
+	public function setType($type);
+	public function getInput();
+	public function setInput($input);
+	public function getLabel();
+	public function setLabel($label);
+	public function getCss();
+	public function setCss($css);
+	public function getSourceModel();
+	public function setSourceModel($source_model);
+	public function getFilters();
+	public function setFilters($filters);
+	public function getIsRequired();
+	public function setIsRequired($is_required);
+	public function getIsUserDefined();
+	public function setIsUserDefined($is_user_defined);
 }

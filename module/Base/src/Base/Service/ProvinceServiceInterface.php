@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,71 +41,76 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Base\Service;
 
-interface ProvinceServiceInterface
-{
-    /**
-     * Should return all the records 
-     *
-     * @return array|\Traversable
-     */
-    public function findAll();
-
-    /**
-     * Should return a single record
-     *
-     * @param  int $id Identifier of the Record that should be returned
-     * @return \Base\Entity\Province
-     */
-    public function find($id);
-    
-    /**
-     * Should return a single record
-     *
-     * @param  string $name of the Record that should be returned
-     * @return \Base\Entity\Province
-     */
-    public function findByName($name);
-    
-    /**
-     * Should return a single record
-     *
-     * @param  string $code of the Record that should be returned
-     * @return \Base\Entity\Province
-     */
-    public function findByCode($code);
-    
-    /**
-     * Should return a group of records
-     *
-     * @param  string $regionId of the foreign reference of the Records that should be returned
-     * @return \Base\Entity\Province
-     */
-    public function findByRegionId($region_id);
-    
-    /**
-     * Should return a group of records
-     *
-     * @param  string $country_id of the foreign reference of the Records that should be returned
-     * @return \Base\Entity\Province
-     */
-    public function findByCountryId($country_id);
-    
-    /**
-     * Should delete a single record
-     *
-     * @param  int $id Identifier of the Record that should be deleted
-     * @return \Base\Entity\Province
-     */
-    public function delete($id);
-    
-    /**
-     * Should save a single record
-     *
-     * @param  \Base\Entity\Province $record object that should be saved
-     * @return \Base\Entity\Province
-     */
-    public function save(\Base\Entity\Province $record);
+interface ProvinceServiceInterface {
+	/**
+	 * Should return all the records
+	 *
+	 * @return array|\Traversable
+	 */
+	public function findAll();
+	
+	/**
+	 * Should return a single record
+	 *
+	 * @param int $id
+	 *        	Identifier of the Record that should be returned
+	 * @return \Base\Entity\Province
+	 */
+	public function find($id);
+	
+	/**
+	 * Should return a single record
+	 *
+	 * @param string $name
+	 *        	of the Record that should be returned
+	 * @return \Base\Entity\Province
+	 */
+	public function findByName($name);
+	
+	/**
+	 * Should return a single record
+	 *
+	 * @param string $code
+	 *        	of the Record that should be returned
+	 * @return \Base\Entity\Province
+	 */
+	public function findByCode($code);
+	
+	/**
+	 * Should return a group of records
+	 *
+	 * @param string $regionId
+	 *        	of the foreign reference of the Records that should be returned
+	 * @return \Base\Entity\Province
+	 */
+	public function findByRegionId($region_id);
+	
+	/**
+	 * Should return a group of records
+	 *
+	 * @param string $country_id
+	 *        	of the foreign reference of the Records that should be returned
+	 * @return \Base\Entity\Province
+	 */
+	public function findByCountryId($country_id);
+	
+	/**
+	 * Should delete a single record
+	 *
+	 * @param int $id
+	 *        	Identifier of the Record that should be deleted
+	 * @return \Base\Entity\Province
+	 */
+	public function delete($id);
+	
+	/**
+	 * Should save a single record
+	 *
+	 * @param \Base\Entity\Province $record
+	 *        	object that should be saved
+	 * @return \Base\Entity\Province
+	 */
+	public function save(\Base\Entity\Province $record);
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,13 +41,11 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Product\Entity;
 
-interface ProductAttributeSetIdxInterface
-{
-    public function getAttributeId();
-    public function setAttributeId($attribute_id);
-    public function getAttributeSetId();
-    public function setAttributeSetId($attribute_set_id);
+interface ProductAttributeSetIdxInterface {
+	public function getAttributeId();
+	public function setAttributeId($attribute_id);
+	public function getAttributeSetId();
+	public function setAttributeSetId($attribute_set_id);
 }

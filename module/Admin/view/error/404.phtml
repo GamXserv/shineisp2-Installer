@@ -2,26 +2,28 @@
 
 <?php if (isset($this->reason) && $this->reason): ?>
 
-	<small><?php echo $this->reason ?><?php echo $this->message ?></small>
-	<hr/>
-	<p><?php echo $this->translate('Click one of these buttons to solve the problem.') ?></p>
-	<p><a class='btn btn-success' href='<?php echo $this->url('home') ?>'><?php echo $this->translate('Homepage') ?></a>
-	<a class='btn btn-success' href='#'><?php echo $this->translate('Contact us') ?></a></p>
-	<?php endif ?>
+<small><?php echo $this->reason ?><?php echo $this->message ?></small>
+<hr />
+<p><?php echo $this->translate('Click one of these buttons to solve the problem.') ?></p>
+<p>
+	<a class='btn btn-success' href='<?php echo $this->url('home') ?>'><?php echo $this->translate('Homepage') ?></a>
+	<a class='btn btn-success' href='#'><?php echo $this->translate('Contact us') ?></a>
+</p>
+<?php endif ?>
 	
 	<?php if (isset($this->controller) && $this->controller): ?>
-	
-	<dl>
-		<dt>Controller:</dt>
-		<dd><?php echo $this->escapeHtml($this->controller)?>
+
+<dl>
+	<dt>Controller:</dt>
+	<dd><?php echo $this->escapeHtml($this->controller)?>
 		<?php
 		
-		    if (isset($this->controller_class) && $this->controller_class && $this->controller_class != $this->controller) {
-		        echo '(' . sprintf('resolves to %s', $this->escapeHtml($this->controller_class)) . ')';
-		    }
-		    ?>
+		if (isset ( $this->controller_class ) && $this->controller_class && $this->controller_class != $this->controller) {
+			echo '(' . sprintf ( 'resolves to %s', $this->escapeHtml ( $this->controller_class ) ) . ')';
+		}
+		?>
 		</dd>
-	</dl>
+</dl>
 
 <?php endif ?>
 
@@ -46,9 +48,9 @@
 	</dd>
 </dl>
 <?php
-        $e = $this->exception->getPrevious();
-        if ($e) :
-            ?>
+		$e = $this->exception->getPrevious ();
+		if ($e) :
+			?>
 <hr />
 <h2>Previous exceptions:</h2>
 <ul class="unstyled">
@@ -71,9 +73,10 @@
 		</dl>
 	</li>
     <?php
-		$e = $e->getPrevious();
-        endwhile;
-	?>
+				$e = $e->getPrevious ();
+			endwhile
+			;
+			?>
 </ul>
 <?php endif; ?>
 

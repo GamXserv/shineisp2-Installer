@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,79 +41,80 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Product\Entity;
 
 class ProductAttributeEntity implements ProductAttributeEntityInterface {
-
-    public $id;
-    public $attribute_id;
-    public $entity_id;
-    public $value;
-     
-    
-    /**
-     * This method get the array posted and assign the values to the table
-     * object
-     *
-     * @param array $data
-     */
-    public function exchangeArray ($data)
-    {
-    	foreach ($data as $field => $value) {
-    		$this->$field = (isset($value)) ? $value : null;
-    	}
-    
-    	return true;
-    }
-    
+	public $id;
+	public $attribute_id;
+	public $entity_id;
+	public $value;
+	
 	/**
+	 * This method get the array posted and assign the values to the table
+	 * object
+	 *
+	 * @param array $data        	
+	 */
+	public function exchangeArray($data) {
+		foreach ( $data as $field => $value ) {
+			$this->$field = (isset ( $value )) ? $value : null;
+		}
+		
+		return true;
+	}
+	
+	/**
+	 *
 	 * @return the $id
 	 */
 	public function getId() {
 		return $this->id;
 	}
 	/**
+	 *
 	 * @return the $attribute_id
 	 */
 	public function getAttributeId() {
 		return $this->attribute_id;
 	}
-
+	
 	/**
-	 * @param field_type $attribute_id
+	 *
+	 * @param field_type $attribute_id        	
 	 */
 	public function setAttributeId($attribute_id) {
 		$this->attribute_id = $attribute_id;
 	}
-
+	
 	/**
+	 *
 	 * @return the $entity_id
 	 */
 	public function getEntityId() {
 		return $this->entity_id;
 	}
-
+	
 	/**
-	 * @param field_type $entity_id
+	 *
+	 * @param field_type $entity_id        	
 	 */
 	public function setEntityId($entity_id) {
 		$this->entity_id = $entity_id;
 	}
-
+	
 	/**
+	 *
 	 * @return the $value
 	 */
 	public function getValue() {
 		return $this->value;
 	}
-
+	
 	/**
-	 * @param field_type $value
+	 *
+	 * @param field_type $value        	
 	 */
 	public function setValue($value) {
 		$this->value = $value;
 	}
-
-    
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,97 +41,103 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Base\Entity;
 
 class Province implements ProvinceInterface {
-
-    public $id;
-    public $name;
-    public $code;
-    public $region_id;
-    public $country_id;
-    
-    
-    /**
-     * This method get the array posted and assign the values to the table
-     * object
-     *
-     * @param array $data
-     */
-    public function exchangeArray ($data)
-    {
-    	foreach ($data as $field => $value) {
-    		$this->$field = (isset($value)) ? $value : null;
-    	}
-    
-    	return true;
-    }
-    
+	public $id;
+	public $name;
+	public $code;
+	public $region_id;
+	public $country_id;
+	
 	/**
+	 * This method get the array posted and assign the values to the table
+	 * object
+	 *
+	 * @param array $data        	
+	 */
+	public function exchangeArray($data) {
+		foreach ( $data as $field => $value ) {
+			$this->$field = (isset ( $value )) ? $value : null;
+		}
+		
+		return true;
+	}
+	
+	/**
+	 *
 	 * @return the $name
 	 */
 	public function getName() {
 		return $this->name;
 	}
-
+	
 	/**
-	 * @param field_type $name
+	 *
+	 * @param field_type $name        	
 	 */
 	public function setName($name) {
 		$this->name = $name;
 	}
-
+	
 	/**
+	 *
 	 * @return the $id
 	 */
 	public function getId() {
 		return $this->id;
 	}
-
+	
 	/**
-	 * @param field_type $id
+	 *
+	 * @param field_type $id        	
 	 */
 	public function setId($id) {
 		$this->id = $id;
 	}
-
+	
 	/**
+	 *
 	 * @return the $code
 	 */
 	public function getCode() {
 		return $this->code;
 	}
-
+	
 	/**
-	 * @param field_type $code
+	 *
+	 * @param field_type $code        	
 	 */
 	public function setCode($code) {
 		$this->code = $code;
 	}
 	/**
+	 *
 	 * @return the $region_id
 	 */
 	public function getRegionId() {
 		return $this->region_id;
 	}
-
+	
 	/**
-	 * @param field_type $region_id
+	 *
+	 * @param field_type $region_id        	
 	 */
 	public function setRegionId($region_id) {
 		$this->region_id = $region_id;
 	}
-
+	
 	/**
+	 *
 	 * @return the $country_id
 	 */
 	public function getCountryId() {
 		return $this->country_id;
 	}
-
+	
 	/**
-	 * @param field_type $country_id
+	 *
+	 * @param field_type $country_id        	
 	 */
 	public function setCountryId($country_id) {
 		$this->country_id = $country_id;

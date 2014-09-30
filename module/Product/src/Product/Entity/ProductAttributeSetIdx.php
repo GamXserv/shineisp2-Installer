@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,55 +41,55 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Product\Entity;
 
 class ProductAttributeSetIdx implements ProductAttributeSetIdxInterface {
-
-    public $attribute_id;
-    public $attribute_set_id;
-    
+	public $attribute_id;
+	public $attribute_set_id;
+	
 	/**
+	 *
 	 * @return the $attribute_id
 	 */
 	public function getAttributeId() {
 		return $this->attribute_id;
 	}
-
+	
 	/**
-	 * @param field_type $attribute_id
+	 *
+	 * @param field_type $attribute_id        	
 	 */
 	public function setAttributeId($attribute_id) {
 		$this->attribute_id = $attribute_id;
 	}
-
+	
 	/**
+	 *
 	 * @return the $attribute_set_id
 	 */
 	public function getAttributeSetId() {
 		return $this->attribute_set_id;
 	}
-
+	
 	/**
-	 * @param field_type $attribute_set_id
+	 *
+	 * @param field_type $attribute_set_id        	
 	 */
 	public function setAttributeSetId($attribute_set_id) {
 		$this->attribute_set_id = $attribute_set_id;
 	}
-
-	/**
-     * This method get the array posted and assign the values to the table
-     * object
-     *
-     * @param array $data
-     */
-    public function exchangeArray ($data)
-    {
-    	foreach ($data as $field => $value) {
-    		$this->$field = (isset($value)) ? $value : null;
-    	}
-    
-    	return true;
-    }
 	
+	/**
+	 * This method get the array posted and assign the values to the table
+	 * object
+	 *
+	 * @param array $data        	
+	 */
+	public function exchangeArray($data) {
+		foreach ( $data as $field => $value ) {
+			$this->$field = (isset ( $value )) ? $value : null;
+		}
+		
+		return true;
+	}
 }

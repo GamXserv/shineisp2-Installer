@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,262 +41,240 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
-
 namespace Product;
+
 use Product\Entity\ProductAttributeSet;
-
 use ProductAdmin\Form\ProductAttributesForm;
-
 use Product\Entity\ProductAttributes;
-
 use Product\Entity\ProductAttributeSetIdx;
 use Product\Entity\ProductAttributeGroups;
 use Product\Entity\ProductAttributeIdx;
-
 use Product\Entity\ProductTypes;
-
 use Product\Entity\Product;
 use Product\Listeners\ProductListener;
-
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\ModuleManager\Feature\DependencyIndicatorInterface;
 
-class Module implements DependencyIndicatorInterface{
+class Module implements DependencyIndicatorInterface {
+	public function onBootstrap(MvcEvent $e) {
+		$eventManager = $e->getApplication ()->getEventManager ();
+		$moduleRouteListener = new ModuleRouteListener ();
+		$moduleRouteListener->attach ( $eventManager );
+		
+		$sm = $e->getApplication ()->getServiceManager ();
+		$eventManager->attach ( new ProductListener ( $sm ) );
+		
+		$headLink = $sm->get ( 'viewhelpermanager' )->get ( 'headLink' );
+		$headLink->appendStylesheet ( '/css/base/fancytree/ui.fancytree.min.css' );
+		$headLink->appendStylesheet ( '/css/product/product.css' );
+		
+		$inlineScript = $sm->get ( 'viewhelpermanager' )->get ( 'inlineScript' );
+		$inlineScript->appendFile ( '/js/product/jquery.fancytree.min.js' );
+		$inlineScript->appendFile ( '/js/product/jquery.fancytree.dnd.js' );
+		$inlineScript->appendFile ( '/js/product/jquery.fancytree.edit.js' );
+		$inlineScript->appendFile ( '/js/product/product.js' );
+	}
 	
-    public function onBootstrap(MvcEvent $e)
-    {
-        $eventManager        = $e->getApplication()->getEventManager();
-        $moduleRouteListener = new ModuleRouteListener();
-        $moduleRouteListener->attach($eventManager);
-        
-        $sm = $e->getApplication()->getServiceManager();
-        $eventManager->attach(new ProductListener($sm));
-        
-        
-        $headLink = $sm->get('viewhelpermanager')->get('headLink');
-        $headLink->appendStylesheet('/css/base/fancytree/ui.fancytree.min.css');
-        $headLink->appendStylesheet('/css/product/product.css');
-        
-        $inlineScript = $sm->get('viewhelpermanager')->get('inlineScript');
-        $inlineScript->appendFile('/js/product/jquery.fancytree.min.js');
-        $inlineScript->appendFile('/js/product/jquery.fancytree.dnd.js');
-        $inlineScript->appendFile('/js/product/jquery.fancytree.edit.js');
-        $inlineScript->appendFile('/js/product/product.js');
-    }
-    
-    /**
-     * Set the Services Manager items
-     */
-    public function getServiceConfig() {
-    	return array (
-    			'factories' => array (
-    					'ProductService' => function ($sm) {
-	    					$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
-	    					$translator = $sm->get ( 'translator' );
-	    					$resultSetPrototype = new ResultSet ();
-	    					$resultSetPrototype->setArrayObjectPrototype ( new Product () );
-	    					$tablegateway = new TableGateway ( 'product', $dbAdapter, null, $resultSetPrototype );
-	    					$service = new \Product\Service\ProductService ( $tablegateway, $sm->get('ProductEAV'), $sm->get('ProductAttributeGroupService'), $sm->get('ProductAttributeSetService'), $sm->get('ProductAttributeService'), $translator );
-	    					return $service;
-    					},
-    					'ProductEAV' => function ($sm) {
-	    					$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
-	    					$resultSetPrototype = new ResultSet ();
-	    					$resultSetPrototype->setArrayObjectPrototype ( new Product () );
-	    					$tablegateway = new TableGateway ( 'product', $dbAdapter, null, $resultSetPrototype );
-	    					$service = new \Product\Model\EavProduct( $tablegateway );
-	    					return $service;
-    					},
-    					'ProductTypeService' => function ($sm) {
-	    					$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
-	    					$translator = $sm->get ( 'translator' );
-	    					$resultSetPrototype = new ResultSet ();
-	    					$resultSetPrototype->setArrayObjectPrototype ( new ProductTypes () );
-	    					$tablegateway = new TableGateway ( 'product_types', $dbAdapter, null, $resultSetPrototype );
-	    					$service = new \Product\Service\ProductTypeService ( $tablegateway, $translator );
-	    					return $service;
-    					},
-    					'ProductAttributeSetService' => function ($sm) {
-	    					$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
-	    					$translator = $sm->get ( 'translator' );
-	    					$resultSetPrototype = new ResultSet ();
-	    					$resultSetPrototype->setArrayObjectPrototype ( new ProductAttributeSet () );
-	    					$tablegateway = new TableGateway ( 'product_attributes_set', $dbAdapter, null, $resultSetPrototype );
-	    					$service = new \Product\Service\ProductAttributeSetService ( $tablegateway, $sm->get('ProductAttributeGroupService'), $sm->get('ProductAttributeIdxService'), $translator );
-	    					return $service;
-    					},
-    					'ProductAttributeSetIdxService' => function ($sm) { 
-	    					$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
-	    					$translator = $sm->get ( 'translator' );
-	    					$resultSetPrototype = new ResultSet ();
-	    					$resultSetPrototype->setArrayObjectPrototype ( new ProductAttributeSetIdx () );
-	    					$tablegateway = new TableGateway ( 'product_attributes_set_idx', $dbAdapter, null, $resultSetPrototype );
-	    					$service = new \Product\Service\ProductAttributeSetIdxService ( $tablegateway, $translator );
-	    					return $service;
-    					},
-    					'ProductAttributeGroupService' => function ($sm) {
-	    					$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
-	    					$translator = $sm->get ( 'translator' );
-	    					$resultSetPrototype = new ResultSet ();
-	    					$resultSetPrototype->setArrayObjectPrototype ( new ProductAttributeGroups () );
-	    					$tablegateway = new TableGateway ( 'product_attributes_groups', $dbAdapter, null, $resultSetPrototype );
-	    					$service = new \Product\Service\ProductAttributeGroupService ( $tablegateway, $translator );
-	    					return $service;
-    					},
-    					'ProductAttributeIdxService' => function ($sm) {
-	    					$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
-	    					$translator = $sm->get ( 'translator' );
-	    					$resultSetPrototype = new ResultSet ();
-	    					$resultSetPrototype->setArrayObjectPrototype ( new ProductAttributeIdx () );
-	    					$tablegateway = new TableGateway ( 'product_attributes_idx', $dbAdapter, null, $resultSetPrototype );
-	    					$service = new \Product\Service\ProductAttributeIdxService ( $tablegateway, $translator );
-	    					return $service;
-    					},
-    					'ProductAttributeService' => function ($sm) {
-	    					$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
-	    					$translator = $sm->get ( 'translator' );
-	    					$resultSetPrototype = new ResultSet ();
-	    					$resultSetPrototype->setArrayObjectPrototype ( new ProductAttributes () );
-	    					$tablegateway = new TableGateway ( 'product_attributes', $dbAdapter, null, $resultSetPrototype );
-	    					$service = new \Product\Service\ProductAttributeService ( $tablegateway, $translator );
-	    					return $service;
-    					},
-    	
-				    	'ProductNewForm' => function ($sm) {
-					    	$form = new \ProductAdmin\Form\ProductNewForm ();
-					    	$form->setInputFilter ( $sm->get ( 'ProductNewFilter' ) );
-					    	return $form;
-				    	},
-				    
-				    	'ProductNewFilter' => function ($sm) {
-				    		return new \ProductAdmin\Form\ProductNewFilter ();
-				    	},
-    	
-				    
-				    	'AdminProductForm' => function ($sm) {
-					    	$form = new \ProductAdmin\Form\ProductForm ();
-					    	$form->setInputFilter ( $sm->get ( 'AdminProductFilter' ) );
-					    	return $form;
-				    	},
-				    
-				    	'AdminProductFilter' => function ($sm) {
-				    		return new \ProductAdmin\Form\ProductFilter ();
-				    	},
-				    
-				    	'AttributesForm' => function ($sm) {
-					    	$form = new \ProductAdmin\Form\AttributesForm ();
-					    	$form->setInputFilter ( $sm->get ( 'AttributesFilter' ) );
-					    	return $form;
-				    	},
-				    
-				    	'AttributesFilter' => function ($sm) {
-				    		return new \ProductAdmin\Form\AttributesFilter ();
-				    	},
-				    
-				    	'AttributeGroupsForm' => function ($sm) {
-					    	$form = new \ProductAdmin\Form\AttributeGroupsForm ();
-					    	$form->setInputFilter ( $sm->get ( 'AttributeGroupsFilter' ) );
-					    	return $form;
-				    	},
-				    
-				    	'AttributeGroupsFilter' => function ($sm) {
-				    		return new \ProductAdmin\Form\AttributeGroupsFilter ();
-				    	},
-				    
-				    	'AttributeSetForm' => function ($sm) {
-					    	$form = new \ProductAdmin\Form\AttributeSetForm ();
-					    	$form->setInputFilter ( $sm->get ( 'AttributeSetFilter' ) );
-					    	return $form;
-				    	},
-				    
-				    	'AttributeSetFilter' => function ($sm) {
-				    		return new \ProductAdmin\Form\AttributeSetFilter ();
-				    	},
-				)
-    	);
-    }
-    
-    
-    /**
-     * Get the form elements
-     */
-    public function getFormElementConfig ()
-    {
-    	return array (
-    			'factories' => array (
-    					'ProductAdmin\Form\Element\Types' => function  ($sm)
-    					{
-    						$serviceLocator = $sm->getServiceLocator();
-    						$translator = $sm->getServiceLocator()->get('translator');
-    						$service = $serviceLocator->get('ProductTypeService');
-    						$element = new \ProductAdmin\Form\Element\Types($service, $translator);
-    						return $element;
-    					},
-    					'ProductAdmin\Form\Element\Attributes' => function  ($sm)
-    					{
-    						$serviceLocator = $sm->getServiceLocator();
-    						$translator = $sm->getServiceLocator()->get('translator');
-    						$service = $serviceLocator->get('ProductAttributeService');
-    						$element = new \ProductAdmin\Form\Element\Attributes($service, $translator);
-    						return $element;
-    					},
-    					'ProductAdmin\Form\Element\AttributeSet' => function  ($sm)
-    					{
-    						$serviceLocator = $sm->getServiceLocator();
-    						$translator = $sm->getServiceLocator()->get('translator');
-    						$service = $serviceLocator->get('ProductAttributeSetService');
-    						$element = new \ProductAdmin\Form\Element\AttributeSets($service, $translator);
-    						return $element;
-    					},
-    					'ProductSettings\Form\Element\CommonAttributes' => function  ($sm)
-    					{
-    						$serviceLocator = $sm->getServiceLocator();
-    						$translator = $sm->getServiceLocator()->get('translator');
-    						$service = $serviceLocator->get('ProductAttributeService');
-    						$element = new \ProductSettings\Form\Element\CommonAttributes($service, $translator, false);
-    						return $element; 
-    					},
-    					'ProductAdmin\Form\Element\Groups' => function  ($sm)
-    					{
-    						$serviceLocator = $sm->getServiceLocator();
-    						$translator = $sm->getServiceLocator()->get('translator');
-    						$service = $serviceLocator->get('ProductAttributeGroupService');
-    						$element = new \ProductAdmin\Form\Element\Groups($service, $translator);
-    						return $element;
-    					},
-    			  ),
-    	   );
-    }
-    
-    /**
-     * Check the dependency of the module
-     * (non-PHPdoc)
-     * @see Zend\ModuleManager\Feature.DependencyIndicatorInterface::getModuleDependencies()
-     */
-    public function getModuleDependencies()
-    {
-    	return array();
-    }
-
-    public function getConfig()
-    {
-        return include __DIR__ . '/config/module.config.php';
-    }
-    
-    public function getAutoloaderConfig()
-    {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
-                    __NAMESPACE__ . "Admin" => __DIR__ . '/src/' . __NAMESPACE__ . "Admin",
-                    __NAMESPACE__ . "Settings" => __DIR__ . '/src/' . __NAMESPACE__ . "Settings",
-                ),
-            ),
-        );
-    }
+	/**
+	 * Set the Services Manager items
+	 */
+	public function getServiceConfig() {
+		return array (
+				'factories' => array (
+						'ProductService' => function ($sm) {
+							$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
+							$translator = $sm->get ( 'translator' );
+							$resultSetPrototype = new ResultSet ();
+							$resultSetPrototype->setArrayObjectPrototype ( new Product () );
+							$tablegateway = new TableGateway ( 'product', $dbAdapter, null, $resultSetPrototype );
+							$service = new \Product\Service\ProductService ( $tablegateway, $sm->get ( 'ProductEAV' ), $sm->get ( 'ProductAttributeGroupService' ), $sm->get ( 'ProductAttributeSetService' ), $sm->get ( 'ProductAttributeService' ), $translator );
+							return $service;
+						},
+						'ProductEAV' => function ($sm) {
+							$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
+							$resultSetPrototype = new ResultSet ();
+							$resultSetPrototype->setArrayObjectPrototype ( new Product () );
+							$tablegateway = new TableGateway ( 'product', $dbAdapter, null, $resultSetPrototype );
+							$service = new \Product\Model\EavProduct ( $tablegateway );
+							return $service;
+						},
+						'ProductTypeService' => function ($sm) {
+							$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
+							$translator = $sm->get ( 'translator' );
+							$resultSetPrototype = new ResultSet ();
+							$resultSetPrototype->setArrayObjectPrototype ( new ProductTypes () );
+							$tablegateway = new TableGateway ( 'product_types', $dbAdapter, null, $resultSetPrototype );
+							$service = new \Product\Service\ProductTypeService ( $tablegateway, $translator );
+							return $service;
+						},
+						'ProductAttributeSetService' => function ($sm) {
+							$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
+							$translator = $sm->get ( 'translator' );
+							$resultSetPrototype = new ResultSet ();
+							$resultSetPrototype->setArrayObjectPrototype ( new ProductAttributeSet () );
+							$tablegateway = new TableGateway ( 'product_attributes_set', $dbAdapter, null, $resultSetPrototype );
+							$service = new \Product\Service\ProductAttributeSetService ( $tablegateway, $sm->get ( 'ProductAttributeGroupService' ), $sm->get ( 'ProductAttributeIdxService' ), $translator );
+							return $service;
+						},
+						'ProductAttributeSetIdxService' => function ($sm) {
+							$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
+							$translator = $sm->get ( 'translator' );
+							$resultSetPrototype = new ResultSet ();
+							$resultSetPrototype->setArrayObjectPrototype ( new ProductAttributeSetIdx () );
+							$tablegateway = new TableGateway ( 'product_attributes_set_idx', $dbAdapter, null, $resultSetPrototype );
+							$service = new \Product\Service\ProductAttributeSetIdxService ( $tablegateway, $translator );
+							return $service;
+						},
+						'ProductAttributeGroupService' => function ($sm) {
+							$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
+							$translator = $sm->get ( 'translator' );
+							$resultSetPrototype = new ResultSet ();
+							$resultSetPrototype->setArrayObjectPrototype ( new ProductAttributeGroups () );
+							$tablegateway = new TableGateway ( 'product_attributes_groups', $dbAdapter, null, $resultSetPrototype );
+							$service = new \Product\Service\ProductAttributeGroupService ( $tablegateway, $translator );
+							return $service;
+						},
+						'ProductAttributeIdxService' => function ($sm) {
+							$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
+							$translator = $sm->get ( 'translator' );
+							$resultSetPrototype = new ResultSet ();
+							$resultSetPrototype->setArrayObjectPrototype ( new ProductAttributeIdx () );
+							$tablegateway = new TableGateway ( 'product_attributes_idx', $dbAdapter, null, $resultSetPrototype );
+							$service = new \Product\Service\ProductAttributeIdxService ( $tablegateway, $translator );
+							return $service;
+						},
+						'ProductAttributeService' => function ($sm) {
+							$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
+							$translator = $sm->get ( 'translator' );
+							$resultSetPrototype = new ResultSet ();
+							$resultSetPrototype->setArrayObjectPrototype ( new ProductAttributes () );
+							$tablegateway = new TableGateway ( 'product_attributes', $dbAdapter, null, $resultSetPrototype );
+							$service = new \Product\Service\ProductAttributeService ( $tablegateway, $translator );
+							return $service;
+						},
+						
+						'ProductNewForm' => function ($sm) {
+							$form = new \ProductAdmin\Form\ProductNewForm ();
+							$form->setInputFilter ( $sm->get ( 'ProductNewFilter' ) );
+							return $form;
+						},
+						
+						'ProductNewFilter' => function ($sm) {
+							return new \ProductAdmin\Form\ProductNewFilter ();
+						},
+						
+						'AdminProductForm' => function ($sm) {
+							$form = new \ProductAdmin\Form\ProductForm ();
+							$form->setInputFilter ( $sm->get ( 'AdminProductFilter' ) );
+							return $form;
+						},
+						
+						'AdminProductFilter' => function ($sm) {
+							return new \ProductAdmin\Form\ProductFilter ();
+						},
+						
+						'AttributesForm' => function ($sm) {
+							$form = new \ProductAdmin\Form\AttributesForm ();
+							$form->setInputFilter ( $sm->get ( 'AttributesFilter' ) );
+							return $form;
+						},
+						
+						'AttributesFilter' => function ($sm) {
+							return new \ProductAdmin\Form\AttributesFilter ();
+						},
+						
+						'AttributeGroupsForm' => function ($sm) {
+							$form = new \ProductAdmin\Form\AttributeGroupsForm ();
+							$form->setInputFilter ( $sm->get ( 'AttributeGroupsFilter' ) );
+							return $form;
+						},
+						
+						'AttributeGroupsFilter' => function ($sm) {
+							return new \ProductAdmin\Form\AttributeGroupsFilter ();
+						},
+						
+						'AttributeSetForm' => function ($sm) {
+							$form = new \ProductAdmin\Form\AttributeSetForm ();
+							$form->setInputFilter ( $sm->get ( 'AttributeSetFilter' ) );
+							return $form;
+						},
+						
+						'AttributeSetFilter' => function ($sm) {
+							return new \ProductAdmin\Form\AttributeSetFilter ();
+						} 
+				) 
+		);
+	}
+	
+	/**
+	 * Get the form elements
+	 */
+	public function getFormElementConfig() {
+		return array (
+				'factories' => array (
+						'ProductAdmin\Form\Element\Types' => function ($sm) {
+							$serviceLocator = $sm->getServiceLocator ();
+							$translator = $sm->getServiceLocator ()->get ( 'translator' );
+							$service = $serviceLocator->get ( 'ProductTypeService' );
+							$element = new \ProductAdmin\Form\Element\Types ( $service, $translator );
+							return $element;
+						},
+						'ProductAdmin\Form\Element\Attributes' => function ($sm) {
+							$serviceLocator = $sm->getServiceLocator ();
+							$translator = $sm->getServiceLocator ()->get ( 'translator' );
+							$service = $serviceLocator->get ( 'ProductAttributeService' );
+							$element = new \ProductAdmin\Form\Element\Attributes ( $service, $translator );
+							return $element;
+						},
+						'ProductAdmin\Form\Element\AttributeSet' => function ($sm) {
+							$serviceLocator = $sm->getServiceLocator ();
+							$translator = $sm->getServiceLocator ()->get ( 'translator' );
+							$service = $serviceLocator->get ( 'ProductAttributeSetService' );
+							$element = new \ProductAdmin\Form\Element\AttributeSets ( $service, $translator );
+							return $element;
+						},
+						'ProductSettings\Form\Element\CommonAttributes' => function ($sm) {
+							$serviceLocator = $sm->getServiceLocator ();
+							$translator = $sm->getServiceLocator ()->get ( 'translator' );
+							$service = $serviceLocator->get ( 'ProductAttributeService' );
+							$element = new \ProductSettings\Form\Element\CommonAttributes ( $service, $translator, false );
+							return $element;
+						},
+						'ProductAdmin\Form\Element\Groups' => function ($sm) {
+							$serviceLocator = $sm->getServiceLocator ();
+							$translator = $sm->getServiceLocator ()->get ( 'translator' );
+							$service = $serviceLocator->get ( 'ProductAttributeGroupService' );
+							$element = new \ProductAdmin\Form\Element\Groups ( $service, $translator );
+							return $element;
+						} 
+				) 
+		);
+	}
+	
+	/**
+	 * Check the dependency of the module
+	 * (non-PHPdoc)
+	 * 
+	 * @see Zend\ModuleManager\Feature.DependencyIndicatorInterface::getModuleDependencies()
+	 */
+	public function getModuleDependencies() {
+		return array ();
+	}
+	public function getConfig() {
+		return include __DIR__ . '/config/module.config.php';
+	}
+	public function getAutoloaderConfig() {
+		return array (
+				'Zend\Loader\StandardAutoloader' => array (
+						'namespaces' => array (
+								__NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
+								__NAMESPACE__ . "Admin" => __DIR__ . '/src/' . __NAMESPACE__ . "Admin",
+								__NAMESPACE__ . "Settings" => __DIR__ . '/src/' . __NAMESPACE__ . "Settings" 
+						) 
+				) 
+		);
+	}
 }

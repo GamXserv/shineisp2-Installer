@@ -1,89 +1,95 @@
 <?php $this->headTitle()->prepend($this->translate('Edit attribute set')); ?>
 
-<?php 
-    $form = $this->form;
-    $attributeGroups = $this->attributegroups;
-    $attributeselids = $this->attributeselids;
-    $attributes = $this->attributes;
-    $form->prepare();
-    $form->setAttribute('action', $this->url(NULL, array( 'action' => 'process')));
-    $form->setAttribute('name', 'attributeset');
-    $form->setAttribute('method', 'post');
-    echo $this->form()->openTag($form);
+<?php
+$form = $this->form;
+$attributeGroups = $this->attributegroups;
+$attributeselids = $this->attributeselids;
+$attributes = $this->attributes;
+$form->prepare ();
+$form->setAttribute ( 'action', $this->url ( NULL, array (
+		'action' => 'process' 
+) ) );
+$form->setAttribute ( 'name', 'attributeset' );
+$form->setAttribute ( 'method', 'post' );
+echo $this->form ()->openTag ( $form );
 ?>
 <div class="row">
-    <div class="col-lg-8">
-        <h2><?php echo $this->translate('Attribute Set') ?></h2>
-        <p><?php echo $this->translate('Handle a the product attribute sets') ?></p>
-    </div>
-    <div class="col-lg-4">
-    	<div class="text-right">
-		    <a href="/admin/product/sets/add" class="btn btn-default"><i class="fa fa-file"></i> <?php echo $this->translate('Add new')?></a>
+	<div class="col-lg-8">
+		<h2><?php echo $this->translate('Attribute Set') ?></h2>
+		<p><?php echo $this->translate('Handle a the product attribute sets') ?></p>
+	</div>
+	<div class="col-lg-4">
+		<div class="text-right">
+			<a href="/admin/product/sets/add" class="btn btn-default"><i
+				class="fa fa-file"></i> <?php echo $this->translate('Add new')?></a>
 		    <?php echo $this->formElement($form->get('submit')); ?>
-		    <a href="/admin/product/sets/" class="btn btn-info"><i class="fa fa-list"></i> <?php echo $this->translate('List')?></a>
+		    <a href="/admin/product/sets/" class="btn btn-info"><i
+				class="fa fa-list"></i> <?php echo $this->translate('List')?></a>
 		</div>
 	</div>
 </div>
 
-    <?php if ($this->error): ?>
-        <div class="row">
-	        <div class="col-lg-12">
-	            <div class="alert alert-warning">
-	                <?php echo $this->translate('There were one or more isues with your submission. Please correct them as indicated below.') ?>
+<?php if ($this->error): ?>
+<div class="row">
+	<div class="col-lg-12">
+		<div class="alert alert-warning">
+	                <?php echo $this->translate('There were one or more isues with your submission. Please correct them as indicated below.')?>
 	            </div>
-	        </div>
-        </div>
-    <?php endif ?>
+	</div>
+</div>
+<?php endif ?>
 
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="tabbable" id="tabs">
-				<ul class="nav nav-tabs">
-					<li class="active"><a data-toggle="tab" href="#tab10"><?php echo $this->translate('Main');?></a></li> 
-				</ul>
-				<div class="tab-content">
-				    <div class="tab-pane active" id="tab10">
-						<div class="row">
-		                    <div class="col-lg-12">
-        						<div class="form-set">
+<div class="row">
+	<div class="col-lg-12">
+		<div class="tabbable" id="tabs">
+			<ul class="nav nav-tabs">
+				<li class="active"><a data-toggle="tab" href="#tab10"><?php echo $this->translate('Main');?></a></li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="tab10">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="form-set">
         	                        <?php echo $this->formLabel($form->get('name')); ?>
         	                        <?php echo $this->formElement($form->get('name')); ?>
         	                        <?php echo $this->formElementErrors($form->get('name')); ?>
         	                    </div>
-						    </div>
-						    <div class="clearfix"></div>
-						    </br/>
-		                    <div class="col-lg-6">
-		                    	<div class="row">
-			                    	<div class="col-lg-6">
-			                    		<h5><?php echo $this->translate('Attribute Set')?></h5>
-			                    	</div>
-			                    	<div class="col-lg-6 text-right">
-			                    		<a class="btn btn-danger btn-sm " id="btnDelete"><?php echo $this->translate('Delete Group')?></a>
-			                    		<a class="btn btn-success btn-sm " id="btnCreate"><?php echo $this->translate('New Group')?></a> 
-		                    		</div>
-		                    	</div>
-		                    	<div id="tree" name="selNodes"></div>
-		                    </div>
-		                    
-		                    <div class="col-lg-6">
-        	                    <h5><?php echo $this->translate('Available Attributes')?></h5>
-        	                    <div id="treeattributes">
-		                            <ul id="treeData" style="display: none;">
+						</div>
+						<div class="clearfix"></div>
+						</br/>
+						<div class="col-lg-6">
+							<div class="row">
+								<div class="col-lg-6">
+									<h5><?php echo $this->translate('Attribute Set')?></h5>
+								</div>
+								<div class="col-lg-6 text-right">
+									<a class="btn btn-danger btn-sm " id="btnDelete"><?php echo $this->translate('Delete Group')?></a>
+									<a class="btn btn-success btn-sm " id="btnCreate"><?php echo $this->translate('New Group')?></a>
+								</div>
+							</div>
+							<div id="tree" name="selNodes"></div>
+						</div>
+
+						<div class="col-lg-6">
+							<h5><?php echo $this->translate('Available Attributes')?></h5>
+							<div id="treeattributes">
+								<ul id="treeData" style="display: none;">
 		                              <?php foreach ($attributes as $attribute): ?>
 	                                      <?php if(!in_array($attribute->getId(), $attributeselids)): ?>
-                                              <li title="<?php echo $this->translate('Drag this attribute into the attribute folder list')?>" id="<?php echo $attribute->getId()?>"><?php echo $attribute->getName()?></li>
+                                              <li
+										title="<?php echo $this->translate('Drag this attribute into the attribute folder list')?>"
+										id="<?php echo $attribute->getId()?>"><?php echo $attribute->getName()?></li>
                                           <?php endif;?>
                                       <?php endforeach;?>
                                     </ul>
-		                        </div>
-	                        </div>
-	                    </div>
-				    </div>
-			   	</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-	
+</div>
+
 <?php echo $this->formElement($form->get('id')); ?>
-<?php echo $this->form()->closeTag() ?>
+<?php echo $this->form()->closeTag()?>

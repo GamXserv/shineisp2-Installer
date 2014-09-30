@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,36 +41,34 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Cms\Entity;
 
 use DateTime;
 
-interface PageInterface
-{
-    public function getId();
-    public function getTitle();
-    public function setTitle($title);
-    public function getSlug();
-    public function setSlug($slug);
-    public function getContent();
-    public function setContent($content);
-    public function getVisible();
-    public function setVisible($visible);
-    public function getShowonlist();
-    public function setShowonlist($showonlist);
-    public function getCategoryId();
-    public function setCategoryId($category_id);
-    public function getLanguageId();
-    public function setLanguageId($language_id);
-    public function getParentId();
-    public function setParentId($parent_id);
-    public function getTags();
-    public function setTags($tags);
-    public function getLayout();
-    public function setLayout($layout);
-    public function getCreatedat();
-    public function setCreatedat(DateTime $createdat = null);
-    public function getUpdatedat();
-    public function setUpdatedat(DateTime $updatedat = null);
+interface PageInterface {
+	public function getId();
+	public function getTitle();
+	public function setTitle($title);
+	public function getSlug();
+	public function setSlug($slug);
+	public function getContent();
+	public function setContent($content);
+	public function getVisible();
+	public function setVisible($visible);
+	public function getShowonlist();
+	public function setShowonlist($showonlist);
+	public function getCategoryId();
+	public function setCategoryId($category_id);
+	public function getLanguageId();
+	public function setLanguageId($language_id);
+	public function getParentId();
+	public function setParentId($parent_id);
+	public function getTags();
+	public function setTags($tags);
+	public function getLayout();
+	public function setLayout($layout);
+	public function getCreatedat();
+	public function setCreatedat(DateTime $createdat = null);
+	public function getUpdatedat();
+	public function setUpdatedat(DateTime $updatedat = null);
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,72 +41,71 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Customer\Entity;
 
 class ContactType implements ContactTypeInterface {
-
-    public $id;
-    public $name;
-    public $enabled;
-    
-    /**
-     * This method get the array posted and assign the values to the table
-     * object
-     *
-     * @param array $data
-     */
-    public function exchangeArray ($data)
-    {
-    	foreach ($data as $field => $value) {
-    		$this->$field = (isset($value)) ? $value : null;
-    	}
-    
-    	return true;
-    }
+	public $id;
+	public $name;
+	public $enabled;
+	
 	/**
+	 * This method get the array posted and assign the values to the table
+	 * object
+	 *
+	 * @param array $data        	
+	 */
+	public function exchangeArray($data) {
+		foreach ( $data as $field => $value ) {
+			$this->$field = (isset ( $value )) ? $value : null;
+		}
+		
+		return true;
+	}
+	/**
+	 *
 	 * @return the $id
 	 */
 	public function getId() {
 		return $this->id;
 	}
-
+	
 	/**
-	 * @param integer $id
+	 *
+	 * @param integer $id        	
 	 */
 	public function setId($id) {
 		$this->id = $id;
 	}
-
+	
 	/**
+	 *
 	 * @return the $name
 	 */
 	public function getName() {
 		return $this->name;
 	}
-
+	
 	/**
-	 * @param string $name
+	 *
+	 * @param string $name        	
 	 */
 	public function setName($name) {
 		$this->name = $name;
 	}
-
+	
 	/**
+	 *
 	 * @return the $active
 	 */
 	public function getEnabled() {
 		return $this->enabled;
 	}
-
+	
 	/**
-	 * @param boolean $enabled
+	 *
+	 * @param boolean $enabled        	
 	 */
 	public function setEnabled($enabled) {
 		$this->enabled = $enabled;
 	}
-
-    
-    
-
 }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * Copyright (c) 2014 Shine Software.
@@ -41,7 +41,6 @@
  * @link http://shinesoftware.com
  * @version @@PACKAGE_VERSION@@
  */
-
 namespace CustomerAdmin\Model;
 
 use \Base\Service\SettingsServiceInterface;
@@ -75,12 +74,11 @@ class ContactTypeDatagrid {
 	
 	/**
 	 * Datagrid Constructor
-	 * 
-	 * @param \Zend\Db\Adapter\Adapter $dbAdapter
-	 * @param \ZfcDatagrid\Datagrid $datagrid
+	 *
+	 * @param \Zend\Db\Adapter\Adapter $dbAdapter        	
+	 * @param \ZfcDatagrid\Datagrid $datagrid        	
 	 */
-	public function __construct(\Zend\Db\Adapter\Adapter $dbAdapter, \ZfcDatagrid\Datagrid $datagrid, SettingsServiceInterface $settings )
-	{
+	public function __construct(\Zend\Db\Adapter\Adapter $dbAdapter, \ZfcDatagrid\Datagrid $datagrid, SettingsServiceInterface $settings) {
 		$this->adapter = $dbAdapter;
 		$this->grid = $datagrid;
 		$this->settings = $settings;
@@ -90,8 +88,7 @@ class ContactTypeDatagrid {
 	 *
 	 * @return \ZfcDatagrid\Datagrid
 	 */
-	public function getGrid()
-	{
+	public function getGrid() {
 		return $this->grid;
 	}
 	
@@ -100,54 +97,54 @@ class ContactTypeDatagrid {
 	 *
 	 * @return \ZfcDatagrid\Datagrid
 	 */
-	public function getDatagrid()
-	{
-		$grid = $this->getGrid();
-		$grid->setId('contactGrid');
+	public function getDatagrid() {
+		$grid = $this->getGrid ();
+		$grid->setId ( 'contactGrid' );
 		
 		$dbAdapter = $this->adapter;
-		$select = new Select();
-    	$select->from(array ('c' => 'customer_contact_type'));
-
-    	$grid = $this->getGrid();
-    	$grid->setDefaultItemsPerPage(10);
-    	$grid->setDataSource($select, $dbAdapter);
-    
-    	$colId = new Column\Select('id', 'c');
-    	$colId->setLabel('Id');
-    	$colId->setIdentity();
-    	$grid->addColumn($colId);
-    	
-    	$col = new Column\Select('name', 'c');
-    	$col->setLabel(_('Name'));
-    	$grid->addColumn($col);
-    	
-    	$col = new Column\Select('enabled', 'c');
-    	$col->setLabel(_('Enabled'));
-    	$col->setWidth(15);
-    	$grid->addColumn($col);
-    
-    	// Add actions to the grid
-    	$showaction = new Column\Action\Button();
-    	$showaction->setAttribute('href', "/admin/customer/contacttype/edit/" . $showaction->getColumnValuePlaceholder(new Column\Select('id', 'c')));
-    	$showaction->setAttribute('class', 'btn btn-xs btn-success');
-    	$showaction->setLabel(_('edit'));
-    
-    	$delaction = new Column\Action\Button();
-    	$delaction->setAttribute('href', '/admin/customer/contacttype/delete/' . $delaction->getRowIdPlaceholder());
-    	$delaction->setAttribute('onclick', "return confirm('Are you sure?')");
-    	$delaction->setAttribute('class', 'btn btn-xs btn-danger');
-    	$delaction->setLabel(_('delete'));
-    
-    	$col = new Column\Action();
-    	$col->addAction($showaction);
-    	$col->addAction($delaction);
-    	$grid->addColumn($col);
-    
-    	$grid->setToolbarTemplate('');
+		$select = new Select ();
+		$select->from ( array (
+				'c' => 'customer_contact_type' 
+		) );
+		
+		$grid = $this->getGrid ();
+		$grid->setDefaultItemsPerPage ( 10 );
+		$grid->setDataSource ( $select, $dbAdapter );
+		
+		$colId = new Column\Select ( 'id', 'c' );
+		$colId->setLabel ( 'Id' );
+		$colId->setIdentity ();
+		$grid->addColumn ( $colId );
+		
+		$col = new Column\Select ( 'name', 'c' );
+		$col->setLabel ( _ ( 'Name' ) );
+		$grid->addColumn ( $col );
+		
+		$col = new Column\Select ( 'enabled', 'c' );
+		$col->setLabel ( _ ( 'Enabled' ) );
+		$col->setWidth ( 15 );
+		$grid->addColumn ( $col );
+		
+		// Add actions to the grid
+		$showaction = new Column\Action\Button ();
+		$showaction->setAttribute ( 'href', "/admin/customer/contacttype/edit/" . $showaction->getColumnValuePlaceholder ( new Column\Select ( 'id', 'c' ) ) );
+		$showaction->setAttribute ( 'class', 'btn btn-xs btn-success' );
+		$showaction->setLabel ( _ ( 'edit' ) );
+		
+		$delaction = new Column\Action\Button ();
+		$delaction->setAttribute ( 'href', '/admin/customer/contacttype/delete/' . $delaction->getRowIdPlaceholder () );
+		$delaction->setAttribute ( 'onclick', "return confirm('Are you sure?')" );
+		$delaction->setAttribute ( 'class', 'btn btn-xs btn-danger' );
+		$delaction->setLabel ( _ ( 'delete' ) );
+		
+		$col = new Column\Action ();
+		$col->addAction ( $showaction );
+		$col->addAction ( $delaction );
+		$grid->addColumn ( $col );
+		
+		$grid->setToolbarTemplate ( '' );
 		return $grid;
 	}
-
 }
 
 ?>

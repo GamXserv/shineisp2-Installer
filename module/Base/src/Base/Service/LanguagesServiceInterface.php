@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,55 +41,58 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Base\Service;
 
-interface LanguagesServiceInterface
-{
-    /**
-     * Should return all the records 
-     *
-     * @return array|\Traversable
-     */
-    public function findAll();
-
-    /**
-     * Should return a single record
-     *
-     * @param  int $id Identifier of the Record that should be returned
-     * @return \Base\Entity\Languages
-     */
-    public function find($id);
-    
-    /**
-     * Should return a single record
-     *
-     * @param  string $name of the Record that should be returned
-     * @return \Base\Entity\Languages
-     */
-    public function findByName($name);
-    
-    /**
-     * Should return a single record
-     *
-     * @param  string $locale of the Record that should be returned
-     * @return \Base\Entity\Languages
-     */
-    public function findByLocale($locale);
-    
-    /**
-     * Should delete a single record
-     *
-     * @param  int $id Identifier of the Record that should be deleted
-     * @return \Base\Entity\Languages
-     */
-    public function delete($id);
-    
-    /**
-     * Should save a single record
-     *
-     * @param  \Base\Entity\Languages $record object that should be saved
-     * @return \Base\Entity\Languages
-     */
-    public function save(\Base\Entity\Languages $record);
+interface LanguagesServiceInterface {
+	/**
+	 * Should return all the records
+	 *
+	 * @return array|\Traversable
+	 */
+	public function findAll();
+	
+	/**
+	 * Should return a single record
+	 *
+	 * @param int $id
+	 *        	Identifier of the Record that should be returned
+	 * @return \Base\Entity\Languages
+	 */
+	public function find($id);
+	
+	/**
+	 * Should return a single record
+	 *
+	 * @param string $name
+	 *        	of the Record that should be returned
+	 * @return \Base\Entity\Languages
+	 */
+	public function findByName($name);
+	
+	/**
+	 * Should return a single record
+	 *
+	 * @param string $locale
+	 *        	of the Record that should be returned
+	 * @return \Base\Entity\Languages
+	 */
+	public function findByLocale($locale);
+	
+	/**
+	 * Should delete a single record
+	 *
+	 * @param int $id
+	 *        	Identifier of the Record that should be deleted
+	 * @return \Base\Entity\Languages
+	 */
+	public function delete($id);
+	
+	/**
+	 * Should save a single record
+	 *
+	 * @param \Base\Entity\Languages $record
+	 *        	object that should be saved
+	 * @return \Base\Entity\Languages
+	 */
+	public function save(\Base\Entity\Languages $record);
 }

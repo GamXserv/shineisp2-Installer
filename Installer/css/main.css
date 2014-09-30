@@ -1,0 +1,85 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+@import url("bootstrap.min.css");
+
+html, body {
+	height: 100%;
+	/* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	/* Negative indent footer by its height */
+	margin: 0 auto -60px;
+	/* Pad bottom by footer height */
+	padding: 0 0 60px;
+}
+
+/* Set the fixed height of the footer here */
+#footer {
+	height: 60px;
+	background-color: #f5f5f5;
+}
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+.no_margin_top {
+	margin-top: 0;
+}
+
+.full_width {
+	width: 100%;
+}
+
+#wrap>.container {
+	padding: 60px 15px 10px;
+}
+
+.container .credit {
+	margin: 20px 0;
+}
+
+#footer>.container {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+code {
+	font-size: 80%;
+}
+
+.suggestion {
+	font-size: 0.8em;
+	font-style: italic;
+	margin-top: 0.25em;
+	display: inline-block;
+}
+
+/*
+  MAIN CONTAINER
+*/
+.isp2-flat-bg {
+	background: 0;
+	-webkit-box-shadow: 0 0 0 1px rgba(14, 41, 57, 0.12), 0 2px 5px
+		rgba(14, 41, 57, 0.44), inset 0 -1px 2px rgba(14, 41, 57, 0.15);
+	-moz-box-shadow: 0 0 0 1px rgba(14, 41, 57, 0.12), 0 2px 5px
+		rgba(14, 41, 57, 0.44), inset 0 -1px 2px rgba(14, 41, 57, 0.15);
+	-ms-box-shadow: 0 0 0 1px rgba(14, 41, 57, 0.12), 0 2px 5px
+		rgba(14, 41, 57, 0.44), inset 0 -1px 2px rgba(14, 41, 57, 0.15);
+	-o-box-shadow: 0 0 0 1px rgba(14, 41, 57, 0.12), 0 2px 5px
+		rgba(14, 41, 57, 0.44), inset 0 -1px 2px rgba(14, 41, 57, 0.15);
+	box-shadow: 0 0 0 1px rgba(14, 41, 57, 0.12), 0 2px 5px
+		rgba(14, 41, 57, 0.44), inset 0 -1px 2px rgba(14, 41, 57, 0.15);
+	background: #fff;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	-ms-border-radius: 6px;
+	-o-border-radius: 6px;
+	border-radius: 6px;
+	padding: 20px;
+	margin: 10px auto 50px auto;
+}

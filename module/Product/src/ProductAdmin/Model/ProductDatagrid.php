@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * Copyright (c) 2014 Shine Software.
@@ -41,7 +41,6 @@
  * @link http://shinesoftware.com
  * @version @@PACKAGE_VERSION@@
  */
-
 namespace ProductAdmin\Model;
 
 use ZfcDatagrid;
@@ -86,19 +85,13 @@ class ProductDatagrid {
 	
 	/**
 	 * Datagrid Constructor
-	 * 
-	 * @param \Zend\Db\Adapter\Adapter $dbAdapter
-	 * @param \ZfcDatagrid\Datagrid $datagrid
-	 * @param \Base\Service\SettingsServiceInterface $settings
-	 * @param \Product\Service\ProductAttributeService $attributes
+	 *
+	 * @param \Zend\Db\Adapter\Adapter $dbAdapter        	
+	 * @param \ZfcDatagrid\Datagrid $datagrid        	
+	 * @param \Base\Service\SettingsServiceInterface $settings        	
+	 * @param \Product\Service\ProductAttributeService $attributes        	
 	 */
-	public function __construct(\Zend\Db\Adapter\Adapter $dbAdapter, 
-	                            \ZfcDatagrid\Datagrid $datagrid, 
-	                            \Base\Service\SettingsServiceInterface $settings,
-	                            TableGateway $productService,
-	                            \Product\Service\ProductAttributeService $attributes
-	        )
-	{
+	public function __construct(\Zend\Db\Adapter\Adapter $dbAdapter, \ZfcDatagrid\Datagrid $datagrid, \Base\Service\SettingsServiceInterface $settings, TableGateway $productService, \Product\Service\ProductAttributeService $attributes) {
 		$this->adapter = $dbAdapter;
 		$this->grid = $datagrid;
 		$this->settings = $settings;
@@ -110,8 +103,7 @@ class ProductDatagrid {
 	 *
 	 * @return \ZfcDatagrid\Datagrid
 	 */
-	public function getGrid()
-	{
+	public function getGrid() {
 		return $this->grid;
 	}
 	
@@ -120,87 +112,86 @@ class ProductDatagrid {
 	 *
 	 * @return \ZfcDatagrid\Datagrid
 	 */
-	public function getDatagrid()
-	{
-	    $eavProduct = new \Product\Model\EavProduct($this->tableGateway);
-	    
-	    $attributesTable = $eavProduct->getAttributesTable();
-	    $attributes = $attributesTable->select();
-	    $attributes->buffer();
-	   
-		$grid = $this->getGrid();
-		$grid->setId('productGrid');
+	public function getDatagrid() {
+		$eavProduct = new \Product\Model\EavProduct ( $this->tableGateway );
+		
+		$attributesTable = $eavProduct->getAttributesTable ();
+		$attributes = $attributesTable->select ();
+		$attributes->buffer ();
+		
+		$grid = $this->getGrid ();
+		$grid->setId ( 'productGrid' );
 		
 		$dbAdapter = $this->adapter;
-		$select = new Select();
-		$select->from(array ('p' => 'product'));
+		$select = new Select ();
+		$select->from ( array (
+				'p' => 'product' 
+		) );
 		
-		$sql = new \Zend\Db\Sql\Sql($this->adapter);
-		$stmt = $sql->prepareStatementForSqlObject($select);
-		$results = $stmt->execute();
-
+		$sql = new \Zend\Db\Sql\Sql ( $this->adapter );
+		$stmt = $sql->prepareStatementForSqlObject ( $select );
+		$results = $stmt->execute ();
+		
 		// load the attributes from the preferences
-		$columnsAttributesIdx = $this->settings->getValueByParameter('product', 'attributes');
-		if(!empty($columnsAttributesIdx)){
-		    $selectedAttributes = $this->attributes->findbyIdx(json_decode($columnsAttributesIdx, true));
-		    $query = $eavProduct->loadAttributesAndGetSQL($results, $attributes);
-
-		    $select = $this->adapter->query($query, 'execute');
+		$columnsAttributesIdx = $this->settings->getValueByParameter ( 'product', 'attributes' );
+		if (! empty ( $columnsAttributesIdx )) {
+			$selectedAttributes = $this->attributes->findbyIdx ( json_decode ( $columnsAttributesIdx, true ) );
+			$query = $eavProduct->loadAttributesAndGetSQL ( $results, $attributes );
+			
+			$select = $this->adapter->query ( $query, 'execute' );
 		}
 		
-		$RecordsPerPage = $this->settings->getValueByParameter('product', 'recordsperpage');
+		$RecordsPerPage = $this->settings->getValueByParameter ( 'product', 'recordsperpage' );
 		
-		$grid->setDefaultItemsPerPage($RecordsPerPage);
-		$grid->setDataSource($select, $dbAdapter);
+		$grid->setDefaultItemsPerPage ( $RecordsPerPage );
+		$grid->setDataSource ( $select, $dbAdapter );
 		
-		$colId = new Column\Select('id', 'p');
-		$colId->setLabel('Id');
-		$colId->setIdentity();
-		$grid->addColumn($colId);
-		 
-		$col = new Column\Select('uid', 'p');
-		$col->setLabel(_('Uid'));
-		$col->setWidth(15);
-		$grid->addColumn($col);
-		 
-		$col = new Column\Select('type_id', 'p');
-		$col->setLabel(_('Type'));
-		$col->setWidth(15);
-		$grid->addColumn($col);
+		$colId = new Column\Select ( 'id', 'p' );
+		$colId->setLabel ( 'Id' );
+		$colId->setIdentity ();
+		$grid->addColumn ( $colId );
 		
-		 
-		$colType = new Type\DateTime('Y-m-d H:i:s', \IntlDateFormatter::SHORT, \IntlDateFormatter::SHORT);
-		$colType->setSourceTimezone('Europe/Rome');
-		$colType->setOutputTimezone('UTC');
-		$colType->setLocale('it_IT');
+		$col = new Column\Select ( 'uid', 'p' );
+		$col->setLabel ( _ ( 'Uid' ) );
+		$col->setWidth ( 15 );
+		$grid->addColumn ( $col );
 		
-		$col = new Column\Select('createdat', 'p');
-		$col->setType($colType);
-		$col->setLabel(_('Created At'));
-		$grid->addColumn($col);
+		$col = new Column\Select ( 'type_id', 'p' );
+		$col->setLabel ( _ ( 'Type' ) );
+		$col->setWidth ( 15 );
+		$grid->addColumn ( $col );
+		
+		$colType = new Type\DateTime ( 'Y-m-d H:i:s', \IntlDateFormatter::SHORT, \IntlDateFormatter::SHORT );
+		$colType->setSourceTimezone ( 'Europe/Rome' );
+		$colType->setOutputTimezone ( 'UTC' );
+		$colType->setLocale ( 'it_IT' );
+		
+		$col = new Column\Select ( 'createdat', 'p' );
+		$col->setType ( $colType );
+		$col->setLabel ( _ ( 'Created At' ) );
+		$grid->addColumn ( $col );
 		
 		// Add actions to the grid
-		$showaction = new Column\Action\Button();
-		$showaction->setAttribute('href', "/admin/product/edit/" . $showaction->getColumnValuePlaceholder(new Column\Select('id', 'p')));
-		$showaction->setAttribute('class', 'btn btn-xs btn-success');
-		$showaction->setLabel(_('edit'));
+		$showaction = new Column\Action\Button ();
+		$showaction->setAttribute ( 'href', "/admin/product/edit/" . $showaction->getColumnValuePlaceholder ( new Column\Select ( 'id', 'p' ) ) );
+		$showaction->setAttribute ( 'class', 'btn btn-xs btn-success' );
+		$showaction->setLabel ( _ ( 'edit' ) );
 		
-		$delaction = new Column\Action\Button();
-		$delaction->setAttribute('href', '/admin/product/delete/' . $delaction->getRowIdPlaceholder());
-		$delaction->setAttribute('onclick', "return confirm('Are you sure?')");
-		$delaction->setAttribute('class', 'btn btn-xs btn-danger');
-		$delaction->setLabel(_('delete'));
+		$delaction = new Column\Action\Button ();
+		$delaction->setAttribute ( 'href', '/admin/product/delete/' . $delaction->getRowIdPlaceholder () );
+		$delaction->setAttribute ( 'onclick', "return confirm('Are you sure?')" );
+		$delaction->setAttribute ( 'class', 'btn btn-xs btn-danger' );
+		$delaction->setLabel ( _ ( 'delete' ) );
 		
-		$col = new Column\Action();
-		$col->addAction($showaction);
-		$col->addAction($delaction);
-		$grid->addColumn($col);
+		$col = new Column\Action ();
+		$col->addAction ( $showaction );
+		$col->addAction ( $delaction );
+		$grid->addColumn ( $col );
 		
-		$grid->setToolbarTemplate('');
+		$grid->setToolbarTemplate ( '' );
 		
 		return $grid;
 	}
-
 }
 
 ?>

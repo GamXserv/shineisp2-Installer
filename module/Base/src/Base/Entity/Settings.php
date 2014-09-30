@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,97 +41,89 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Base\Entity;
 
 class Settings implements SettingsInterface {
-
-    public $id;
-    public $module;
-    public $parameter;
-    public $value;
-    
-    
-    /**
-     * This method get the array posted and assign the values to the table
-     * object
-     *
-     * @param array $data
-     */
-    public function exchangeArray ($data)
-    {
-    	foreach ($data as $field => $value) {
-    		$this->$field = (isset($value)) ? $value : null;
-    	}
-    
-    	return true;
-    }
-    
+	public $id;
+	public $module;
+	public $parameter;
+	public $value;
+	
 	/**
-     * @return the $id
-     */
-    public function getId ()
-    {
-        return $this->id;
-    }
-
+	 * This method get the array posted and assign the values to the table
+	 * object
+	 *
+	 * @param array $data        	
+	 */
+	public function exchangeArray($data) {
+		foreach ( $data as $field => $value ) {
+			$this->$field = (isset ( $value )) ? $value : null;
+		}
+		
+		return true;
+	}
+	
 	/**
-     * @param field_type $id
-     */
-    public function setId ($id)
-    {
-        $this->id = $id;
-    }
-
+	 *
+	 * @return the $id
+	 */
+	public function getId() {
+		return $this->id;
+	}
+	
 	/**
-     * @return the $module
-     */
-    public function getModule ()
-    {
-        return $this->module;
-    }
-
+	 *
+	 * @param field_type $id        	
+	 */
+	public function setId($id) {
+		$this->id = $id;
+	}
+	
 	/**
-     * @param field_type $module
-     */
-    public function setModule ($module)
-    {
-        $this->module = $module;
-    }
-
+	 *
+	 * @return the $module
+	 */
+	public function getModule() {
+		return $this->module;
+	}
+	
 	/**
-     * @return the $parameter
-     */
-    public function getParameter ()
-    {
-        return $this->parameter;
-    }
-
+	 *
+	 * @param field_type $module        	
+	 */
+	public function setModule($module) {
+		$this->module = $module;
+	}
+	
 	/**
-     * @param field_type $parameter
-     */
-    public function setParameter ($parameter)
-    {
-        $this->parameter = $parameter;
-    }
-
+	 *
+	 * @return the $parameter
+	 */
+	public function getParameter() {
+		return $this->parameter;
+	}
+	
 	/**
-     * @return the $value
-     */
-    public function getValue ()
-    {
-        return $this->value;
-    }
-
+	 *
+	 * @param field_type $parameter        	
+	 */
+	public function setParameter($parameter) {
+		$this->parameter = $parameter;
+	}
+	
 	/**
-     * @param field_type $value
-     */
-    public function setValue ($value)
-    {
-        $this->value = $value;
-    }
-
-    
-    
-
+	 *
+	 * @return the $value
+	 */
+	public function getValue() {
+		return $this->value;
+	}
+	
+	/**
+	 *
+	 * @param field_type $value        	
+	 */
+	public function setValue($value) {
+		$this->value = $value;
+	}
 }

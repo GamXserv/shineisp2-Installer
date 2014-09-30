@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,55 +41,58 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Dummy\Service;
 
-interface DummyServiceInterface
-{
-    /**
-     * Should return all the records 
-     *
-     * @return array|\Traversable
-     */
-    public function findAll();
-    
-    /**
-     * Should return all the active dummy  
-     *
-     * @return array|\Traversable
-     */
-    public function getActiveDummys();
-
-    /**
-     * Should return a single record
-     *
-     * @param  string $id of the Record that should be returned
-     * @return \Dummy\Entity\Dummy
-     */
-    public function find($id);
-    
-    /**
-     * Search a record by title and content
-     *
-     * @param  int $search Identifier of the Record that should be returned
-     * @param  string $locale Identifier of the locale
-     * @return \Dummy\Entity\Dummy
-     */
-    public function search($search, $locale);
-    
-    /**
-     * Should delete a single record
-     *
-     * @param  int $id Identifier of the Record that should be deleted
-     * @return \Dummy\Entity\Dummy
-     */
-    public function delete($id);
-    
-    /**
-     * Should save a single record
-     *
-     * @param  \Dummy\Model\Dummy $record object that should be saved
-     * @return \Dummy\Entity\Dummy
-     */
-    public function save(\Dummy\Entity\Dummy $record);
+interface DummyServiceInterface {
+	/**
+	 * Should return all the records
+	 *
+	 * @return array|\Traversable
+	 */
+	public function findAll();
+	
+	/**
+	 * Should return all the active dummy
+	 *
+	 * @return array|\Traversable
+	 */
+	public function getActiveDummys();
+	
+	/**
+	 * Should return a single record
+	 *
+	 * @param string $id
+	 *        	of the Record that should be returned
+	 * @return \Dummy\Entity\Dummy
+	 */
+	public function find($id);
+	
+	/**
+	 * Search a record by title and content
+	 *
+	 * @param int $search
+	 *        	Identifier of the Record that should be returned
+	 * @param string $locale
+	 *        	Identifier of the locale
+	 * @return \Dummy\Entity\Dummy
+	 */
+	public function search($search, $locale);
+	
+	/**
+	 * Should delete a single record
+	 *
+	 * @param int $id
+	 *        	Identifier of the Record that should be deleted
+	 * @return \Dummy\Entity\Dummy
+	 */
+	public function delete($id);
+	
+	/**
+	 * Should save a single record
+	 *
+	 * @param \Dummy\Model\Dummy $record
+	 *        	object that should be saved
+	 * @return \Dummy\Entity\Dummy
+	 */
+	public function save(\Dummy\Entity\Dummy $record);
 }

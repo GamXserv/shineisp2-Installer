@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,16 +41,14 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Customer\Entity;
 
 use DateTime;
 
-interface CustomerInterface
-{
-    public function getId();
-    public function getCreatedat();
-    public function setCreatedat(DateTime $createdat = null);
-    public function getUpdatedat();
-    public function setUpdatedat(DateTime $updatedat = null);
+interface CustomerInterface {
+	public function getId();
+	public function getCreatedat();
+	public function setCreatedat(DateTime $createdat = null);
+	public function getUpdatedat();
+	public function setUpdatedat(DateTime $updatedat = null);
 }

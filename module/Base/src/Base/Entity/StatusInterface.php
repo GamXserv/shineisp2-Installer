@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,19 +41,17 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Base\Entity;
 
-interface StatusInterface
-{
-    public function getId();
-    public function getStatus();
-    public function getSection();
-    public function getCode();
-    public function getPublic();
-    public function setId($id);
-    public function setStatus($status);
-    public function setSection($section);
-    public function setCode($code);
-    public function setPublic($public);
+interface StatusInterface {
+	public function getId();
+	public function getStatus();
+	public function getSection();
+	public function getCode();
+	public function getPublic();
+	public function setId($id);
+	public function setStatus($status);
+	public function setSection($section);
+	public function setCode($code);
+	public function setPublic($public);
 }

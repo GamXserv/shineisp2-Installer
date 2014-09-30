@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,47 +41,49 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Product\Service;
 
-interface ProductAttributeSetServiceInterface
-{
-    /**
-     * Should return all the records 
-     *
-     * @return array|\Traversable
-     */
-    public function findAll();
-    
-    /**
-     * Should return a single record
-     *
-     * @param  int $id Identifier of the Record that should be returned
-     * @return \Product\Entity\ProductAttributeSet
-     */
-    public function find($id);
-    
-    /**
-     * Should return a group of attributes bind to the attribute set
-     *
-     * @param  int $id Identifier of the Record that should be returned
-     * @return \ArrayObject
-     */
-    public function findByAttributeSet($id);
-    
-    /**
-     * Should delete a single record
-     *
-     * @param  int $id Identifier of the Record that should be deleted
-     * @return \Product\Entity\ProductAttributeSet
-     */
-    public function delete($id);
-    
-    /**
-     * Should save a single record
-     *
-     * @param  \Product\Model\Page $record object that should be saved
-     * @return \Product\Entity\ProductAttributeSet
-     */
-    public function save(\Product\Entity\ProductAttributeSet $record);
+interface ProductAttributeSetServiceInterface {
+	/**
+	 * Should return all the records
+	 *
+	 * @return array|\Traversable
+	 */
+	public function findAll();
+	
+	/**
+	 * Should return a single record
+	 *
+	 * @param int $id
+	 *        	Identifier of the Record that should be returned
+	 * @return \Product\Entity\ProductAttributeSet
+	 */
+	public function find($id);
+	
+	/**
+	 * Should return a group of attributes bind to the attribute set
+	 *
+	 * @param int $id
+	 *        	Identifier of the Record that should be returned
+	 * @return \ArrayObject
+	 */
+	public function findByAttributeSet($id);
+	
+	/**
+	 * Should delete a single record
+	 *
+	 * @param int $id
+	 *        	Identifier of the Record that should be deleted
+	 * @return \Product\Entity\ProductAttributeSet
+	 */
+	public function delete($id);
+	
+	/**
+	 * Should save a single record
+	 *
+	 * @param \Product\Model\Page $record
+	 *        	object that should be saved
+	 * @return \Product\Entity\ProductAttributeSet
+	 */
+	public function save(\Product\Entity\ProductAttributeSet $record);
 }

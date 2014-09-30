@@ -41,7 +41,6 @@
  * @link http://shinesoftware.com
  * @version @@PACKAGE_VERSION@@
  */
-
 namespace CustomerAdmin\Factory;
 
 use CustomerAdmin\Controller\ContactTypeController;
@@ -49,30 +48,28 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use CustomerAdmin\Model\ContactTypeDatagrid;
 
-class ContactTypeControllerFactory implements FactoryInterface
-{
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        $realServiceLocator = $serviceLocator->getServiceLocator();
-        $contactTypeService = $realServiceLocator->get('ContactTypeService');
-        $settings = $realServiceLocator->get('SettingsService');
-
-        $dbAdapter = $realServiceLocator->get('Zend\Db\Adapter\Adapter');
-        $datagrid = $realServiceLocator->get('ZfcDatagrid\Datagrid');
-        $form = $realServiceLocator->get('FormElementManager')->get('CustomerAdmin\Form\ContactTypeForm');
-        $formfilter = $realServiceLocator->get('ContactTypeFilter');
-        
-        // prepare the datagrid to handle the custom columns and data
-        $theDatagrid = new ContactTypeDatagrid($dbAdapter, $datagrid, $settings);
-        $grid = $theDatagrid->getDatagrid();
-        
-        return new ContactTypeController($contactTypeService, $form, $formfilter, $grid, $settings);
-    }
+class ContactTypeControllerFactory implements FactoryInterface {
+	/**
+	 * Create service
+	 *
+	 * @param ServiceLocatorInterface $serviceLocator        	
+	 *
+	 * @return mixed
+	 */
+	public function createService(ServiceLocatorInterface $serviceLocator) {
+		$realServiceLocator = $serviceLocator->getServiceLocator ();
+		$contactTypeService = $realServiceLocator->get ( 'ContactTypeService' );
+		$settings = $realServiceLocator->get ( 'SettingsService' );
+		
+		$dbAdapter = $realServiceLocator->get ( 'Zend\Db\Adapter\Adapter' );
+		$datagrid = $realServiceLocator->get ( 'ZfcDatagrid\Datagrid' );
+		$form = $realServiceLocator->get ( 'FormElementManager' )->get ( 'CustomerAdmin\Form\ContactTypeForm' );
+		$formfilter = $realServiceLocator->get ( 'ContactTypeFilter' );
+		
+		// prepare the datagrid to handle the custom columns and data
+		$theDatagrid = new ContactTypeDatagrid ( $dbAdapter, $datagrid, $settings );
+		$grid = $theDatagrid->getDatagrid ();
+		
+		return new ContactTypeController ( $contactTypeService, $form, $formfilter, $grid, $settings );
+	}
 }

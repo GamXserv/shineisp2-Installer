@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,26 +41,24 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Cms\Entity;
 
 use DateTime;
 
-interface BlockInterface
-{
-    public function getId();
-    public function getTitle();
-    public function setTitle($title);
-    public function getPlaceholder();
-    public function setPlaceholder($placeholder);
-    public function getContent();
-    public function setContent($content);
-    public function getVisible();
-    public function setVisible($visible);
-    public function getLanguageId();
-    public function setLanguageId($language_id);
-    public function getCreatedat();
-    public function setCreatedat(DateTime $createdat = null);
-    public function getUpdatedat();
-    public function setUpdatedat(DateTime $updatedat = null);
+interface BlockInterface {
+	public function getId();
+	public function getTitle();
+	public function setTitle($title);
+	public function getPlaceholder();
+	public function setPlaceholder($placeholder);
+	public function getContent();
+	public function setContent($content);
+	public function getVisible();
+	public function setVisible($visible);
+	public function getLanguageId();
+	public function setLanguageId($language_id);
+	public function getCreatedat();
+	public function setCreatedat(DateTime $createdat = null);
+	public function getUpdatedat();
+	public function setUpdatedat(DateTime $updatedat = null);
 }

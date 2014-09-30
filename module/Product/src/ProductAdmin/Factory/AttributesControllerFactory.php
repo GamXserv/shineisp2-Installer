@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (c) 2014 Shine Software.
  * All rights reserved.
@@ -40,7 +41,6 @@
  * @link http://shinesoftware.com
  * @version @@PACKAGE_VERSION@@
  */
-
 namespace ProductAdmin\Factory;
 
 use ProductAdmin\Controller\AttributesController;
@@ -48,29 +48,27 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ProductAdmin\Model\ProductAttributesDatagrid;
 
-class AttributesControllerFactory implements FactoryInterface
-{
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        $realServiceLocator = $serviceLocator->getServiceLocator();
-        $service = $realServiceLocator->get('ProductAttributeService');
-        $settings = $realServiceLocator->get('SettingsService');
-        $dbAdapter = $realServiceLocator->get('Zend\Db\Adapter\Adapter');
-        $datagrid = $realServiceLocator->get('ZfcDatagrid\Datagrid');
-        $form = $realServiceLocator->get('FormElementManager')->get('ProductAdmin\Form\AttributesForm');
-        $formfilter = $realServiceLocator->get('AttributesFilter');
-         
-        // prepare the datagrid to handle the custom columns and data
-		$theDatagrid = new ProductAttributesDatagrid($dbAdapter, $datagrid, $settings);
-		$grid = $theDatagrid->getDatagrid();
+class AttributesControllerFactory implements FactoryInterface {
+	/**
+	 * Create service
+	 *
+	 * @param ServiceLocatorInterface $serviceLocator        	
+	 *
+	 * @return mixed
+	 */
+	public function createService(ServiceLocatorInterface $serviceLocator) {
+		$realServiceLocator = $serviceLocator->getServiceLocator ();
+		$service = $realServiceLocator->get ( 'ProductAttributeService' );
+		$settings = $realServiceLocator->get ( 'SettingsService' );
+		$dbAdapter = $realServiceLocator->get ( 'Zend\Db\Adapter\Adapter' );
+		$datagrid = $realServiceLocator->get ( 'ZfcDatagrid\Datagrid' );
+		$form = $realServiceLocator->get ( 'FormElementManager' )->get ( 'ProductAdmin\Form\AttributesForm' );
+		$formfilter = $realServiceLocator->get ( 'AttributesFilter' );
 		
-        return new AttributesController($service, $form, $formfilter, $grid, $settings);
-    }
+		// prepare the datagrid to handle the custom columns and data
+		$theDatagrid = new ProductAttributesDatagrid ( $dbAdapter, $datagrid, $settings );
+		$grid = $theDatagrid->getDatagrid ();
+		
+		return new AttributesController ( $service, $form, $formfilter, $grid, $settings );
+	}
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,49 +41,44 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Dummy\Listeners;
 
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 
-class DummyListener implements ListenerAggregateInterface
-{
-    protected $serviceManager;
-    
-    public function __construct(\Zend\ServiceManager\ServiceLocatorInterface $serviceManager){
-        
-        $this->serviceManager = $serviceManager;
-    }
-    
-    /**
-     * @var \Zend\Stdlib\CallbackHandler[]
-     */
-    protected $listeners = array();
-
-    /**
-     * {@inheritDoc}
-     */
-    public function attach(EventManagerInterface $events)
-    {
-        $sharedEvents      = $events->getSharedManager();
-        $this->listeners[] = $sharedEvents->attach('Dummy\Service\DummyService', 'save.post', array($this, 'onDispatch'), 100);
-    }
-
-    public function detach(EventManagerInterface $events)
-    {
-        foreach ($this->listeners as $index => $listener) {
-            if ($events->detach($listener)) {
-                unset($this->listeners[$index]);
-            }
-        }
-    }
-
-    public function onDispatch($e)
-    {
-        $data = $e->getParam('data');
-        
-        // Log the data
-        $this->serviceManager->get('Zend\Log\Logger')->crit($data);
-    }
+class DummyListener implements ListenerAggregateInterface {
+	protected $serviceManager;
+	public function __construct(\Zend\ServiceManager\ServiceLocatorInterface $serviceManager) {
+		$this->serviceManager = $serviceManager;
+	}
+	
+	/**
+	 *
+	 * @var \Zend\Stdlib\CallbackHandler[]
+	 */
+	protected $listeners = array ();
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public function attach(EventManagerInterface $events) {
+		$sharedEvents = $events->getSharedManager ();
+		$this->listeners [] = $sharedEvents->attach ( 'Dummy\Service\DummyService', 'save.post', array (
+				$this,
+				'onDispatch' 
+		), 100 );
+	}
+	public function detach(EventManagerInterface $events) {
+		foreach ( $this->listeners as $index => $listener ) {
+			if ($events->detach ( $listener )) {
+				unset ( $this->listeners [$index] );
+			}
+		}
+	}
+	public function onDispatch($e) {
+		$data = $e->getParam ( 'data' );
+		
+		// Log the data
+		$this->serviceManager->get ( 'Zend\Log\Logger' )->crit ( $data );
+	}
 }

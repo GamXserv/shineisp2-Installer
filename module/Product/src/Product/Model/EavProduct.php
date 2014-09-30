@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,17 +41,14 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Product\Model;
 
 use Product\Model\Eav;
 
-class EavProduct extends Eav
-{
-    protected $_entitiesTableFieldId = 'id'; // name of primary key of products table
-
-    protected $_attributesTableName = 'product_attributes'; // name of 'attributes' table
-    protected $_attributesTableFieldId   = 'id'; // name of primary key of attributes table
-    protected $_attributesTableFieldType = 'type'; // field where attribute type is stored
-    protected $_attributesTableFieldName = 'name'; // field where attribute name is stored
+class EavProduct extends Eav {
+	protected $_entitiesTableFieldId = 'id'; // name of primary key of products table
+	protected $_attributesTableName = 'product_attributes'; // name of 'attributes' table
+	protected $_attributesTableFieldId = 'id'; // name of primary key of attributes table
+	protected $_attributesTableFieldType = 'type'; // field where attribute type is stored
+	protected $_attributesTableFieldName = 'name'; // field where attribute name is stored
 }

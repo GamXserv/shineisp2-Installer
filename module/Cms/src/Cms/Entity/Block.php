@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,149 +41,159 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Cms\Entity;
 
 use DateTime;
 
 class Block implements BlockInterface {
-
-    public $id;
-    public $title;
-    public $placeholder;
-    public $content;
-    public $visible;
-    public $language_id;
-    public $createdat;
-    public $updatedat;
-    
-    /**
-     * This method get the array posted and assign the values to the table
-     * object
-     *
-     * @param array $data
-     */
-    public function exchangeArray ($data)
-    {
-    	foreach ($data as $field => $value) {
-    		$this->$field = (isset($value)) ? $value : null;
-    	}
-    
-    	return true;
-    }
-    
+	public $id;
+	public $title;
+	public $placeholder;
+	public $content;
+	public $visible;
+	public $language_id;
+	public $createdat;
+	public $updatedat;
+	
 	/**
+	 * This method get the array posted and assign the values to the table
+	 * object
+	 *
+	 * @param array $data        	
+	 */
+	public function exchangeArray($data) {
+		foreach ( $data as $field => $value ) {
+			$this->$field = (isset ( $value )) ? $value : null;
+		}
+		
+		return true;
+	}
+	
+	/**
+	 *
 	 * @return the $id
 	 */
 	public function getId() {
 		return $this->id;
 	}
-
+	
 	/**
-	 * @param field_type $id
+	 *
+	 * @param field_type $id        	
 	 */
 	public function setId($id) {
 		$this->id = $id;
 	}
-
+	
 	/**
+	 *
 	 * @return the $title
 	 */
 	public function getTitle() {
 		return $this->title;
 	}
-
+	
 	/**
-	 * @param field_type $title
+	 *
+	 * @param field_type $title        	
 	 */
 	public function setTitle($title) {
 		$this->title = $title;
 	}
-
+	
 	/**
+	 *
 	 * @return the $placeholder
 	 */
 	public function getPlaceholder() {
 		return $this->placeholder;
 	}
-
+	
 	/**
-	 * @param field_type $placeholder
+	 *
+	 * @param field_type $placeholder        	
 	 */
 	public function setPlaceholder($placeholder) {
 		$this->placeholder = $placeholder;
 	}
-
+	
 	/**
+	 *
 	 * @return the $content
 	 */
 	public function getContent() {
 		return $this->content;
 	}
-
+	
 	/**
-	 * @param field_type $content
+	 *
+	 * @param field_type $content        	
 	 */
 	public function setContent($content) {
 		$this->content = $content;
 	}
-
+	
 	/**
+	 *
 	 * @return the $visible
 	 */
 	public function getVisible() {
 		return $this->visible;
 	}
-
+	
 	/**
-	 * @param field_type $visible
+	 *
+	 * @param field_type $visible        	
 	 */
 	public function setVisible($visible) {
 		$this->visible = $visible;
 	}
-
+	
 	/**
+	 *
 	 * @return the $language_id
 	 */
 	public function getLanguageId() {
 		return $this->language_id;
 	}
-
+	
 	/**
-	 * @param field_type $language_id
+	 *
+	 * @param field_type $language_id        	
 	 */
 	public function setLanguageId($language_id) {
 		$this->language_id = $language_id;
 	}
-
+	
 	/**
+	 *
 	 * @return the $createdat
 	 */
 	public function getCreatedat() {
 		return $this->createdat;
 	}
-
+	
 	/**
-	 * @param field_type $createdat
+	 *
+	 * @param field_type $createdat        	
 	 */
 	public function setCreatedat(DateTime $createdat = null) {
 		$this->createdat = $createdat;
 	}
-
+	
 	/**
+	 *
 	 * @return the $updatedat
 	 */
 	public function getUpdatedat() {
 		return $this->updatedat;
 	}
-
+	
 	/**
-	 * @param field_type $updatedat
+	 *
+	 * @param field_type $updatedat        	
 	 */
 	public function setUpdatedat(DateTime $updatedat = null) {
 		$this->updatedat = $updatedat;
 	}
-
-    
-
 }

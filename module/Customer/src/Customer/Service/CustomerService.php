@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,7 +41,6 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Customer\Service;
 
 use Zend\EventManager\EventManager;
@@ -51,168 +51,164 @@ use Zend\Stdlib\Hydrator\ClassMethods;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;
 
-
-class CustomerService implements CustomerServiceInterface, EventManagerAwareInterface
-{
+class CustomerService implements CustomerServiceInterface, EventManagerAwareInterface {
 	protected $tableGateway;
 	protected $addressService;
 	protected $translator;
 	protected $eventManager;
-	
-	public function __construct(TableGateway $tableGateway, \Customer\Service\AddressService $addressService, \Zend\Mvc\I18n\Translator $translator ){
+	public function __construct(TableGateway $tableGateway, \Customer\Service\AddressService $addressService, \Zend\Mvc\I18n\Translator $translator) {
 		$this->tableGateway = $tableGateway;
 		$this->addressService = $addressService;
 		$this->translator = $translator;
 	}
 	
-    /**
-     * @inheritDoc
-     */
-    public function findAll()
-    {
-    	$records = $this->tableGateway->select(function (\Zend\Db\Sql\Select $select) {
-//          	$select->join('customer_address', 'category_id = customer_address.id', array ('category'), 'left');
-        });
-        
-        return $records;
-    }
+	/**
+	 * @inheritDoc
+	 */
+	public function findAll() {
+		$records = $this->tableGateway->select ( function (\Zend\Db\Sql\Select $select) {
+			// $select->join('customer_address', 'category_id = customer_address.id', array ('category'), 'left');
+		} );
+		
+		return $records;
+	}
 	
-    /**
-     * @inheritDoc
-     */
-    public function getActiveCustomers()
-    {
-    	$records = $this->tableGateway->select(function (\Zend\Db\Sql\Select $select) {
-//     		$select->join('cms_page_category', 'category_id = cms_page_category.id', array ('category'), 'left');
-//         	$select->where(array('cms_page.visible' => true, 'cms_page.showonlist' => true));
-        });
-        
-        return $records;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function find($id)
-    {
-    	if(!is_numeric($id)){
-    		return false;
-    	}
-    	$rowset = $this->tableGateway->select(array('id' => $id));
-    	$row = $rowset->current();
-    	
-    	if(!empty($row) && $row->getId()){
-//     		$address = $this->addressService->find($row->getId());
-//     		$row->setAddress($address);
-    	}
-    	
-    	return $row;
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    public function search($search, $locale="en_US")
-    {
-    	$result = array();
-    	$i = 0;
-    	
-    	$records = $this->tableGateway->select(function (\Zend\Db\Sql\Select $select) use ($search, $locale){
-    		$select->where(new \Zend\Db\Sql\Predicate\Like('company', '%'.$search.'%'));
-    		$select->where(new \Zend\Db\Sql\Predicate\Like('lastname', '%'.$search.'%'), 'OR');
-    	});
-    	
-    	foreach ($records as $record){
-    		$result[$i]['icon'] = "fa fa-file";
-    		$result[$i]['section'] = "Customer";
-    		$result[$i]['value'] = $record->getCompany();
-//     		$result[$i]['url'] = "/admin/customer/" . $record->getSlug() . ".html";
-    		$result[$i]['keywords'] = null;
-    		$i++;
-    	}
-    	
-    	return $result;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function delete($id)
-    {
-    	$this->tableGateway->delete(array(
-    			'id' => $id
-    	));
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function save(\Customer\Entity\Customer $record)
-    {
-    	$hydrator = new ClassMethods();
-    	$utils = new Utilities();
-    	
-    	// extract the data from the object
-    	$data = $hydrator->extract($record);
-    	$id = (int) $record->getId();
-    	
-    	$this->getEventManager()->trigger(__FUNCTION__ . '.pre', null, array('data' => $data));  // Trigger an event
-    	
-    	// delete the foreign Address object from the save action
-    	unset( $data['address']);
-    	
-    	if ($id == 0) {
-    		unset($data['id']);
-    		$data['createdat'] = date('Y-m-d H:i:s');
-    		$data['updatedat'] = date('Y-m-d H:i:s');
-			$data['uid'] = $utils->generateUid();
+	/**
+	 * @inheritDoc
+	 */
+	public function getActiveCustomers() {
+		$records = $this->tableGateway->select ( function (\Zend\Db\Sql\Select $select) {
+			// $select->join('cms_page_category', 'category_id = cms_page_category.id', array ('category'), 'left');
+			// $select->where(array('cms_page.visible' => true, 'cms_page.showonlist' => true));
+		} );
+		
+		return $records;
+	}
+	
+	/**
+	 * @inheritDoc
+	 */
+	public function find($id) {
+		if (! is_numeric ( $id )) {
+			return false;
+		}
+		$rowset = $this->tableGateway->select ( array (
+				'id' => $id 
+		) );
+		$row = $rowset->current ();
+		
+		if (! empty ( $row ) && $row->getId ()) {
+			// $address = $this->addressService->find($row->getId());
+			// $row->setAddress($address);
+		}
+		
+		return $row;
+	}
+	
+	/**
+	 * @inheritDoc
+	 */
+	public function search($search, $locale = "en_US") {
+		$result = array ();
+		$i = 0;
+		
+		$records = $this->tableGateway->select ( function (\Zend\Db\Sql\Select $select) use($search, $locale) {
+			$select->where ( new \Zend\Db\Sql\Predicate\Like ( 'company', '%' . $search . '%' ) );
+			$select->where ( new \Zend\Db\Sql\Predicate\Like ( 'lastname', '%' . $search . '%' ), 'OR' );
+		} );
+		
+		foreach ( $records as $record ) {
+			$result [$i] ['icon'] = "fa fa-file";
+			$result [$i] ['section'] = "Customer";
+			$result [$i] ['value'] = $record->getCompany ();
+			// $result[$i]['url'] = "/admin/customer/" . $record->getSlug() . ".html";
+			$result [$i] ['keywords'] = null;
+			$i ++;
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * @inheritDoc
+	 */
+	public function delete($id) {
+		$this->tableGateway->delete ( array (
+				'id' => $id 
+		) );
+	}
+	
+	/**
+	 * @inheritDoc
+	 */
+	public function save(\Customer\Entity\Customer $record) {
+		$hydrator = new ClassMethods ();
+		$utils = new Utilities ();
+		
+		// extract the data from the object
+		$data = $hydrator->extract ( $record );
+		$id = ( int ) $record->getId ();
+		
+		$this->getEventManager ()->trigger ( __FUNCTION__ . '.pre', null, array (
+				'data' => $data 
+		) ); // Trigger an event
+		                                                                                        
+		// delete the foreign Address object from the save action
+		unset ( $data ['address'] );
+		
+		if ($id == 0) {
+			unset ( $data ['id'] );
+			$data ['createdat'] = date ( 'Y-m-d H:i:s' );
+			$data ['updatedat'] = date ( 'Y-m-d H:i:s' );
+			$data ['uid'] = $utils->generateUid ();
 			
-    		// Save the data
-    		$this->tableGateway->insert($data); 
-    		
-    		// Get the ID of the record
-    		$id = $this->tableGateway->getLastInsertValue();
-    	} else {
-    		
-    		$rs = $this->find($id);
-    		
-    		if (!empty($rs)) {
-    			$data['updatedat'] = date('Y-m-d H:i:s');
-    			unset( $data['createdat']);
-
-    			// Save the data
-    			$this->tableGateway->update($data, array (
-    					'id' => $id
-    			));
-    			
-    		} else {
-    			throw new \Exception('Record ID does not exist');
-    		}
-    	}
-    	
-    	$record = $this->find($id);
-    	$this->getEventManager()->trigger(__FUNCTION__ . '.post', null, array('id' => $id, 'data' => $data, 'record' => $record));  // Trigger an event
-    	return $record;
-    }
-    
-    
-	/* (non-PHPdoc)
-     * @see \Zend\EventManager\EventManagerAwareInterface::setEventManager()
-     */
-     public function setEventManager (EventManagerInterface $eventManager){
-         $eventManager->addIdentifiers(get_called_class());
-         $this->eventManager = $eventManager;
-     }
-
-	/* (non-PHPdoc)
-     * @see \Zend\EventManager\EventsCapableInterface::getEventManager()
-     */
-     public function getEventManager (){
-       if (null === $this->eventManager) {
-            $this->setEventManager(new EventManager());
-        }
-
-        return $this->eventManager;
-     }
-
+			// Save the data
+			$this->tableGateway->insert ( $data );
+			
+			// Get the ID of the record
+			$id = $this->tableGateway->getLastInsertValue ();
+		} else {
+			
+			$rs = $this->find ( $id );
+			
+			if (! empty ( $rs )) {
+				$data ['updatedat'] = date ( 'Y-m-d H:i:s' );
+				unset ( $data ['createdat'] );
+				
+				// Save the data
+				$this->tableGateway->update ( $data, array (
+						'id' => $id 
+				) );
+			} else {
+				throw new \Exception ( 'Record ID does not exist' );
+			}
+		}
+		
+		$record = $this->find ( $id );
+		$this->getEventManager ()->trigger ( __FUNCTION__ . '.post', null, array (
+				'id' => $id,
+				'data' => $data,
+				'record' => $record 
+		) ); // Trigger an event
+		return $record;
+	}
+	
+	/*
+	 * (non-PHPdoc) @see \Zend\EventManager\EventManagerAwareInterface::setEventManager()
+	 */
+	public function setEventManager(EventManagerInterface $eventManager) {
+		$eventManager->addIdentifiers ( get_called_class () );
+		$this->eventManager = $eventManager;
+	}
+	
+	/*
+	 * (non-PHPdoc) @see \Zend\EventManager\EventsCapableInterface::getEventManager()
+	 */
+	public function getEventManager() {
+		if (null === $this->eventManager) {
+			$this->setEventManager ( new EventManager () );
+		}
+		
+		return $this->eventManager;
+	}
 }

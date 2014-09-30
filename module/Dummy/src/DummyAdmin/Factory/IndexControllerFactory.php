@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (c) 2014 Shine Software.
  * All rights reserved.
@@ -40,7 +41,6 @@
  * @link http://shinesoftware.com
  * @version @@PACKAGE_VERSION@@
  */
-
 namespace DummyAdmin\Factory;
 
 use DummyAdmin\Controller\IndexController;
@@ -48,29 +48,27 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use DummyAdmin\Model\DummyDatagrid;
 
-class IndexControllerFactory implements FactoryInterface
-{
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        $realServiceLocator = $serviceLocator->getServiceLocator();
-        $dummyService = $realServiceLocator->get('DummyService');
-        $settings = $realServiceLocator->get('SettingsService');
-        $dbAdapter = $realServiceLocator->get('Zend\Db\Adapter\Adapter');
-        $datagrid = $realServiceLocator->get('ZfcDatagrid\Datagrid');
-        $form = $realServiceLocator->get('FormElementManager')->get('DummyAdmin\Form\DummyForm');
-        $formfilter = $realServiceLocator->get('AdminDummyFilter');
-        
-        // prepare the datagrid to handle the custom columns and data
-		$theDatagrid = new DummyDatagrid($dbAdapter, $datagrid, $settings);
-		$grid = $theDatagrid->getDatagrid();
+class IndexControllerFactory implements FactoryInterface {
+	/**
+	 * Create service
+	 *
+	 * @param ServiceLocatorInterface $serviceLocator        	
+	 *
+	 * @return mixed
+	 */
+	public function createService(ServiceLocatorInterface $serviceLocator) {
+		$realServiceLocator = $serviceLocator->getServiceLocator ();
+		$dummyService = $realServiceLocator->get ( 'DummyService' );
+		$settings = $realServiceLocator->get ( 'SettingsService' );
+		$dbAdapter = $realServiceLocator->get ( 'Zend\Db\Adapter\Adapter' );
+		$datagrid = $realServiceLocator->get ( 'ZfcDatagrid\Datagrid' );
+		$form = $realServiceLocator->get ( 'FormElementManager' )->get ( 'DummyAdmin\Form\DummyForm' );
+		$formfilter = $realServiceLocator->get ( 'AdminDummyFilter' );
 		
-        return new IndexController($dummyService, $form, $formfilter, $grid, $settings);
-    }
+		// prepare the datagrid to handle the custom columns and data
+		$theDatagrid = new DummyDatagrid ( $dbAdapter, $datagrid, $settings );
+		$grid = $theDatagrid->getDatagrid ();
+		
+		return new IndexController ( $dummyService, $form, $formfilter, $grid, $settings );
+	}
 }

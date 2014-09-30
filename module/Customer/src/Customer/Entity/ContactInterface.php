@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,17 +41,15 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Customer\Entity;
 
-interface ContactInterface
-{
-    public function getId();
-    public function getContact();
-    public function getTypeId();
-    public function getCustomerId();
-    public function setId($id);
-    public function setContact($contact);
-    public function setTypeId($type_id);
-    public function setCustomerId($customer_id);
+interface ContactInterface {
+	public function getId();
+	public function getContact();
+	public function getTypeId();
+	public function getCustomerId();
+	public function setId($id);
+	public function setContact($contact);
+	public function setTypeId($type_id);
+	public function setCustomerId($customer_id);
 }

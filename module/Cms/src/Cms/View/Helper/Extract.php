@@ -1,8 +1,10 @@
 <?php
+
 namespace Cms\View\Helper;
+
 use Zend\View\Helper\AbstractHelper;
 
-class Extract extends AbstractHelper  {
+class Extract extends AbstractHelper {
 	
 	/**
 	 * Truncates text.
@@ -10,11 +12,16 @@ class Extract extends AbstractHelper  {
 	 * Cuts a string to the length of $length and replaces the last characters
 	 * with the ending if the text is longer than length.
 	 *
-	 * @param string  $text String to truncate.
-	 * @param integer $length Length of returned string, including ellipsis.
-	 * @param string  $ending Ending to be appended to the trimmed string.
-	 * @param boolean $exact If false, $text will not be cut mid-word
-	 * @param boolean $considerHtml If true, HTML tags would be handled correctly
+	 * @param string $text
+	 *        	String to truncate.
+	 * @param integer $length
+	 *        	Length of returned string, including ellipsis.
+	 * @param string $ending
+	 *        	Ending to be appended to the trimmed string.
+	 * @param boolean $exact
+	 *        	If false, $text will not be cut mid-word
+	 * @param boolean $considerHtml
+	 *        	If true, HTML tags would be handled correctly
 	 * @return string Trimmed string.
 	 */
 	public function __invoke($text, $length = 100, $ending = '...', $exact = true, $considerHtml = true) {
@@ -41,7 +48,7 @@ class Extract extends AbstractHelper  {
 						if ($pos !== false) {
 							unset ( $open_tags [$pos] );
 						}
-							
+						
 						// if tag is an opening tag (f.e. <b>)
 					} else if (preg_match ( '/^<\s*([^\s>!]+).*?>$/s', $line_matchings [1], $tag_matchings )) {
 						// add tag to the beginning of $open_tags list

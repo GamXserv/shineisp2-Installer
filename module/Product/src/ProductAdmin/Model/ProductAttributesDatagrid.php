@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * Copyright (c) 2014 Shine Software.
@@ -41,7 +41,6 @@
  * @link http://shinesoftware.com
  * @version @@PACKAGE_VERSION@@
  */
-
 namespace ProductAdmin\Model;
 
 use \Base\Service\SettingsServiceInterface;
@@ -75,12 +74,11 @@ class ProductAttributesDatagrid {
 	
 	/**
 	 * Datagrid Constructor
-	 * 
-	 * @param \Zend\Db\Adapter\Adapter $dbAdapter
-	 * @param \ZfcDatagrid\Datagrid $datagrid
+	 *
+	 * @param \Zend\Db\Adapter\Adapter $dbAdapter        	
+	 * @param \ZfcDatagrid\Datagrid $datagrid        	
 	 */
-	public function __construct(\Zend\Db\Adapter\Adapter $dbAdapter, \ZfcDatagrid\Datagrid $datagrid, SettingsServiceInterface $settings )
-	{
+	public function __construct(\Zend\Db\Adapter\Adapter $dbAdapter, \ZfcDatagrid\Datagrid $datagrid, SettingsServiceInterface $settings) {
 		$this->adapter = $dbAdapter;
 		$this->grid = $datagrid;
 		$this->settings = $settings;
@@ -90,8 +88,7 @@ class ProductAttributesDatagrid {
 	 *
 	 * @return \ZfcDatagrid\Datagrid
 	 */
-	public function getGrid()
-	{
+	public function getGrid() {
 		return $this->grid;
 	}
 	
@@ -100,72 +97,72 @@ class ProductAttributesDatagrid {
 	 *
 	 * @return \ZfcDatagrid\Datagrid
 	 */
-	public function getDatagrid()
-	{
-		$grid = $this->getGrid();
-		$grid->setId('productGrid');
+	public function getDatagrid() {
+		$grid = $this->getGrid ();
+		$grid->setId ( 'productGrid' );
 		
 		$dbAdapter = $this->adapter;
-		$select = new Select();
-		$select->from(array ('p' => 'product_attributes'));
+		$select = new Select ();
+		$select->from ( array (
+				'p' => 'product_attributes' 
+		) );
 		
-		$RecordsPerPage = $this->settings->getValueByParameter('product_attributes', 'recordsperpage');
-		 
-		$grid->setDefaultItemsPerPage($RecordsPerPage);
-		$grid->setDataSource($select, $dbAdapter);
+		$RecordsPerPage = $this->settings->getValueByParameter ( 'product_attributes', 'recordsperpage' );
 		
-		$colId = new Column\Select('id', 'p');
-		$colId->setLabel('Id');
-		$colId->setIdentity();
-		$grid->addColumn($colId);
-		 
-		$col = new Column\Select('name', 'p');
-		$col->setLabel(_('Name'));
-		$col->setWidth(15);
-		$grid->addColumn($col);
+		$grid->setDefaultItemsPerPage ( $RecordsPerPage );
+		$grid->setDataSource ( $select, $dbAdapter );
 		
-		$col = new Column\Select('type', 'p');
-		$col->setLabel(_('Type'));
-		$col->setWidth(5);
-		$grid->addColumn($col);
+		$colId = new Column\Select ( 'id', 'p' );
+		$colId->setLabel ( 'Id' );
+		$colId->setIdentity ();
+		$grid->addColumn ( $colId );
 		
-		$col = new Column\Select('label', 'p');
-		$col->setLabel(_('Label'));
-		$col->setWidth(15);
-		$grid->addColumn($col);
+		$col = new Column\Select ( 'name', 'p' );
+		$col->setLabel ( _ ( 'Name' ) );
+		$col->setWidth ( 15 );
+		$grid->addColumn ( $col );
 		
-		$col = new Column\Select('is_user_defined', 'p');
-		$col->setLabel(_('Is User Defined'));
-		$col->setWidth(5);
-		$grid->addColumn($col);
+		$col = new Column\Select ( 'type', 'p' );
+		$col->setLabel ( _ ( 'Type' ) );
+		$col->setWidth ( 5 );
+		$grid->addColumn ( $col );
 		
-		$col = new Column\Select('is_required', 'p');
-		$col->setLabel(_('Is Required'));
-		$col->setWidth(5);
-		$grid->addColumn($col);
+		$col = new Column\Select ( 'label', 'p' );
+		$col->setLabel ( _ ( 'Label' ) );
+		$col->setWidth ( 15 );
+		$grid->addColumn ( $col );
+		
+		$col = new Column\Select ( 'is_user_defined', 'p' );
+		$col->setLabel ( _ ( 'Is User Defined' ) );
+		$col->setWidth ( 5 );
+		$grid->addColumn ( $col );
+		
+		$col = new Column\Select ( 'is_required', 'p' );
+		$col->setLabel ( _ ( 'Is Required' ) );
+		$col->setWidth ( 5 );
+		$grid->addColumn ( $col );
 		
 		// Add actions to the grid
-		$showaction = new Column\Action\Button();
-		$showaction->setAttribute('href', "/admin/product/attributes/edit/" . $showaction->getColumnValuePlaceholder(new Column\Select('id', 'p')));
-		$showaction->setAttribute('class', 'btn btn-xs btn-success');
-		$showaction->setLabel(_('edit'));
+		$showaction = new Column\Action\Button ();
+		$showaction->setAttribute ( 'href', "/admin/product/attributes/edit/" . $showaction->getColumnValuePlaceholder ( new Column\Select ( 'id', 'p' ) ) );
+		$showaction->setAttribute ( 'class', 'btn btn-xs btn-success' );
+		$showaction->setLabel ( _ ( 'edit' ) );
 		
-		$delaction = new Column\Action\Button();
-		$delaction->setAttribute('href', '/admin/product/attributes/delete/' . $delaction->getRowIdPlaceholder());
-		$delaction->setAttribute('onclick', "return confirm('Are you sure?')");
-		$delaction->setAttribute('class', 'btn btn-xs btn-danger');
-		$delaction->setLabel(_('delete'));
+		$delaction = new Column\Action\Button ();
+		$delaction->setAttribute ( 'href', '/admin/product/attributes/delete/' . $delaction->getRowIdPlaceholder () );
+		$delaction->setAttribute ( 'onclick', "return confirm('Are you sure?')" );
+		$delaction->setAttribute ( 'class', 'btn btn-xs btn-danger' );
+		$delaction->setLabel ( _ ( 'delete' ) );
 		
-		$col = new Column\Action();
-		$col->addAction($showaction);
-		$col->addAction($delaction);
-		$grid->addColumn($col);
+		$col = new Column\Action ();
+		$col->addAction ( $showaction );
+		$col->addAction ( $delaction );
+		$grid->addColumn ( $col );
 		
-		$grid->setToolbarTemplate('');
+		$grid->setToolbarTemplate ( '' );
 		
 		return $grid;
 	}
-
 }
 
 ?>

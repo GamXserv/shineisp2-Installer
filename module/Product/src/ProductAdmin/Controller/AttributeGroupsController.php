@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,15 +41,13 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace ProductAdmin\Controller;
 
 use Zend\InputFilter\InputFilter;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class AttributeGroupsController extends AbstractActionController
-{
+class AttributeGroupsController extends AbstractActionController {
 	protected $recordService;
 	protected $datagrid;
 	protected $form;
@@ -57,19 +56,14 @@ class AttributeGroupsController extends AbstractActionController
 	
 	/**
 	 * Class Constructor
-	 * 
-	 * @param \Product\Service\ProductAttributeGroupServiceInterface $recordService
-	 * @param \ProductAdmin\Form\ProductForm $form
-	 * @param \ProductAdmin\Form\ProductFilter $formfilter
-	 * @param \ZfcDatagrid\Datagrid $datagrid
-	 * @param \Base\Service\SettingsServiceInterface $settings
+	 *
+	 * @param \Product\Service\ProductAttributeGroupServiceInterface $recordService        	
+	 * @param \ProductAdmin\Form\ProductForm $form        	
+	 * @param \ProductAdmin\Form\ProductFilter $formfilter        	
+	 * @param \ZfcDatagrid\Datagrid $datagrid        	
+	 * @param \Base\Service\SettingsServiceInterface $settings        	
 	 */
-	public function __construct(\Product\Service\ProductAttributeGroupServiceInterface $recordService, 
-								\ProductAdmin\Form\AttributeGroupsForm $form, 
-								\ProductAdmin\Form\AttributeGroupsFilter $formfilter, 
-								\ZfcDatagrid\Datagrid $datagrid, 
-								\Base\Service\SettingsServiceInterface $settings)
-	{
+	public function __construct(\Product\Service\ProductAttributeGroupServiceInterface $recordService, \ProductAdmin\Form\AttributeGroupsForm $form, \ProductAdmin\Form\AttributeGroupsFilter $formfilter, \ZfcDatagrid\Datagrid $datagrid, \Base\Service\SettingsServiceInterface $settings) {
 		$this->recordService = $recordService;
 		$this->datagrid = $datagrid;
 		$this->form = $form;
@@ -77,147 +71,137 @@ class AttributeGroupsController extends AbstractActionController
 		$this->settings = $settings;
 	}
 	
-	
 	/**
 	 * List of all records
 	 */
-	public function indexAction ()
-	{
+	public function indexAction() {
 		// prepare the datagrid
-		$this->datagrid->render();
+		$this->datagrid->render ();
 		
 		// get the datagrid ready to be shown in the template view
-		$response = $this->datagrid->getResponse();
+		$response = $this->datagrid->getResponse ();
 		
-		if ($this->datagrid->isHtmlInitReponse()) {
-			$view = new ViewModel();
-			$view->addChild($response, 'grid');
+		if ($this->datagrid->isHtmlInitReponse ()) {
+			$view = new ViewModel ();
+			$view->addChild ( $response, 'grid' );
 			return $view;
 		} else {
 			return $response;
 		}
 	}
 	
-    /**
-     * Add new information
-     */
-    public function addAction ()
-    {
-    	 
-    	$form = $this->form;
-    
-    	$viewModel = new ViewModel(array (
-    			'form' => $form,
-    	));
-    
-    	$viewModel->setTemplate('product-admin/attribute-groups/edit');
-    	return $viewModel;
-    }
-    
-    /**
-     * Edit the main product information
-     */
-    public function editAction ()
-    {
-    	$id = $this->params()->fromRoute('id');
-    	
-    	$form = $this->form;
-    
-    	// Get the record by its id
-    	$product = $this->recordService->find($id);
-    	
-    	if(!empty($product) && $product->getId()){
-
-    	}else{
-    		$this->flashMessenger()->setNamespace('danger')->addMessage('The record has been not found!');
-    		return $this->redirect()->toRoute('zfcadmin/product/groups/default');
-    	}
-
-    	// Bind the data in the form
-    	if (! empty($product)) {
-    		$form->bind($product);
-    	}
-    
-    	$viewModel = new ViewModel(array (
-    			'form' => $form,
-    	));
-    
-    	return $viewModel;
-    }
-    
-    /**
-     * Prepare the data and then save them
-     *
-     * @return \Zend\View\Model\ViewModel
-     */
-    public function processAction ()
-    {
-    	
-    	if (! $this->request->isPost()) {
-    		return $this->redirect()->toRoute(NULL, array (
-    				'controller' => 'product',
-    				'action' => 'index'
-    		));
-    	}
-    	
-    	$request = $this->getRequest();
-    	$post = $this->request->getPost();
-    	$form = $this->form;
-    	
-    	$post = array_merge_recursive(
-    			$request->getPost()->toArray(),
-    			$request->getFiles()->toArray()
-    	);
-    	
-    	$form->setData($post);
-    	
-    	// get the input file filter in order to set the right file upload path
-    	$inputFilter = $this->filter;
-
-    	// set the input filter
-    	$form->setInputFilter($inputFilter);
-    	
-    	if (!$form->isValid()) {
-    		$viewModel = new ViewModel(array (
-    				'error' => true,
-    				'form' => $form,
-    		));
-    		
-    		$viewModel->setTemplate('product-admin/attribute-groups/edit');
-    		return $viewModel;
-    	}
-    
-    	// Get the posted vars
-    	$data = $form->getData();
-
-    	// Save the data in the database
-    	$record = $this->recordService->save($data);
-    	$this->flashMessenger()->setNamespace('success')->addMessage('The information have been saved.');
-    
-    	return $this->redirect()->toRoute('zfcadmin/product/groups', array ('action' => 'edit', 'id' => $record->getId()));
-    }
-    
-    /**
-     * Delete the records 
-     *
-     * @return \Zend\Http\Response
-     */
-    public function deleteAction ()
-    {
-    	$id = $this->params()->fromRoute('id');
-    
-    	if (is_numeric($id)) {
-    
-    		// Delete the record informaiton
-    		$this->recordService->delete($id);
-    
-    		// Go back showing a message
-    		$this->flashMessenger()->setNamespace('success')->addMessage('The record has been deleted!');
-    		return $this->redirect()->toRoute('zfcadmin/product/groups');
-    	}
-    
-    	$this->flashMessenger()->setNamespace('danger')->addMessage('The record has been not deleted!');
-    	return $this->redirect()->toRoute('zfcadmin/product/groups');
-    }
-    
+	/**
+	 * Add new information
+	 */
+	public function addAction() {
+		$form = $this->form;
+		
+		$viewModel = new ViewModel ( array (
+				'form' => $form 
+		) );
+		
+		$viewModel->setTemplate ( 'product-admin/attribute-groups/edit' );
+		return $viewModel;
+	}
+	
+	/**
+	 * Edit the main product information
+	 */
+	public function editAction() {
+		$id = $this->params ()->fromRoute ( 'id' );
+		
+		$form = $this->form;
+		
+		// Get the record by its id
+		$product = $this->recordService->find ( $id );
+		
+		if (! empty ( $product ) && $product->getId ()) {
+		} else {
+			$this->flashMessenger ()->setNamespace ( 'danger' )->addMessage ( 'The record has been not found!' );
+			return $this->redirect ()->toRoute ( 'zfcadmin/product/groups/default' );
+		}
+		
+		// Bind the data in the form
+		if (! empty ( $product )) {
+			$form->bind ( $product );
+		}
+		
+		$viewModel = new ViewModel ( array (
+				'form' => $form 
+		) );
+		
+		return $viewModel;
+	}
+	
+	/**
+	 * Prepare the data and then save them
+	 *
+	 * @return \Zend\View\Model\ViewModel
+	 */
+	public function processAction() {
+		if (! $this->request->isPost ()) {
+			return $this->redirect ()->toRoute ( NULL, array (
+					'controller' => 'product',
+					'action' => 'index' 
+			) );
+		}
+		
+		$request = $this->getRequest ();
+		$post = $this->request->getPost ();
+		$form = $this->form;
+		
+		$post = array_merge_recursive ( $request->getPost ()->toArray (), $request->getFiles ()->toArray () );
+		
+		$form->setData ( $post );
+		
+		// get the input file filter in order to set the right file upload path
+		$inputFilter = $this->filter;
+		
+		// set the input filter
+		$form->setInputFilter ( $inputFilter );
+		
+		if (! $form->isValid ()) {
+			$viewModel = new ViewModel ( array (
+					'error' => true,
+					'form' => $form 
+			) );
+			
+			$viewModel->setTemplate ( 'product-admin/attribute-groups/edit' );
+			return $viewModel;
+		}
+		
+		// Get the posted vars
+		$data = $form->getData ();
+		
+		// Save the data in the database
+		$record = $this->recordService->save ( $data );
+		$this->flashMessenger ()->setNamespace ( 'success' )->addMessage ( 'The information have been saved.' );
+		
+		return $this->redirect ()->toRoute ( 'zfcadmin/product/groups', array (
+				'action' => 'edit',
+				'id' => $record->getId () 
+		) );
+	}
+	
+	/**
+	 * Delete the records
+	 *
+	 * @return \Zend\Http\Response
+	 */
+	public function deleteAction() {
+		$id = $this->params ()->fromRoute ( 'id' );
+		
+		if (is_numeric ( $id )) {
+			
+			// Delete the record informaiton
+			$this->recordService->delete ( $id );
+			
+			// Go back showing a message
+			$this->flashMessenger ()->setNamespace ( 'success' )->addMessage ( 'The record has been deleted!' );
+			return $this->redirect ()->toRoute ( 'zfcadmin/product/groups' );
+		}
+		
+		$this->flashMessenger ()->setNamespace ( 'danger' )->addMessage ( 'The record has been not deleted!' );
+		return $this->redirect ()->toRoute ( 'zfcadmin/product/groups' );
+	}
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (c) 2014 Shine Software.
  * All rights reserved.
@@ -40,7 +41,6 @@
  * @link http://shinesoftware.com
  * @version @@PACKAGE_VERSION@@
  */
-
 namespace ProductAdmin\Factory;
 
 use ProductAdmin\Controller\AttributeGroupsController;
@@ -48,29 +48,27 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ProductAdmin\Model\ProductGroupsDatagrid;
 
-class AttributeGroupsControllerFactory implements FactoryInterface
-{
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        $realServiceLocator = $serviceLocator->getServiceLocator();
-        $service = $realServiceLocator->get('ProductAttributeGroupService');
-        $settings = $realServiceLocator->get('SettingsService');
-        $dbAdapter = $realServiceLocator->get('Zend\Db\Adapter\Adapter');
-        $datagrid = $realServiceLocator->get('ZfcDatagrid\Datagrid');
-        $form = $realServiceLocator->get('FormElementManager')->get('ProductAdmin\Form\AttributeGroupsForm');
-        $formfilter = $realServiceLocator->get('AttributeGroupsFilter');
-         
-        // prepare the datagrid to handle the custom columns and data
-		$theDatagrid = new ProductGroupsDatagrid($dbAdapter, $datagrid, $settings);
-		$grid = $theDatagrid->getDatagrid();
+class AttributeGroupsControllerFactory implements FactoryInterface {
+	/**
+	 * Create service
+	 *
+	 * @param ServiceLocatorInterface $serviceLocator        	
+	 *
+	 * @return mixed
+	 */
+	public function createService(ServiceLocatorInterface $serviceLocator) {
+		$realServiceLocator = $serviceLocator->getServiceLocator ();
+		$service = $realServiceLocator->get ( 'ProductAttributeGroupService' );
+		$settings = $realServiceLocator->get ( 'SettingsService' );
+		$dbAdapter = $realServiceLocator->get ( 'Zend\Db\Adapter\Adapter' );
+		$datagrid = $realServiceLocator->get ( 'ZfcDatagrid\Datagrid' );
+		$form = $realServiceLocator->get ( 'FormElementManager' )->get ( 'ProductAdmin\Form\AttributeGroupsForm' );
+		$formfilter = $realServiceLocator->get ( 'AttributeGroupsFilter' );
 		
-        return new AttributeGroupsController($service, $form, $formfilter, $grid, $settings);
-    }
+		// prepare the datagrid to handle the custom columns and data
+		$theDatagrid = new ProductGroupsDatagrid ( $dbAdapter, $datagrid, $settings );
+		$grid = $theDatagrid->getDatagrid ();
+		
+		return new AttributeGroupsController ( $service, $form, $formfilter, $grid, $settings );
+	}
 }

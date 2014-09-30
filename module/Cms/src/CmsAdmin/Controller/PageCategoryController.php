@@ -41,15 +41,12 @@
  * @link http://shinesoftware.com
  * @version @@PACKAGE_VERSION@@
  */
-
-
 namespace CmsAdmin\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class PageCategoryController extends AbstractActionController
-{
+class PageCategoryController extends AbstractActionController {
 	protected $recordcategoryService;
 	protected $datagrid;
 	protected $form;
@@ -58,19 +55,14 @@ class PageCategoryController extends AbstractActionController
 	
 	/**
 	 * Class constructor
-	 * 
-	 * @param \Cms\Service\PageCategoryServiceInterface $recordcategoryService
-	 * @param \Cms\Form\PageForm $form
-	 * @param \Cms\Form\PageFilter $formfilter
-	 * @param \ZfcDatagrid\Datagrid $datagrid
-	 * @param \Base\Service\SettingsServiceInterface $settings
+	 *
+	 * @param \Cms\Service\PageCategoryServiceInterface $recordcategoryService        	
+	 * @param \Cms\Form\PageForm $form        	
+	 * @param \Cms\Form\PageFilter $formfilter        	
+	 * @param \ZfcDatagrid\Datagrid $datagrid        	
+	 * @param \Base\Service\SettingsServiceInterface $settings        	
 	 */
-	public function __construct(\Cms\Service\PageCategoryServiceInterface $recordcategoryService,
-								\Cms\Form\PageCategoryForm $form, 
-								\Cms\Form\PageCategoryFilter $formfilter, 
-								\ZfcDatagrid\Datagrid $datagrid, 
-								\Base\Service\SettingsServiceInterface $settings)
-	{
+	public function __construct(\Cms\Service\PageCategoryServiceInterface $recordcategoryService, \Cms\Form\PageCategoryForm $form, \Cms\Form\PageCategoryFilter $formfilter, \ZfcDatagrid\Datagrid $datagrid, \Base\Service\SettingsServiceInterface $settings) {
 		$this->pagecategoryService = $recordcategoryService;
 		$this->datagrid = $datagrid;
 		$this->form = $form;
@@ -81,132 +73,124 @@ class PageCategoryController extends AbstractActionController
 	/**
 	 * List of all records
 	 */
-	public function indexAction ()
-	{
+	public function indexAction() {
 		// prepare the datagrid
-		$this->datagrid->render();
-	
+		$this->datagrid->render ();
+		
 		// get the datagrid ready to be shown in the template view
-		$response = $this->datagrid->getResponse();
-	
-		if ($this->datagrid->isHtmlInitReponse()) {
-			$view = new ViewModel();
-			$view->addChild($response, 'grid');
+		$response = $this->datagrid->getResponse ();
+		
+		if ($this->datagrid->isHtmlInitReponse ()) {
+			$view = new ViewModel ();
+			$view->addChild ( $response, 'grid' );
 			return $view;
 		} else {
 			return $response;
 		}
 	}
 	
-	
 	/**
 	 * Add new information
 	 */
-	public function addAction ()
-	{
-	
+	public function addAction() {
 		$form = $this->form;
-	
-		$viewModel = new ViewModel(array (
-				'form' => $form,
-		));
-	
-		$viewModel->setTemplate('cms-admin/page-category/edit');
+		
+		$viewModel = new ViewModel ( array (
+				'form' => $form 
+		) );
+		
+		$viewModel->setTemplate ( 'cms-admin/page-category/edit' );
 		return $viewModel;
 	}
 	
-    /**
-     * Edit the record
-     */
-    public function editAction ()
-    {
-    	$id = $this->params()->fromRoute('id');
-    	 
-    	$form = $this->form;
-    
-    	// Get the record by its id
-    	$record = $this->pagecategoryService->find($id);
-    	
-    	// Bind the data in the form
-    	if (! empty($record)) {
-    		$form->bind($record);
-    	}
-    
-    	$viewModel = new ViewModel(array (
-    			'form' => $form,
-    	));
-    
-    	return $viewModel;
-    }
-    	
-    /**
-     * Prepare the data and then save them
-     *
-     * @return \Zend\View\Model\ViewModel
-     */
-    public function processAction ()
-    {
-    	
-    	if (! $this->request->isPost()) {
-    		return $this->redirect()->toRoute(NULL, array (
-    				'controller' => 'cms',
-    				'action' => 'index'
-    		));
-    	}
-    
-    	$post = $this->request->getPost();
-    	$form = $this->form;
-    	$form->setData($post);
-    	
-    	$inputFilter = $this->filter;
-    	$form->setInputFilter($inputFilter);
-    	 
-    	if (!$form->isValid()) {
-    
-    		// Get the record by its id
-    		$viewModel = new ViewModel(array (
-    				'error' => true,
-    				'form' => $form,
-    		));
-    		$viewModel->setTemplate('cms-admin/page-category/edit');
-    		return $viewModel;
-    	}
-    
-    	// Get the posted vars
-    	$data = $form->getData();
-    	
-    	// Save the data in the database
-    	$record = $this->pagecategoryService->save($data);
-    
-    	$this->flashMessenger()->setNamespace('success')->addMessage('The information have been saved.');
-    
-    	return $this->redirect()->toRoute(NULL, array (
-    			'controller' => 'cms',
-    			'action' => 'edit',
-    			'id' => $record->getId()
-    	));
-    }
-    
-    /**
-     * Delete the records 
-     *
-     * @return \Zend\Http\Response
-     */
-    public function deleteAction ()
-    {
-    	$id = $this->params()->fromRoute('id');
-    
-    	if (is_numeric($id)) {
-    
-    		// Delete the record informaiton
-    		$this->pagecategoryService->delete($id);
-    
-    		// Go back showing a message
-    		$this->flashMessenger()->setNamespace('success')->addMessage('The record has been deleted!');
-    		return $this->redirect()->toRoute('zfcadmin/cmscategory');
-    	}
-    
-    	$this->flashMessenger()->setNamespace('danger')->addMessage('The record has been not deleted!');
-    	return $this->redirect()->toRoute('zfcadmin/cmscategory');
-    }
+	/**
+	 * Edit the record
+	 */
+	public function editAction() {
+		$id = $this->params ()->fromRoute ( 'id' );
+		
+		$form = $this->form;
+		
+		// Get the record by its id
+		$record = $this->pagecategoryService->find ( $id );
+		
+		// Bind the data in the form
+		if (! empty ( $record )) {
+			$form->bind ( $record );
+		}
+		
+		$viewModel = new ViewModel ( array (
+				'form' => $form 
+		) );
+		
+		return $viewModel;
+	}
+	
+	/**
+	 * Prepare the data and then save them
+	 *
+	 * @return \Zend\View\Model\ViewModel
+	 */
+	public function processAction() {
+		if (! $this->request->isPost ()) {
+			return $this->redirect ()->toRoute ( NULL, array (
+					'controller' => 'cms',
+					'action' => 'index' 
+			) );
+		}
+		
+		$post = $this->request->getPost ();
+		$form = $this->form;
+		$form->setData ( $post );
+		
+		$inputFilter = $this->filter;
+		$form->setInputFilter ( $inputFilter );
+		
+		if (! $form->isValid ()) {
+			
+			// Get the record by its id
+			$viewModel = new ViewModel ( array (
+					'error' => true,
+					'form' => $form 
+			) );
+			$viewModel->setTemplate ( 'cms-admin/page-category/edit' );
+			return $viewModel;
+		}
+		
+		// Get the posted vars
+		$data = $form->getData ();
+		
+		// Save the data in the database
+		$record = $this->pagecategoryService->save ( $data );
+		
+		$this->flashMessenger ()->setNamespace ( 'success' )->addMessage ( 'The information have been saved.' );
+		
+		return $this->redirect ()->toRoute ( NULL, array (
+				'controller' => 'cms',
+				'action' => 'edit',
+				'id' => $record->getId () 
+		) );
+	}
+	
+	/**
+	 * Delete the records
+	 *
+	 * @return \Zend\Http\Response
+	 */
+	public function deleteAction() {
+		$id = $this->params ()->fromRoute ( 'id' );
+		
+		if (is_numeric ( $id )) {
+			
+			// Delete the record informaiton
+			$this->pagecategoryService->delete ( $id );
+			
+			// Go back showing a message
+			$this->flashMessenger ()->setNamespace ( 'success' )->addMessage ( 'The record has been deleted!' );
+			return $this->redirect ()->toRoute ( 'zfcadmin/cmscategory' );
+		}
+		
+		$this->flashMessenger ()->setNamespace ( 'danger' )->addMessage ( 'The record has been not deleted!' );
+		return $this->redirect ()->toRoute ( 'zfcadmin/cmscategory' );
+	}
 }

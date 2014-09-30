@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,22 +41,50 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace ProductAdmin\Form;
+
 use Zend\Form\Form;
 use Zend\Stdlib\Hydrator\ClassMethods;
 use Base\Hydrator\Strategy\DateTimeStrategy;
 
 class ProductNewForm extends Form {
-	
 	public function init() {
-		
 		$this->setAttribute ( 'method', 'post' );
 		
-		$this->add ( array ('type' => 'ProductAdmin\Form\Element\Types', 'name' => 'type_id', 'attributes' => array ('class' => 'form-control' ), 'options' => array ('label' => _ ( 'Type' ) ) ) );
-		$this->add ( array ('type' => 'ProductAdmin\Form\Element\AttributeSet', 'name' => 'attribute_set_id', 'attributes' => array ('class' => 'form-control' ), 'options' => array ('label' => _ ( 'Attribute Set' ) ) ) );
+		$this->add ( array (
+				'type' => 'ProductAdmin\Form\Element\Types',
+				'name' => 'type_id',
+				'attributes' => array (
+						'class' => 'form-control' 
+				),
+				'options' => array (
+						'label' => _ ( 'Type' ) 
+				) 
+		) );
+		$this->add ( array (
+				'type' => 'ProductAdmin\Form\Element\AttributeSet',
+				'name' => 'attribute_set_id',
+				'attributes' => array (
+						'class' => 'form-control' 
+				),
+				'options' => array (
+						'label' => _ ( 'Attribute Set' ) 
+				) 
+		) );
 		
-		$this->add ( array ('name' => 'submit', 'attributes' => array ('type' => 'submit', 'class' => 'btn btn-success', 'value' => _ ( 'Save' ) ) ) );
-		$this->add ( array ('name' => 'id', 'attributes' => array ('type' => 'hidden' ) ) );
+		$this->add ( array (
+				'name' => 'submit',
+				'attributes' => array (
+						'type' => 'submit',
+						'class' => 'btn btn-success',
+						'value' => _ ( 'Save' ) 
+				) 
+		) );
+		$this->add ( array (
+				'name' => 'id',
+				'attributes' => array (
+						'type' => 'hidden' 
+				) 
+		) );
 	}
 }

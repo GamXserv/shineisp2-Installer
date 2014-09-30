@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,25 +41,23 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Customer\Entity;
 
-interface AddressInterface
-{
-    public function getId();
-    public function getStreet();
-    public function getCode();
-    public function getCity();
-    public function getCountryId();
-    public function getCustomerId();
-    public function getLatitude();
-    public function getLongitude();
-    public function setId($id);
-    public function setStreet($street);
-    public function setCode($code);
-    public function setCity($city);
-    public function setCountryId($country_id);
-    public function setLatitude($latitude);
-    public function setLongitude($longitude);
-    public function setCustomerId($customer_id);
+interface AddressInterface {
+	public function getId();
+	public function getStreet();
+	public function getCode();
+	public function getCity();
+	public function getCountryId();
+	public function getCustomerId();
+	public function getLatitude();
+	public function getLongitude();
+	public function setId($id);
+	public function setStreet($street);
+	public function setCode($code);
+	public function setCity($city);
+	public function setCountryId($country_id);
+	public function setLatitude($latitude);
+	public function setLongitude($longitude);
+	public function setCustomerId($customer_id);
 }

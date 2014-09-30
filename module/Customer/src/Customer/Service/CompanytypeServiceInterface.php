@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,39 +41,40 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Customer\Service;
 
-interface CompanytypeServiceInterface
-{
-    /**
-     * Should return all the records 
-     *
-     * @return array|\Traversable
-     */
-    public function findAll();
-
-    /**
-     * Should return a single record
-     *
-     * @param  int $id Identifier of the Record that should be returned
-     * @return \Customer\Entity\Companytype
-     */
-    public function find($id);
-    
-    /**
-     * Should delete a single record
-     *
-     * @param  int $id Identifier of the Record that should be deleted
-     * @return \Customer\Entity\Companytype
-     */
-    public function delete($id);
-    
-    /**
-     * Should save a single record
-     *
-     * @param  \Customer\Model\Companytype $record object that should be saved
-     * @return \Customer\Entity\Companytype
-     */
-    public function save(\Customer\Entity\Companytype $record);
+interface CompanytypeServiceInterface {
+	/**
+	 * Should return all the records
+	 *
+	 * @return array|\Traversable
+	 */
+	public function findAll();
+	
+	/**
+	 * Should return a single record
+	 *
+	 * @param int $id
+	 *        	Identifier of the Record that should be returned
+	 * @return \Customer\Entity\Companytype
+	 */
+	public function find($id);
+	
+	/**
+	 * Should delete a single record
+	 *
+	 * @param int $id
+	 *        	Identifier of the Record that should be deleted
+	 * @return \Customer\Entity\Companytype
+	 */
+	public function delete($id);
+	
+	/**
+	 * Should save a single record
+	 *
+	 * @param \Customer\Model\Companytype $record
+	 *        	object that should be saved
+	 * @return \Customer\Entity\Companytype
+	 */
+	public function save(\Customer\Entity\Companytype $record);
 }

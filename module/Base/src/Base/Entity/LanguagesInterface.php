@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,20 +41,18 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Base\Entity;
 
-interface LanguagesInterface
-{
-    public function getId();
-    public function getLanguage();
-    public function setLanguage($language);
-    public function getLocale();
-    public function setLocale($locale);
-    public function getCode();
-    public function setCode($code);
-    public function getBase();
-    public function setBase($base);
-    public function getActive();
-    public function setActive($active);
+interface LanguagesInterface {
+	public function getId();
+	public function getLanguage();
+	public function setLanguage($language);
+	public function getLocale();
+	public function setLocale($locale);
+	public function getCode();
+	public function setCode($code);
+	public function getBase();
+	public function setBase($base);
+	public function getActive();
+	public function setActive($active);
 }

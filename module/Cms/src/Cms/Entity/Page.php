@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,224 +41,244 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Cms\Entity;
+
 use DateTime;
 
 class Page implements PageInterface {
-
-    public $id;
-    public $title;
-    public $slug;
-    public $content;
-    public $visible;
-    public $showonlist;
-    public $category_id;
-    public $language_id;
-    public $parent_id;
-    public $tags;
-    public $layout;
-    public $createdat;
-    public $updatedat;
-    
-    /**
-     * This method get the array posted and assign the values to the table
-     * object
-     *
-     * @param array $data
-     */
-    public function exchangeArray ($data)
-    {
-    	foreach ($data as $field => $value) {
-    		$this->$field = (isset($value)) ? $value : null;
-    	}
-    
-    	return true;
-    }
-    
-    /**
+	public $id;
+	public $title;
+	public $slug;
+	public $content;
+	public $visible;
+	public $showonlist;
+	public $category_id;
+	public $language_id;
+	public $parent_id;
+	public $tags;
+	public $layout;
+	public $createdat;
+	public $updatedat;
+	
+	/**
+	 * This method get the array posted and assign the values to the table
+	 * object
+	 *
+	 * @param array $data        	
+	 */
+	public function exchangeArray($data) {
+		foreach ( $data as $field => $value ) {
+			$this->$field = (isset ( $value )) ? $value : null;
+		}
+		
+		return true;
+	}
+	
+	/**
+	 *
 	 * @return the $id
 	 */
 	public function getId() {
 		return $this->id;
 	}
-
+	
 	/**
-	 * @param field_type $id
+	 *
+	 * @param field_type $id        	
 	 */
 	public function setId($id) {
 		$this->id = $id;
 	}
-
+	
 	/**
+	 *
 	 * @return the $title
 	 */
 	public function getTitle() {
 		return $this->title;
 	}
-
+	
 	/**
-	 * @param field_type $title
+	 *
+	 * @param field_type $title        	
 	 */
 	public function setTitle($title) {
 		$this->title = $title;
 	}
-
+	
 	/**
+	 *
 	 * @return the $slug
 	 */
 	public function getSlug() {
 		return $this->slug;
 	}
-
+	
 	/**
-	 * @param field_type $slug
+	 *
+	 * @param field_type $slug        	
 	 */
 	public function setSlug($slug) {
 		$this->slug = $slug;
 	}
-
+	
 	/**
+	 *
 	 * @return the $content
 	 */
 	public function getContent() {
 		return $this->content;
 	}
-
+	
 	/**
-	 * @param field_type $content
+	 *
+	 * @param field_type $content        	
 	 */
 	public function setContent($content) {
 		$this->content = $content;
 	}
-
+	
 	/**
+	 *
 	 * @return the $createdat
 	 */
 	public function getCreatedat() {
 		return $this->createdat;
 	}
-
+	
 	/**
-	 * @param field_type $createdat
+	 *
+	 * @param field_type $createdat        	
 	 */
 	public function setCreatedat(DateTime $createdat = NULL) {
 		$this->createdat = $createdat;
 	}
-
+	
 	/**
+	 *
 	 * @return the $updatedat
 	 */
 	public function getUpdatedat() {
 		return $this->updatedat;
 	}
-
+	
 	/**
-	 * @param field_type $updatedat
+	 *
+	 * @param field_type $updatedat        	
 	 */
 	public function setUpdatedat(DateTime $updatedat = NULL) {
 		$this->updatedat = $updatedat;
 	}
-
+	
 	/**
+	 *
 	 * @return the $visible
 	 */
 	public function getVisible() {
 		return $this->visible;
 	}
-
+	
 	/**
-	 * @param field_type $visible
+	 *
+	 * @param field_type $visible        	
 	 */
 	public function setVisible($visible) {
 		$this->visible = $visible;
 	}
-
+	
 	/**
-     * @return the $showonlist
-     */
-    public function getShowonlist ()
-    {
-        return $this->showonlist;
-    }
-
+	 *
+	 * @return the $showonlist
+	 */
+	public function getShowonlist() {
+		return $this->showonlist;
+	}
+	
 	/**
-     * @param field_type $showonlist
-     */
-    public function setShowonlist ($showonlist)
-    {
-        $this->showonlist = $showonlist;
-    }
-
+	 *
+	 * @param field_type $showonlist        	
+	 */
+	public function setShowonlist($showonlist) {
+		$this->showonlist = $showonlist;
+	}
+	
 	/**
+	 *
 	 * @return the $category_id
 	 */
 	public function getCategoryId() {
 		return $this->category_id;
 	}
-
+	
 	/**
+	 *
 	 * @return the $language_id
 	 */
 	public function getLanguageId() {
 		return $this->language_id;
 	}
-
+	
 	/**
-	 * @param field_type $language_id
+	 *
+	 * @param field_type $language_id        	
 	 */
 	public function setLanguageId($language_id) {
 		$this->language_id = $language_id;
 	}
-
+	
 	/**
-	 * @param field_type $category_id
+	 *
+	 * @param field_type $category_id        	
 	 */
 	public function setCategoryId($category_id) {
 		$this->category_id = $category_id;
 	}
-
+	
 	/**
+	 *
 	 * @return the $tags
 	 */
 	public function getTags() {
 		return $this->tags;
 	}
-
+	
 	/**
-	 * @param field_type $tags
+	 *
+	 * @param field_type $tags        	
 	 */
 	public function setTags($tags) {
 		$this->tags = $tags;
 	}
-
+	
 	/**
+	 *
 	 * @return the $layout
 	 */
 	public function getLayout() {
 		return $this->layout;
 	}
-
+	
 	/**
-	 * @param field_type $layout
+	 *
+	 * @param field_type $layout        	
 	 */
 	public function setLayout($layout) {
 		$this->layout = $layout;
 	}
-
+	
 	/**
+	 *
 	 * @return the $parent_id
 	 */
 	public function getParentId() {
 		return $this->parent_id;
 	}
-
+	
 	/**
-	 * @param field_type $parent_id
+	 *
+	 * @param field_type $parent_id        	
 	 */
 	public function setParentId($parent_id) {
 		$this->parent_id = $parent_id;
 	}
-
-
 }

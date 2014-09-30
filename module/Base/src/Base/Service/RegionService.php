@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,104 +41,101 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Base\Service;
 
 use Base\Entity\Region;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Stdlib\Hydrator\ClassMethods;
 
-class RegionService implements RegionServiceInterface
-{
+class RegionService implements RegionServiceInterface {
 	protected $tableGateway;
-	
-	public function __construct(TableGateway $tableGateway ){
+	public function __construct(TableGateway $tableGateway) {
 		$this->tableGateway = $tableGateway;
 	}
 	
 	/**
 	 * @inheritDoc
 	 */
-	public function findAll()
-	{
-		$records = $this->tableGateway->select();
+	public function findAll() {
+		$records = $this->tableGateway->select ();
 		return $records;
 	}
 	
 	/**
 	 * @inheritDoc
 	 */
-	public function find($id)
-	{
-		if(!is_numeric($id)){
+	public function find($id) {
+		if (! is_numeric ( $id )) {
 			return false;
 		}
-		$rowset = $this->tableGateway->select(array('id' => $id));
-		$row = $rowset->current();
+		$rowset = $this->tableGateway->select ( array (
+				'id' => $id 
+		) );
+		$row = $rowset->current ();
 		return $row;
 	}
 	
 	/**
 	 * @inheritDoc
 	 */
-	public function findByName($name)
-	{
-		$record = $this->tableGateway->select(function (\Zend\Db\Sql\Select $select) use ($name){
-			$select->where(array('language' => $name));
-		});
-	
-		return $record->current();
+	public function findByName($name) {
+		$record = $this->tableGateway->select ( function (\Zend\Db\Sql\Select $select) use($name) {
+			$select->where ( array (
+					'language' => $name 
+			) );
+		} );
+		
+		return $record->current ();
 	}
 	
 	/**
 	 * @inheritDoc
 	 */
-	public function findByCountryId($country_id)
-	{
-		$records = $this->tableGateway->select(function (\Zend\Db\Sql\Select $select) use ($country_id){
-			$select->where(array('country_id' => $country_id));
-		});
-	
+	public function findByCountryId($country_id) {
+		$records = $this->tableGateway->select ( function (\Zend\Db\Sql\Select $select) use($country_id) {
+			$select->where ( array (
+					'country_id' => $country_id 
+			) );
+		} );
+		
 		return $records;
 	}
 	
 	/**
 	 * @inheritDoc
 	 */
-	public function delete($id)
-	{
-		$this->tableGateway->delete(array(
-				'id' => $id
-		));
+	public function delete($id) {
+		$this->tableGateway->delete ( array (
+				'id' => $id 
+		) );
 	}
 	
 	/**
 	 * @inheritDoc
 	 */
-	public function save(\Base\Entity\Region $record)
-	{
-		$hydrator = new ClassMethods(true);
-		 
+	public function save(\Base\Entity\Region $record) {
+		$hydrator = new ClassMethods ( true );
+		
 		// extract the data from the object
-		$data = $hydrator->extract($record);
-		$id = (int) $record->getId();
-		 
+		$data = $hydrator->extract ( $record );
+		$id = ( int ) $record->getId ();
+		
 		if ($id == 0) {
-			unset($data['id']);
-			$this->tableGateway->insert($data); // add the record
-			$id = $this->tableGateway->getLastInsertValue();
+			unset ( $data ['id'] );
+			$this->tableGateway->insert ( $data ); // add the record
+			$id = $this->tableGateway->getLastInsertValue ();
 		} else {
-			$rs = $this->find($id);
-			if (!empty($rs)) {
-				$this->tableGateway->update($data, array (
-						'id' => $id
-				));
+			$rs = $this->find ( $id );
+			if (! empty ( $rs )) {
+				$this->tableGateway->update ( $data, array (
+						'id' => $id 
+				) );
 			} else {
-				throw new \Exception('Record ID does not exist');
+				throw new \Exception ( 'Record ID does not exist' );
 			}
 		}
-		 
-		$record = $this->find($id);
+		
+		$record = $this->find ( $id );
 		return $record;
 	}
 }

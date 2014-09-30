@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,55 +41,58 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Customer\Service;
 
-interface CustomerServiceInterface
-{
-    /**
-     * Should return all the records 
-     *
-     * @return array|\Traversable
-     */
-    public function findAll();
-    
-    /**
-     * Should return all the active customer  
-     *
-     * @return array|\Traversable
-     */
-    public function getActiveCustomers();
-
-    /**
-     * Should return a single record
-     *
-     * @param  string $id of the Record that should be returned
-     * @return \Customer\Entity\Customer
-     */
-    public function find($id);
-    
-    /**
-     * Search a record by title and content
-     *
-     * @param  int $search Identifier of the Record that should be returned
-     * @param  string $locale Identifier of the locale
-     * @return \Customer\Entity\Customer
-     */
-    public function search($search, $locale);
-    
-    /**
-     * Should delete a single record
-     *
-     * @param  int $id Identifier of the Record that should be deleted
-     * @return \Customer\Entity\Customer
-     */
-    public function delete($id);
-    
-    /**
-     * Should save a single record
-     *
-     * @param  \Customer\Model\Customer $record object that should be saved
-     * @return \Customer\Entity\Customer
-     */
-    public function save(\Customer\Entity\Customer $record);
+interface CustomerServiceInterface {
+	/**
+	 * Should return all the records
+	 *
+	 * @return array|\Traversable
+	 */
+	public function findAll();
+	
+	/**
+	 * Should return all the active customer
+	 *
+	 * @return array|\Traversable
+	 */
+	public function getActiveCustomers();
+	
+	/**
+	 * Should return a single record
+	 *
+	 * @param string $id
+	 *        	of the Record that should be returned
+	 * @return \Customer\Entity\Customer
+	 */
+	public function find($id);
+	
+	/**
+	 * Search a record by title and content
+	 *
+	 * @param int $search
+	 *        	Identifier of the Record that should be returned
+	 * @param string $locale
+	 *        	Identifier of the locale
+	 * @return \Customer\Entity\Customer
+	 */
+	public function search($search, $locale);
+	
+	/**
+	 * Should delete a single record
+	 *
+	 * @param int $id
+	 *        	Identifier of the Record that should be deleted
+	 * @return \Customer\Entity\Customer
+	 */
+	public function delete($id);
+	
+	/**
+	 * Should save a single record
+	 *
+	 * @param \Customer\Model\Customer $record
+	 *        	object that should be saved
+	 * @return \Customer\Entity\Customer
+	 */
+	public function save(\Customer\Entity\Customer $record);
 }

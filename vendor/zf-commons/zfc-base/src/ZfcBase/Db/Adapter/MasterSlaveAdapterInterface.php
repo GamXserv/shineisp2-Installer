@@ -2,10 +2,10 @@
 
 namespace ZfcBase\Db\Adapter;
 
-interface MasterSlaveAdapterInterface
-{
-    /**
-     * @return Zend\Db\Adapter
-     */
-    public function getSlaveAdapter();
+interface MasterSlaveAdapterInterface {
+	/**
+	 *
+	 * @return Zend\Db\Adapter
+	 */
+	public function getSlaveAdapter();
 }

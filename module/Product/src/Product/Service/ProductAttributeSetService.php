@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,7 +41,6 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Product\Service;
 
 use Product\Entity\ProductAttributeSet;
@@ -48,193 +48,190 @@ use Zend\EventManager\EventManager;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Stdlib\Hydrator\ClassMethods;
 use Zend\EventManager\EventManagerAwareInterface;
-use Zend\EventManager\EventManagerInterface; 
+use Zend\EventManager\EventManagerInterface;
 
-class ProductAttributeSetService implements ProductAttributeSetServiceInterface, EventManagerAwareInterface
-{
+class ProductAttributeSetService implements ProductAttributeSetServiceInterface, EventManagerAwareInterface {
 	protected $tableGateway;
 	protected $attributegroupService;
 	protected $attributegroupIdxService;
 	protected $translator;
 	protected $eventManager;
-	
-	public function __construct(TableGateway $tableGateway,
-								\Product\Service\ProductAttributeGroupService $attributeGroupService, 
-								\Product\Service\ProductAttributeIdxService $attributeGroupIdxService, 
-								\Zend\Mvc\I18n\Translator $translator ){
-		
-			$this->tableGateway = $tableGateway;
-			$this->attributegroupService = $attributeGroupService;
-			$this->attributegroupIdxService = $attributeGroupIdxService;
-			$this->translator = $translator;
+	public function __construct(TableGateway $tableGateway, \Product\Service\ProductAttributeGroupService $attributeGroupService, \Product\Service\ProductAttributeIdxService $attributeGroupIdxService, \Zend\Mvc\I18n\Translator $translator) {
+		$this->tableGateway = $tableGateway;
+		$this->attributegroupService = $attributeGroupService;
+		$this->attributegroupIdxService = $attributeGroupIdxService;
+		$this->translator = $translator;
 	}
 	
-    /**
-     * @inheritDoc
-     */
-    public function findAll()
-    {
-    	$records = $this->tableGateway->select(function (\Zend\Db\Sql\Select $select) {
-        });
-        
-        return $records;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function find($id)
-    {
-    	if(!is_numeric($id)){
-    		return false;
-    	}
-    	$rowset = $this->tableGateway->select(array('id' => $id));
-    	$row = $rowset->current();
-    	
-    	return $row;
-    }
-    
-    /**
-     * @inheritDoc
-     */
-    public function findByAttributeSet($id)
-    {
-    	if(!is_numeric($id)){
-    		return false;
-    	}
-    	
-    	$result = array();
-    
-    	$records = $this->tableGateway->select(function (\Zend\Db\Sql\Select $select) use ($id){
-    		$select->join('product_attributes_idx', 'product_attributes_set.id = product_attributes_idx.attribute_set_id', array ('*'), 'left');
-    		$select->where(array('product_attributes_set.id' => $id));
-    	});
-    
-    	foreach ($records as $record){
-    		$result[] = $record->attribute_id;
-    	}
-    	return $result;
-    }
-    
-    
-    /**
-     * @inheritDoc
-     */
-    public function delete($id)
-    {
-    	$this->tableGateway->delete(array(
-    			'id' => $id
-    	));
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function save(\Product\Entity\ProductAttributeSet $record)
-    {
-    	$hydrator = new ClassMethods();
-    	
-    	$attributes = $record->getAttributes();
-    	
-    	// extract the data from the object
-    	$data = $hydrator->extract($record);
-    	$id = (int) $record->getId();
-    	
-    	$this->getEventManager()->trigger(__FUNCTION__ . '.pre', null, array('data' => $data));  // Trigger an event
-    	
-    	unset($data['attributes']);
-    	
-    	if ($id == 0) {
-    		unset($data['id']);
-
-    		// Save the data
-    		$this->tableGateway->insert($data); 
-    		
-    		// Get the ID of the record
-    		$id = $this->tableGateway->getLastInsertValue();
-    	} else {
-    		
-    		$rs = $this->find($id);
-    		
-    		if (!empty($rs)) {
-
-    			// Save the data
-    			$this->tableGateway->update($data, array (
-    					'id' => $id
-    			));
-    			
-    		} else {
-    			throw new \Exception('Record ID does not exist');
-    		}
-    	}
-    	
-    	// save the attributes
-    	$this->saveAttributes($id, $attributes);
-    	
-    	$record = $this->find($id);
-    	$this->getEventManager()->trigger(__FUNCTION__ . '.post', null, array('id' => $id, 'data' => $data, 'record' => $record));  // Trigger an event
-    	return $record;
-    }
-    
-    /**
-     * Save the attributes idx
-     * @param integer $setId
-     * @param array $attributes
-     */
-    private function saveAttributes($setId, array $attributes){
-    	
-    	$attributegroupIdxService = $this->attributegroupIdxService;
-    	
-    	// clear the old custom settings
-    	$attributegroupIdxService->clearAttributeGroup($setId);
-    	
-    	$idx = new \Product\Entity\ProductAttributeIdx();
-    	
-    	// save the new pair attribute ids and attributeset id
-    	foreach ($attributes as $data){
-
-    		// if the group is new fancytree js object add an underscore into the id of the item
-    		$chkNew = strpos($data['attribute_group_id'], "_"); 
-    		if ($chkNew !== false) {
-    			$rsGroup = $this->attributegroupService->findByName($data['attribute_group_title']);
-    			if(0 == $rsGroup->count()){
-    				$newGroup = new \Product\Entity\ProductAttributeGroups();
-    				$newGroup->setName($data['attribute_group_title']);
-    				$group = $this->attributegroupService->save($newGroup);
-    				$data['attribute_group_id'] = $group->getId();
-    			}else{
-    				$data['attribute_group_id'] = $rsGroup->current()->getId();
-    			}
-    		}
-    		
-    		// save the data
-    		$idx->setAttributeId($data['attribute_id']);
-    		$idx->setAttributeGroupId($data['attribute_group_id']);
-    		$idx->setAttributeSetId($setId);
-    		$attributegroupIdxService->save($idx);
-    	}
-    	
-    	return true;
-    }
-    
-    
-	/* (non-PHPdoc)
-     * @see \Zend\EventManager\EventManagerAwareInterface::setEventManager()
-     */
-     public function setEventManager (EventManagerInterface $eventManager){
-         $eventManager->addIdentifiers(get_called_class());
-         $this->eventManager = $eventManager;
-     }
-
-	/* (non-PHPdoc)
-     * @see \Zend\EventManager\EventsCapableInterface::getEventManager()
-     */
-     public function getEventManager (){
-       if (null === $this->eventManager) {
-            $this->setEventManager(new EventManager());
-        }
-
-        return $this->eventManager;
-     }
-
+	/**
+	 * @inheritDoc
+	 */
+	public function findAll() {
+		$records = $this->tableGateway->select ( function (\Zend\Db\Sql\Select $select) {
+		} );
+		
+		return $records;
+	}
+	
+	/**
+	 * @inheritDoc
+	 */
+	public function find($id) {
+		if (! is_numeric ( $id )) {
+			return false;
+		}
+		$rowset = $this->tableGateway->select ( array (
+				'id' => $id 
+		) );
+		$row = $rowset->current ();
+		
+		return $row;
+	}
+	
+	/**
+	 * @inheritDoc
+	 */
+	public function findByAttributeSet($id) {
+		if (! is_numeric ( $id )) {
+			return false;
+		}
+		
+		$result = array ();
+		
+		$records = $this->tableGateway->select ( function (\Zend\Db\Sql\Select $select) use($id) {
+			$select->join ( 'product_attributes_idx', 'product_attributes_set.id = product_attributes_idx.attribute_set_id', array (
+					'*' 
+			), 'left' );
+			$select->where ( array (
+					'product_attributes_set.id' => $id 
+			) );
+		} );
+		
+		foreach ( $records as $record ) {
+			$result [] = $record->attribute_id;
+		}
+		return $result;
+	}
+	
+	/**
+	 * @inheritDoc
+	 */
+	public function delete($id) {
+		$this->tableGateway->delete ( array (
+				'id' => $id 
+		) );
+	}
+	
+	/**
+	 * @inheritDoc
+	 */
+	public function save(\Product\Entity\ProductAttributeSet $record) {
+		$hydrator = new ClassMethods ();
+		
+		$attributes = $record->getAttributes ();
+		
+		// extract the data from the object
+		$data = $hydrator->extract ( $record );
+		$id = ( int ) $record->getId ();
+		
+		$this->getEventManager ()->trigger ( __FUNCTION__ . '.pre', null, array (
+				'data' => $data 
+		) ); // Trigger an event
+		
+		unset ( $data ['attributes'] );
+		
+		if ($id == 0) {
+			unset ( $data ['id'] );
+			
+			// Save the data
+			$this->tableGateway->insert ( $data );
+			
+			// Get the ID of the record
+			$id = $this->tableGateway->getLastInsertValue ();
+		} else {
+			
+			$rs = $this->find ( $id );
+			
+			if (! empty ( $rs )) {
+				
+				// Save the data
+				$this->tableGateway->update ( $data, array (
+						'id' => $id 
+				) );
+			} else {
+				throw new \Exception ( 'Record ID does not exist' );
+			}
+		}
+		
+		// save the attributes
+		$this->saveAttributes ( $id, $attributes );
+		
+		$record = $this->find ( $id );
+		$this->getEventManager ()->trigger ( __FUNCTION__ . '.post', null, array (
+				'id' => $id,
+				'data' => $data,
+				'record' => $record 
+		) ); // Trigger an event
+		return $record;
+	}
+	
+	/**
+	 * Save the attributes idx
+	 * 
+	 * @param integer $setId        	
+	 * @param array $attributes        	
+	 */
+	private function saveAttributes($setId, array $attributes) {
+		$attributegroupIdxService = $this->attributegroupIdxService;
+		
+		// clear the old custom settings
+		$attributegroupIdxService->clearAttributeGroup ( $setId );
+		
+		$idx = new \Product\Entity\ProductAttributeIdx ();
+		
+		// save the new pair attribute ids and attributeset id
+		foreach ( $attributes as $data ) {
+			
+			// if the group is new fancytree js object add an underscore into the id of the item
+			$chkNew = strpos ( $data ['attribute_group_id'], "_" );
+			if ($chkNew !== false) {
+				$rsGroup = $this->attributegroupService->findByName ( $data ['attribute_group_title'] );
+				if (0 == $rsGroup->count ()) {
+					$newGroup = new \Product\Entity\ProductAttributeGroups ();
+					$newGroup->setName ( $data ['attribute_group_title'] );
+					$group = $this->attributegroupService->save ( $newGroup );
+					$data ['attribute_group_id'] = $group->getId ();
+				} else {
+					$data ['attribute_group_id'] = $rsGroup->current ()->getId ();
+				}
+			}
+			
+			// save the data
+			$idx->setAttributeId ( $data ['attribute_id'] );
+			$idx->setAttributeGroupId ( $data ['attribute_group_id'] );
+			$idx->setAttributeSetId ( $setId );
+			$attributegroupIdxService->save ( $idx );
+		}
+		
+		return true;
+	}
+	
+	/*
+	 * (non-PHPdoc) @see \Zend\EventManager\EventManagerAwareInterface::setEventManager()
+	 */
+	public function setEventManager(EventManagerInterface $eventManager) {
+		$eventManager->addIdentifiers ( get_called_class () );
+		$this->eventManager = $eventManager;
+	}
+	
+	/*
+	 * (non-PHPdoc) @see \Zend\EventManager\EventsCapableInterface::getEventManager()
+	 */
+	public function getEventManager() {
+		if (null === $this->eventManager) {
+			$this->setEventManager ( new EventManager () );
+		}
+		
+		return $this->eventManager;
+	}
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,23 +41,56 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace CustomerAdmin\Form;
+
 use Zend\Form\Form;
 use Zend\Stdlib\Hydrator\ClassMethods;
 use Base\Hydrator\Strategy\DateTimeStrategy;
 
 class ContactTypeForm extends Form {
-	
 	public function init() {
 		$hydrator = new ClassMethods ();
 		
 		$this->setAttribute ( 'method', 'post' );
 		$this->setHydrator ( $hydrator )->setObject ( new \Customer\Entity\ContactType () );
 		
-		$this->add ( array ('name' => 'name', 'attributes' => array ('type' => 'text', 'class' => 'form-control' ), 'options' => array ('label' => _ ( 'Name' ) ) ) );
-		$this->add ( array ('type' => 'Zend\Form\Element\Select', 'name' => 'enabled', 'attributes' => array ('class' => 'form-control' ), 'options' => array ('label' => _ ( 'Enabled' ), 'value_options' => array ('1' => _ ( 'Yes' ), '0' => _ ( 'No' ) ) ) ) );
-		$this->add ( array ('name' => 'submit', 'attributes' => array ('type' => 'submit', 'class' => 'btn btn-success', 'value' => _ ( 'Save' ) ) ) );
-		$this->add ( array ('name' => 'id', 'attributes' => array ('type' => 'hidden' ) ) );
+		$this->add ( array (
+				'name' => 'name',
+				'attributes' => array (
+						'type' => 'text',
+						'class' => 'form-control' 
+				),
+				'options' => array (
+						'label' => _ ( 'Name' ) 
+				) 
+		) );
+		$this->add ( array (
+				'type' => 'Zend\Form\Element\Select',
+				'name' => 'enabled',
+				'attributes' => array (
+						'class' => 'form-control' 
+				),
+				'options' => array (
+						'label' => _ ( 'Enabled' ),
+						'value_options' => array (
+								'1' => _ ( 'Yes' ),
+								'0' => _ ( 'No' ) 
+						) 
+				) 
+		) );
+		$this->add ( array (
+				'name' => 'submit',
+				'attributes' => array (
+						'type' => 'submit',
+						'class' => 'btn btn-success',
+						'value' => _ ( 'Save' ) 
+				) 
+		) );
+		$this->add ( array (
+				'name' => 'id',
+				'attributes' => array (
+						'type' => 'hidden' 
+				) 
+		) );
 	}
 }

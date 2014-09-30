@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,40 +41,42 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Base\Service;
 
-interface StatusServiceInterface
-{
-    /**
-     * Should return all the records 
-     *
-     * @param string section name
-     * @return array|\Traversable
-     */
-    public function findAll($section);
-
-    /**
-     * Should return a single record
-     *
-     * @param  int $id Identifier of the Record that should be returned
-     * @return \Customer\Entity\Status
-     */
-    public function find($id);
-    
-    /**
-     * Should delete a single record
-     *
-     * @param  int $id Identifier of the Record that should be deleted
-     * @return \Customer\Entity\Status
-     */
-    public function delete($id);
-    
-    /**
-     * Should save a single record
-     *
-     * @param  \Customer\Model\Status $record object that should be saved
-     * @return \Customer\Entity\Status
-     */
-    public function save(\Customer\Entity\Status $record);
+interface StatusServiceInterface {
+	/**
+	 * Should return all the records
+	 *
+	 * @param
+	 *        	string section name
+	 * @return array|\Traversable
+	 */
+	public function findAll($section);
+	
+	/**
+	 * Should return a single record
+	 *
+	 * @param int $id
+	 *        	Identifier of the Record that should be returned
+	 * @return \Customer\Entity\Status
+	 */
+	public function find($id);
+	
+	/**
+	 * Should delete a single record
+	 *
+	 * @param int $id
+	 *        	Identifier of the Record that should be deleted
+	 * @return \Customer\Entity\Status
+	 */
+	public function delete($id);
+	
+	/**
+	 * Should save a single record
+	 *
+	 * @param \Customer\Model\Status $record
+	 *        	object that should be saved
+	 * @return \Customer\Entity\Status
+	 */
+	public function save(\Customer\Entity\Status $record);
 }

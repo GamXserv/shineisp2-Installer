@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (c) 2014 Shine Software.
  * All rights reserved.
@@ -40,7 +41,6 @@
  * @link http://shinesoftware.com
  * @version @@PACKAGE_VERSION@@
  */
-
 namespace ProductAdmin\Factory;
 
 use ProductAdmin\Controller\IndexController;
@@ -48,34 +48,32 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ProductAdmin\Model\ProductDatagrid;
 
-class IndexControllerFactory implements FactoryInterface
-{
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        $realServiceLocator = $serviceLocator->getServiceLocator();
-        $productService = $realServiceLocator->get('ProductService');
-        $settings = $realServiceLocator->get('SettingsService');
-        $attributes = $realServiceLocator->get('ProductAttributeService');
-        $dbAdapter = $realServiceLocator->get('Zend\Db\Adapter\Adapter');
-        $datagrid = $realServiceLocator->get('ZfcDatagrid\Datagrid');
-        
-        $form = $realServiceLocator->get('FormElementManager')->get('ProductAdmin\Form\ProductForm');
-        $formfilter = $realServiceLocator->get('AdminProductFilter');
-        
-        $newform = $realServiceLocator->get('FormElementManager')->get('ProductAdmin\Form\ProductNewForm');
-        $newformfilter = $realServiceLocator->get('ProductNewFilter');
-        
-        // prepare the datagrid to handle the custom columns and data
-		$theDatagrid = new ProductDatagrid($dbAdapter, $datagrid, $settings, $productService->getTablegateway(), $attributes);
-		$grid = $theDatagrid->getDatagrid();
+class IndexControllerFactory implements FactoryInterface {
+	/**
+	 * Create service
+	 *
+	 * @param ServiceLocatorInterface $serviceLocator        	
+	 *
+	 * @return mixed
+	 */
+	public function createService(ServiceLocatorInterface $serviceLocator) {
+		$realServiceLocator = $serviceLocator->getServiceLocator ();
+		$productService = $realServiceLocator->get ( 'ProductService' );
+		$settings = $realServiceLocator->get ( 'SettingsService' );
+		$attributes = $realServiceLocator->get ( 'ProductAttributeService' );
+		$dbAdapter = $realServiceLocator->get ( 'Zend\Db\Adapter\Adapter' );
+		$datagrid = $realServiceLocator->get ( 'ZfcDatagrid\Datagrid' );
 		
-        return new IndexController($productService, $newform, $newformfilter, $form, $formfilter, $grid, $settings);
-    }
+		$form = $realServiceLocator->get ( 'FormElementManager' )->get ( 'ProductAdmin\Form\ProductForm' );
+		$formfilter = $realServiceLocator->get ( 'AdminProductFilter' );
+		
+		$newform = $realServiceLocator->get ( 'FormElementManager' )->get ( 'ProductAdmin\Form\ProductNewForm' );
+		$newformfilter = $realServiceLocator->get ( 'ProductNewFilter' );
+		
+		// prepare the datagrid to handle the custom columns and data
+		$theDatagrid = new ProductDatagrid ( $dbAdapter, $datagrid, $settings, $productService->getTablegateway (), $attributes );
+		$grid = $theDatagrid->getDatagrid ();
+		
+		return new IndexController ( $productService, $newform, $newformfilter, $form, $formfilter, $grid, $settings );
+	}
 }

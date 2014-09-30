@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,14 +41,12 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Cms\Entity;
 
-interface PageCategoryInterface
-{
-    public function getId();
-    public function getCategory();
-    public function setCategory($category);
-    public function getVisible();
-    public function setVisible($visible);
+interface PageCategoryInterface {
+	public function getId();
+	public function getCategory();
+	public function setCategory($category);
+	public function getVisible();
+	public function setVisible($visible);
 }

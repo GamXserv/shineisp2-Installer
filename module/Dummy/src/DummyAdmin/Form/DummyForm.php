@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,24 +41,44 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace DummyAdmin\Form;
+
 use Zend\Form\Form;
 use Zend\Stdlib\Hydrator\ClassMethods;
 use Base\Hydrator\Strategy\DateTimeStrategy;
 
 class DummyForm extends Form {
-	
 	public function init() {
 		$hydrator = new ClassMethods ();
-		$hydrator->addStrategy('birthdate', new DateTimeStrategy());
+		$hydrator->addStrategy ( 'birthdate', new DateTimeStrategy () );
 		
 		$this->setAttribute ( 'method', 'post' );
 		$this->setHydrator ( $hydrator )->setObject ( new \Dummy\Entity\Dummy () );
 		
-		$this->add ( array ('name' => 'name', 'attributes' => array ('type' => 'text', 'class' => 'form-control' ), 'options' => array ('label' => _ ( 'Company' ) ) ) );
+		$this->add ( array (
+				'name' => 'name',
+				'attributes' => array (
+						'type' => 'text',
+						'class' => 'form-control' 
+				),
+				'options' => array (
+						'label' => _ ( 'Company' ) 
+				) 
+		) );
 		
-		$this->add ( array ('name' => 'submit', 'attributes' => array ('type' => 'submit', 'class' => 'btn btn-success', 'value' => _ ( 'Save' ) ) ) );
-		$this->add ( array ('name' => 'id', 'attributes' => array ('type' => 'hidden' ) ) );
+		$this->add ( array (
+				'name' => 'submit',
+				'attributes' => array (
+						'type' => 'submit',
+						'class' => 'btn btn-success',
+						'value' => _ ( 'Save' ) 
+				) 
+		) );
+		$this->add ( array (
+				'name' => 'id',
+				'attributes' => array (
+						'type' => 'hidden' 
+				) 
+		) );
 	}
 }

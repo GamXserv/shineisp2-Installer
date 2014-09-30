@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,8 +41,6 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
-
 namespace Cms;
 
 use Zend\Mvc\ModuleRouteListener;
@@ -54,160 +53,139 @@ use Cms\Entity\Block;
 use Cms\Entity\PageCategory;
 use Zend\ModuleManager\Feature\DependencyIndicatorInterface;
 
-class Module implements DependencyIndicatorInterface{
+class Module implements DependencyIndicatorInterface {
+	public function onBootstrap(MvcEvent $e) {
+		$eventManager = $e->getApplication ()->getEventManager ();
+		$moduleRouteListener = new ModuleRouteListener ();
+		$moduleRouteListener->attach ( $eventManager );
+		
+		$sm = $e->getApplication ()->getServiceManager ();
+		$headLink = $sm->get ( 'viewhelpermanager' )->get ( 'headLink' );
+		$headLink->appendStylesheet ( '/css/cms/bootstrap-tagsinput.css' );
+		
+		$inlineScript = $sm->get ( 'viewhelpermanager' )->get ( 'inlineScript' );
+		$inlineScript->appendFile ( '/js/cms/bootstrap-tagsinput.min.js' );
+	}
 	
-    public function onBootstrap(MvcEvent $e)
-    {
-        $eventManager        = $e->getApplication()->getEventManager();
-        $moduleRouteListener = new ModuleRouteListener();
-        $moduleRouteListener->attach($eventManager);
-        
-        $sm = $e->getApplication()->getServiceManager();
-        $headLink = $sm->get('viewhelpermanager')->get('headLink');
-        $headLink->appendStylesheet('/css/cms/bootstrap-tagsinput.css');
-        
-        $inlineScript = $sm->get('viewhelpermanager')->get('inlineScript');
-        $inlineScript->appendFile('/js/cms/bootstrap-tagsinput.min.js');
-        
-    }
-    
-    /**
-     * Check the dependency of the module
-     * (non-PHPdoc)
-     * @see Zend\ModuleManager\Feature.DependencyIndicatorInterface::getModuleDependencies()
-     */
-    public function getModuleDependencies()
-    {
-    	return array('Base');
-    }
-
-    public function getConfig()
-    {
-        return include __DIR__ . '/config/module.config.php';
-    }
-    
-    
-    /**
-     * Set the Services Manager items
-     */
-    public function getServiceConfig ()
-    {
-    	return array(
-    			'factories' => array(
-    					'PageService' => function  ($sm)
-    					{
-    						$dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-    						$translator = $sm->get('translator');
-    						$resultSetPrototype = new ResultSet();
-    						$resultSetPrototype->setArrayObjectPrototype(new Page());
-    						$tableGateway = new TableGateway('cms_page', $dbAdapter, null, $resultSetPrototype);
-    						$service = new \Cms\Service\PageService($tableGateway, $translator);
-    						return $service;
-    					},
-    					'PageCategoryService' => function  ($sm)
-    					{
-    						$dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-    						$resultSetPrototype = new ResultSet();
-    						$resultSetPrototype->setArrayObjectPrototype(new PageCategory());
-    						$tableGateway = new TableGateway('cms_page_category', $dbAdapter, null, $resultSetPrototype);
-    						$service = new \Cms\Service\PageCategoryService($tableGateway);
-    						return $service;
-    					},
-    					'BlockService' => function  ($sm)
-    					{
-    						$dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-    						$resultSetPrototype = new ResultSet();
-    						$resultSetPrototype->setArrayObjectPrototype(new Block());
-    						$tableGateway = new TableGateway('cms_block', $dbAdapter, null, $resultSetPrototype);
-    						$service = new \Cms\Service\BlockService($tableGateway);
-    						return $service;
-    					},
-    					
-    					'PageForm' => function  ($sm)
-    					{
-    						$form = new \Cms\Form\PageForm();
-    						$form->setInputFilter($sm->get('PageFilter'));
-    						return $form;
-    					},
-    					'PageFilter' => function  ($sm)
-    					{
-    						return new \Cms\Form\PageFilter();
-    					},
-    					
-    					'PageSettingsForm' => function  ($sm)
-    					{
-    						$form = new \CmsSettings\Form\PageForm();
-    						$form->setInputFilter($sm->get('PageSettingsFilter'));
-    						return $form;
-    					},
-    					'PageSettingsFilter' => function  ($sm)
-    					{
-    						return new \CmsSettings\Form\PageFilter();
-    					},
-    					
-    					'BlockForm' => function  ($sm)
-    					{
-    						$form = new \Cms\Form\BlockForm();
-    						$form->setInputFilter($sm->get('BlockFilter'));
-    						return $form;
-    					},
-    					'BlockFilter' => function  ($sm)
-    					{
-    						return new \Cms\Form\BlockFilter();
-    					},
-    					
-    					'PageCategoryForm' => function  ($sm)
-    					{
-    						$form = new \Cms\Form\PageCategoryForm();
-    						$form->setInputFilter($sm->get('PageCategoryFilter'));
-    						return $form;
-    					},
-    					'PageCategoryFilter' => function  ($sm)
-    					{
-    						return new \Cms\Form\PageCategoryFilter();
-    					}
-    					
-    				),
-    			);
-    }
-    
-    
-    /**
-     * Get the form elements
-     */
-    public function getFormElementConfig ()
-    {
-    	return array (
-    			'factories' => array (
-    					'Cms\Form\Element\PageCategories' => function  ($sm)
-		    					{
-		    						$serviceLocator = $sm->getServiceLocator();
-		    						$translator = $sm->getServiceLocator()->get('translator');
-		    						$pagecategoryService = $serviceLocator->get('PageCategoryService');
-		    						$element = new \Cms\Form\Element\PageCategories($pagecategoryService, $translator);
-		    						return $element;
-		    					},
-    					'Cms\Form\Element\ParentPages' => function  ($sm)
-		    					{
-		    						$serviceLocator = $sm->getServiceLocator();
-		    						$translator = $sm->getServiceLocator()->get('translator');
-		    						$PageService = $serviceLocator->get('PageService');
-		    						$element = new \Cms\Form\Element\ParentPages($PageService, $translator);
-		    						return $element;
-		    					},
-    						),
-    					);
-    }
-    public function getAutoloaderConfig()
-    {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
-                    __NAMESPACE__ . "Admin" => __DIR__ . '/src/' . __NAMESPACE__ . "Admin",
-                    __NAMESPACE__ . "Settings" => __DIR__ . '/src/' . __NAMESPACE__ . "Settings",
-                ),
-            ),
-        );
-    }
+	/**
+	 * Check the dependency of the module
+	 * (non-PHPdoc)
+	 * 
+	 * @see Zend\ModuleManager\Feature.DependencyIndicatorInterface::getModuleDependencies()
+	 */
+	public function getModuleDependencies() {
+		return array (
+				'Base' 
+		);
+	}
+	public function getConfig() {
+		return include __DIR__ . '/config/module.config.php';
+	}
+	
+	/**
+	 * Set the Services Manager items
+	 */
+	public function getServiceConfig() {
+		return array (
+				'factories' => array (
+						'PageService' => function ($sm) {
+							$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
+							$translator = $sm->get ( 'translator' );
+							$resultSetPrototype = new ResultSet ();
+							$resultSetPrototype->setArrayObjectPrototype ( new Page () );
+							$tableGateway = new TableGateway ( 'cms_page', $dbAdapter, null, $resultSetPrototype );
+							$service = new \Cms\Service\PageService ( $tableGateway, $translator );
+							return $service;
+						},
+						'PageCategoryService' => function ($sm) {
+							$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
+							$resultSetPrototype = new ResultSet ();
+							$resultSetPrototype->setArrayObjectPrototype ( new PageCategory () );
+							$tableGateway = new TableGateway ( 'cms_page_category', $dbAdapter, null, $resultSetPrototype );
+							$service = new \Cms\Service\PageCategoryService ( $tableGateway );
+							return $service;
+						},
+						'BlockService' => function ($sm) {
+							$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
+							$resultSetPrototype = new ResultSet ();
+							$resultSetPrototype->setArrayObjectPrototype ( new Block () );
+							$tableGateway = new TableGateway ( 'cms_block', $dbAdapter, null, $resultSetPrototype );
+							$service = new \Cms\Service\BlockService ( $tableGateway );
+							return $service;
+						},
+						
+						'PageForm' => function ($sm) {
+							$form = new \Cms\Form\PageForm ();
+							$form->setInputFilter ( $sm->get ( 'PageFilter' ) );
+							return $form;
+						},
+						'PageFilter' => function ($sm) {
+							return new \Cms\Form\PageFilter ();
+						},
+						
+						'PageSettingsForm' => function ($sm) {
+							$form = new \CmsSettings\Form\PageForm ();
+							$form->setInputFilter ( $sm->get ( 'PageSettingsFilter' ) );
+							return $form;
+						},
+						'PageSettingsFilter' => function ($sm) {
+							return new \CmsSettings\Form\PageFilter ();
+						},
+						
+						'BlockForm' => function ($sm) {
+							$form = new \Cms\Form\BlockForm ();
+							$form->setInputFilter ( $sm->get ( 'BlockFilter' ) );
+							return $form;
+						},
+						'BlockFilter' => function ($sm) {
+							return new \Cms\Form\BlockFilter ();
+						},
+						
+						'PageCategoryForm' => function ($sm) {
+							$form = new \Cms\Form\PageCategoryForm ();
+							$form->setInputFilter ( $sm->get ( 'PageCategoryFilter' ) );
+							return $form;
+						},
+						'PageCategoryFilter' => function ($sm) {
+							return new \Cms\Form\PageCategoryFilter ();
+						} 
+				)
+				 
+		);
+	}
+	
+	/**
+	 * Get the form elements
+	 */
+	public function getFormElementConfig() {
+		return array (
+				'factories' => array (
+						'Cms\Form\Element\PageCategories' => function ($sm) {
+							$serviceLocator = $sm->getServiceLocator ();
+							$translator = $sm->getServiceLocator ()->get ( 'translator' );
+							$pagecategoryService = $serviceLocator->get ( 'PageCategoryService' );
+							$element = new \Cms\Form\Element\PageCategories ( $pagecategoryService, $translator );
+							return $element;
+						},
+						'Cms\Form\Element\ParentPages' => function ($sm) {
+							$serviceLocator = $sm->getServiceLocator ();
+							$translator = $sm->getServiceLocator ()->get ( 'translator' );
+							$PageService = $serviceLocator->get ( 'PageService' );
+							$element = new \Cms\Form\Element\ParentPages ( $PageService, $translator );
+							return $element;
+						} 
+				) 
+		);
+	}
+	public function getAutoloaderConfig() {
+		return array (
+				'Zend\Loader\StandardAutoloader' => array (
+						'namespaces' => array (
+								__NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
+								__NAMESPACE__ . "Admin" => __DIR__ . '/src/' . __NAMESPACE__ . "Admin",
+								__NAMESPACE__ . "Settings" => __DIR__ . '/src/' . __NAMESPACE__ . "Settings" 
+						) 
+				) 
+		);
+	}
 }

@@ -1,0 +1,59 @@
+<div class="container isp2-flat-bg">
+	<div class="page-header">
+		<h1> {{{ STEP1_TITLE }}} </h1>
+    
+		<p class="lead"> {{{STEP1_MSG}}} </p>
+	
+	</div>
+
+	<form role="form" method="post" action="?step=2">
+	  <div class="form-group">
+	  	
+	    <label for="dbname">{{{STEP1_DBNAME_LBL}}}</label>
+	    <div class="input-group">
+	  		<div class="input-group-addon"><i class="fa fa-database"></i></div>
+	  		<input type="text" class="form-control input-lg" id="dbname" name="dbname" placeholder="{{{STEP1_DBNAME_PLACEHOLDER}}}" required>	
+	  	</div>
+	    <p class="suggestion">{{{STEP1_DBNAME_SUGGESTION}}}</p>
+	  </div>
+
+	  <div class="form-group">
+	    <label for="dbusr">{{{STEP1_DBUSER_LBL}}}</label>
+	    <div class="input-group">
+	    	<div class="input-group-addon"><i class="fa fa-user"></i></div>
+	    	<input type="text" class="form-control input-lg" id="dbusr" name="dbuser" placeholder="{{{STEP1_DBUSER_PLACEHOLDER}}}" required>
+	    </div>
+	    <p class="suggestion">{{{STEP1_DBUSER_SUGGESTION}}}</p>
+	  </div>
+
+	  <div class="form-group">
+	    <label for="dbpwd">{{{STEP1_DBPASS_LBL}}}</label>
+	    <div class="input-group">
+	    	<div class="input-group-addon"><i class="fa fa-key"></i></div>
+	    	<input type="password" class="form-control input-lg" id="dbpwd" name="dbpass" placeholder="{{{STEP1_DBPASS_PLACEHOLDER}}}">
+	    </div>
+	    <p class="suggestion">{{{STEP1_DBPASS_SUGGESTION}}}</p>
+	  </div>
+
+	  <div class="form-group">
+	    <label for="dbhost">{{{STEP1_DBHOST_LBL}}}</label>
+	    <div class="input-group">
+	    	<div class="input-group-addon"><i class="fa fa-hdd-o"></i></div>
+	    	<input type="text" class="form-control input-lg" id="dbhost" name="dbhost" value="localhost" required>
+	    </div>
+	    <p class="suggestion">{{{STEP1_DBHOST_SUGGESTION}}}</p>
+	  </div>
+
+	  <div class="form-group">
+	    <label for="dbprefix">{{{STEP1_DBPREFIX_LBL}}}</label>
+	    <div class="input-group">
+	    	<div class="input-group-addon"><i class="fa fa-indent"></i></div>
+	    	<input type="text" class="form-control input-lg" id="dbprefix" name="dbprefix" placeholder="{{{STEP1_DBPREFIX_PLACEHOLDER}}}">
+	    </div>
+	    <p class="suggestion">{{{STEP1_DBPREFIX_SUGGESTION}}}</p>
+	  </div>
+
+	  <button type="submit" name="dbopt" class="btn btn-default btn-lg btn-success pull-right">{{{STEP1_BUTTON_NEXT}}}</button>
+	</form>
+		
+</div>

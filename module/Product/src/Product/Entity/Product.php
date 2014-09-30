@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,160 +41,169 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Product\Entity;
 
-use DateTime; 
+use DateTime;
 use Zend\Stdlib\ArrayObject as ArrayObject;
 use \Base\Hydrator\Strategy\DateTimeStrategy as DateTimeStrategy;
 
 class Product implements ProductInterface {
-
-    public $id;
-    public $uid;
-    public $type_id;
-    public $attribute_set_id;
-    public $attributes;
-    public $createdat;
-    public $updatedat;
-
-    /**
-     * Returns all the properties of this entity
-     * 
-     * @return array
-     */
-    public function getArrayCopy()
-    {
-        $attributes = array();
-        $hydrator = new DateTimeStrategy();
-        
-        // When I post the variables by the form I need to check the attributes var 
-        if(!empty($this->attributes) && is_array($this->attributes)){
-            $attributes = array('attributes' => $this->attributes);
-        }elseif(is_object($this->attributes)){
-            $attributes = array('attributes' => $this->attributes->getArrayCopy());
-        }
-
-        // now I merge the attributes array with the whole product entity
-        $data = array_merge(get_object_vars($this), $attributes);
-        return $data;
-    }
-    
-    /**
-     * This method get the array posted and assign the values to the table
-     * object
-     *
-     * @param array $data
-     */
-    public function exchangeArray ($data)
-    {
-    	foreach ($data as $field => $value) {
-    		$this->$field = (isset($value)) ? $value : null;
-    	}
-    
-    	return true;
-    }
-    
+	public $id;
+	public $uid;
+	public $type_id;
+	public $attribute_set_id;
+	public $attributes;
+	public $createdat;
+	public $updatedat;
+	
 	/**
+	 * Returns all the properties of this entity
+	 *
+	 * @return array
+	 */
+	public function getArrayCopy() {
+		$attributes = array ();
+		$hydrator = new DateTimeStrategy ();
+		
+		// When I post the variables by the form I need to check the attributes var
+		if (! empty ( $this->attributes ) && is_array ( $this->attributes )) {
+			$attributes = array (
+					'attributes' => $this->attributes 
+			);
+		} elseif (is_object ( $this->attributes )) {
+			$attributes = array (
+					'attributes' => $this->attributes->getArrayCopy () 
+			);
+		}
+		
+		// now I merge the attributes array with the whole product entity
+		$data = array_merge ( get_object_vars ( $this ), $attributes );
+		return $data;
+	}
+	
+	/**
+	 * This method get the array posted and assign the values to the table
+	 * object
+	 *
+	 * @param array $data        	
+	 */
+	public function exchangeArray($data) {
+		foreach ( $data as $field => $value ) {
+			$this->$field = (isset ( $value )) ? $value : null;
+		}
+		
+		return true;
+	}
+	
+	/**
+	 *
 	 * @return the $id
 	 */
 	public function getId() {
 		return $this->id;
 	}
-
+	
 	/**
-	 * @param field_type $id
+	 *
+	 * @param field_type $id        	
 	 */
 	public function setId($id) {
 		$this->id = $id;
 	}
-
+	
 	/**
+	 *
 	 * @return the $uid
 	 */
 	public function getUid() {
 		return $this->uid;
 	}
-
+	
 	/**
-	 * @param field_type $uid
+	 *
+	 * @param field_type $uid        	
 	 */
 	public function setUid($uid) {
 		$this->uid = $uid;
 	}
-
+	
 	/**
+	 *
 	 * @return the $type_id
 	 */
 	public function getTypeId() {
 		return $this->type_id;
 	}
-
+	
 	/**
-	 * @param field_type $type_id
+	 *
+	 * @param field_type $type_id        	
 	 */
 	public function setTypeId($type_id) {
 		$this->type_id = $type_id;
 	}
-
+	
 	/**
-     * @return the $attribute_set_id
-     */
-    public function getAttributeSetId ()
-    {
-        return $this->attribute_set_id;
-    }
-
+	 *
+	 * @return the $attribute_set_id
+	 */
+	public function getAttributeSetId() {
+		return $this->attribute_set_id;
+	}
+	
 	/**
-     * @param field_type $attribute_set_id
-     */
-    public function setAttributeSetId ($attribute_set_id)
-    {
-        $this->attribute_set_id = $attribute_set_id;
-    }
-
+	 *
+	 * @param field_type $attribute_set_id        	
+	 */
+	public function setAttributeSetId($attribute_set_id) {
+		$this->attribute_set_id = $attribute_set_id;
+	}
+	
 	/**
+	 *
 	 * @return the $attributes
 	 */
 	public function getAttributes() {
 		return $this->attributes;
 	}
-
+	
 	/**
-	 * @param field_type $attributes
+	 *
+	 * @param field_type $attributes        	
 	 */
 	public function setAttributes(ArrayObject $attributes) {
 		$this->attributes = $attributes;
 	}
-
+	
 	/**
+	 *
 	 * @return the $createdat
 	 */
 	public function getCreatedat() {
 		return $this->createdat;
 	}
-
+	
 	/**
-	 * @param field_type $createdat
+	 *
+	 * @param field_type $createdat        	
 	 */
 	public function setCreatedat(DateTime $createdat = null) {
 		$this->createdat = $createdat;
 	}
-
+	
 	/**
+	 *
 	 * @return the $updatedat
 	 */
 	public function getUpdatedat() {
 		return $this->updatedat;
 	}
-
+	
 	/**
-	 * @param field_type $updatedat
+	 *
+	 * @param field_type $updatedat        	
 	 */
 	public function setUpdatedat(DateTime $updatedat = null) {
 		$this->updatedat = $updatedat;
 	}
-
-    
-
 }

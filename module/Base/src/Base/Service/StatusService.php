@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,114 +41,114 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Base\Service;
 
 use Zend\EventManager\EventManager;
-
 use \Base\Entity\Status;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Stdlib\Hydrator\ClassMethods;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;
 
-class StatusService implements StatusServiceInterface, EventManagerAwareInterface
-{
+class StatusService implements StatusServiceInterface, EventManagerAwareInterface {
 	protected $tableGateway;
 	protected $translator;
 	protected $eventManager;
-	
-	public function __construct(TableGateway $tableGateway, \Zend\Mvc\I18n\Translator $translator ){
+	public function __construct(TableGateway $tableGateway, \Zend\Mvc\I18n\Translator $translator) {
 		$this->tableGateway = $tableGateway;
 		$this->translator = $translator;
 	}
 	
-    /**
-     * @inheritDoc
-     */
-    public function findAll($section="generic")
-    {
-    	$records = $this->tableGateway->select(function (\Zend\Db\Sql\Select $select) use ($section) {
-    		$select->where(array('section' => $section));
-        });
-        
-        return $records;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function find($id)
-    {
-    	if(!is_numeric($id)){
-    		return false;
-    	}
-    	$rowset = $this->tableGateway->select(array('id' => $id));
-    	$row = $rowset->current();
-    	return $row;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function delete($id)
-    {
-    	$this->tableGateway->delete(array(
-    			'id' => $id
-    	));
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function save(\Customer\Entity\Status $record)
-    {
-    	$hydrator = new ClassMethods(true);
-    	
-    	// extract the data from the object
-    	$data = $hydrator->extract($record);
-    	$id = (int) $record->getId();
-    	
-    	$this->getEventManager()->trigger(__FUNCTION__ . '.pre', null, array('data' => $data));  // Trigger an event
-    	
-    	if ($id == 0) {
-    		unset($data['id']);
-    		$this->tableGateway->insert($data); // add the record
-    		$id = $this->tableGateway->getLastInsertValue();
-    	} else {
-    		$rs = $this->find($id);
-    		if (!empty($rs)) {
-    			$this->tableGateway->update($data, array (
-    					'id' => $id
-    			));
-    		} else {
-    			throw new \Exception('Record ID does not exist');
-    		}
-    	}
-    	
-    	$record = $this->find($id);
-    	$this->getEventManager()->trigger(__FUNCTION__ . '.post', null, array('id' => $id, 'data' => $data, 'record' => $record));  // Trigger an event
-    	return $record;
-    }
-    
-    
-	/* (non-PHPdoc)
-     * @see \Zend\EventManager\EventManagerAwareInterface::setEventManager()
-     */
-     public function setEventManager (EventManagerInterface $eventManager){
-         $eventManager->addIdentifiers(get_called_class());
-         $this->eventManager = $eventManager;
-     }
-
-	/* (non-PHPdoc)
-     * @see \Zend\EventManager\EventsCapableInterface::getEventManager()
-     */
-     public function getEventManager (){
-       if (null === $this->eventManager) {
-            $this->setEventManager(new EventManager());
-        }
-
-        return $this->eventManager;
-     }
-
+	/**
+	 * @inheritDoc
+	 */
+	public function findAll($section = "generic") {
+		$records = $this->tableGateway->select ( function (\Zend\Db\Sql\Select $select) use($section) {
+			$select->where ( array (
+					'section' => $section 
+			) );
+		} );
+		
+		return $records;
+	}
+	
+	/**
+	 * @inheritDoc
+	 */
+	public function find($id) {
+		if (! is_numeric ( $id )) {
+			return false;
+		}
+		$rowset = $this->tableGateway->select ( array (
+				'id' => $id 
+		) );
+		$row = $rowset->current ();
+		return $row;
+	}
+	
+	/**
+	 * @inheritDoc
+	 */
+	public function delete($id) {
+		$this->tableGateway->delete ( array (
+				'id' => $id 
+		) );
+	}
+	
+	/**
+	 * @inheritDoc
+	 */
+	public function save(\Customer\Entity\Status $record) {
+		$hydrator = new ClassMethods ( true );
+		
+		// extract the data from the object
+		$data = $hydrator->extract ( $record );
+		$id = ( int ) $record->getId ();
+		
+		$this->getEventManager ()->trigger ( __FUNCTION__ . '.pre', null, array (
+				'data' => $data 
+		) ); // Trigger an event
+		
+		if ($id == 0) {
+			unset ( $data ['id'] );
+			$this->tableGateway->insert ( $data ); // add the record
+			$id = $this->tableGateway->getLastInsertValue ();
+		} else {
+			$rs = $this->find ( $id );
+			if (! empty ( $rs )) {
+				$this->tableGateway->update ( $data, array (
+						'id' => $id 
+				) );
+			} else {
+				throw new \Exception ( 'Record ID does not exist' );
+			}
+		}
+		
+		$record = $this->find ( $id );
+		$this->getEventManager ()->trigger ( __FUNCTION__ . '.post', null, array (
+				'id' => $id,
+				'data' => $data,
+				'record' => $record 
+		) ); // Trigger an event
+		return $record;
+	}
+	
+	/*
+	 * (non-PHPdoc) @see \Zend\EventManager\EventManagerAwareInterface::setEventManager()
+	 */
+	public function setEventManager(EventManagerInterface $eventManager) {
+		$eventManager->addIdentifiers ( get_called_class () );
+		$this->eventManager = $eventManager;
+	}
+	
+	/*
+	 * (non-PHPdoc) @see \Zend\EventManager\EventsCapableInterface::getEventManager()
+	 */
+	public function getEventManager() {
+		if (null === $this->eventManager) {
+			$this->setEventManager ( new EventManager () );
+		}
+		
+		return $this->eventManager;
+	}
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,100 +41,106 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Base\Entity;
 
 class Status implements StatusInterface {
-
-    public $id;
-    public $status;
-    public $section;
-    public $code;
-    public $public;
-    
-    /**
-     * This method get the array posted and assign the values to the table
-     * object
-     *
-     * @param array $data
-     */
-    public function exchangeArray ($data)
-    {
-    	foreach ($data as $field => $value) {
-    		$this->$field = (isset($value)) ? $value : null;
-    	}
-    
-    	return true;
-    }
-    
+	public $id;
+	public $status;
+	public $section;
+	public $code;
+	public $public;
+	
 	/**
+	 * This method get the array posted and assign the values to the table
+	 * object
+	 *
+	 * @param array $data        	
+	 */
+	public function exchangeArray($data) {
+		foreach ( $data as $field => $value ) {
+			$this->$field = (isset ( $value )) ? $value : null;
+		}
+		
+		return true;
+	}
+	
+	/**
+	 *
 	 * @return the $id
 	 */
 	public function getId() {
 		return $this->id;
 	}
-
+	
 	/**
-	 * @param field_type $id
+	 *
+	 * @param field_type $id        	
 	 */
 	public function setId($id) {
 		$this->id = $id;
 	}
-
+	
 	/**
+	 *
 	 * @return the $status
 	 */
 	public function getStatus() {
 		return $this->status;
 	}
-
+	
 	/**
-	 * @param field_type $status
+	 *
+	 * @param field_type $status        	
 	 */
 	public function setStatus($status) {
 		$this->status = $status;
 	}
-
+	
 	/**
+	 *
 	 * @return the $section
 	 */
 	public function getSection() {
 		return $this->section;
 	}
-
+	
 	/**
-	 * @param field_type $section
+	 *
+	 * @param field_type $section        	
 	 */
 	public function setSection($section) {
 		$this->section = $section;
 	}
-
+	
 	/**
+	 *
 	 * @return the $code
 	 */
 	public function getCode() {
 		return $this->code;
 	}
-
+	
 	/**
-	 * @param field_type $code
+	 *
+	 * @param field_type $code        	
 	 */
 	public function setCode($code) {
 		$this->code = $code;
 	}
-
+	
 	/**
+	 *
 	 * @return the $public
 	 */
 	public function getPublic() {
 		return $this->public;
 	}
-
+	
 	/**
-	 * @param field_type $public
+	 *
+	 * @param field_type $public        	
 	 */
 	public function setPublic($public) {
 		$this->public = $public;
 	}
-
 }

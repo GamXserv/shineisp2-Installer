@@ -1,75 +1,80 @@
 <?php $this->headTitle()->prepend($this->translate('Edit product')); ?>
 
-<?php 
-    $form = $this->form;
-    $form->prepare();
-    $form->setAttribute('action', $this->url(NULL, array( 'action' => 'process')));
-    $form->setAttribute('method', 'post');
-    $product = $this->data;
-    $attrGroups = $this->attrgroups;
-    $attributestruct = $this->attributes;
-    $product_attributes = !empty($product) ? $product->getAttributes() : "";
-    
-//     var_dump($form->get('type_id'));
-//     die;
+<?php
+$form = $this->form;
+$form->prepare ();
+$form->setAttribute ( 'action', $this->url ( NULL, array (
+		'action' => 'process' 
+) ) );
+$form->setAttribute ( 'method', 'post' );
+$product = $this->data;
+$attrGroups = $this->attrgroups;
+$attributestruct = $this->attributes;
+$product_attributes = ! empty ( $product ) ? $product->getAttributes () : "";
+
+// var_dump($form->get('type_id'));
+// die;
 ?>
 
     
 <?php echo $this->form()->openTag($form); ?>
 <div class="row">
-    <div class="col-lg-8">
+	<div class="col-lg-8">
         <?php if(!empty($product_attributes)): ?>
             <h2><?php echo ucfirst($product_attributes['name']); ?></h2>
-            <p class="label label-default"><?php echo $product->getUid(); ?></p>
+		<p class="label label-default"><?php echo $product->getUid(); ?></p>
           <?php else: ?>
             <h2><?php echo $this->translate('Product') ?></h2>
-            <p><?php echo $this->translate('Create and product management') ?></p>
+		<p><?php echo $this->translate('Create and product management') ?></p>
         <?php endif; ?>
-        <hr/>
-    </div>
-    <div class="col-lg-4">
-    	<div class="text-right">
-		    <a href="/admin/product/add" class="btn btn-default"><i class="fa fa-file"></i> <?php echo $this->translate('Add new')?></a>
+        <hr />
+	</div>
+	<div class="col-lg-4">
+		<div class="text-right">
+			<a href="/admin/product/add" class="btn btn-default"><i
+				class="fa fa-file"></i> <?php echo $this->translate('Add new')?></a>
 		    <?php echo $this->formElement($form->get('submit')); ?>
-		    <a href="/admin/product/" class="btn btn-info"><i class="fa fa-list"></i> <?php echo $this->translate('List')?></a>
+		    <a href="/admin/product/" class="btn btn-info"><i
+				class="fa fa-list"></i> <?php echo $this->translate('List')?></a>
 		</div>
 	</div>
 </div>
 
-    <?php if ($this->error): ?>
-        <div class="row">
-	        <div class="col-lg-12">
-	            <div class="alert alert-warning">
-	                <?php echo $this->translate('There were one or more isues with your submission. Please correct them as indicated below.') ?>
+<?php if ($this->error): ?>
+<div class="row">
+	<div class="col-lg-12">
+		<div class="alert alert-warning">
+	                <?php echo $this->translate('There were one or more isues with your submission. Please correct them as indicated below.')?>
 	            </div>
-	        </div>
-        </div>
-    <?php endif ?>
+	</div>
+</div>
+<?php endif ?>
 
-	<div class="row">
-		<div class="col-lg-12">
-			<div class="tabbable tabs-left" id="tabs">
-				<ul class="nav nav-tabs">
+<div class="row">
+	<div class="col-lg-12">
+		<div class="tabbable tabs-left" id="tabs">
+			<ul class="nav nav-tabs">
 					<?php foreach ($attrGroups as $id => $group):?>
 						<li><a data-toggle="tab" href="#tab<?php echo $id?>"><?php echo $this->translate($group);?></a></li>
 					<?php endforeach;?>
 				</ul>
-				<div class="tab-content">
+			<div class="tab-content">
 					<?php foreach ($attributestruct as $groupId => $group):?>
 				    	<div class="tab-pane" id="tab<?php echo $groupId ?>">
-					    	<div class="row">
-					    		<div class="col-lg-12">
+					<div class="row">
+						<div class="col-lg-12">
 					    			<?php foreach ($group as $data):?>
-					    				<?php 
-					    					$element = $form->get('attributes')->get($data['attribute']->getName());
-					    				?>
-						    			<div class="form-group <?php echo count($element->getMessages()) ? "has-error" : "" ?> has-feedback">
+					    				<?php
+							$element = $form->get ( 'attributes' )->get ( $data ['attribute']->getName () );
+							?>
+						    			<div
+								class="form-group <?php echo count($element->getMessages()) ? "has-error" : "" ?> has-feedback">
 											<?php echo $this->formLabel($element); ?>
 											<?php echo $this->formElement($element); ?>
-											<?php echo $this->formElementErrors()->setMessageOpenFormat('<div class="help-block">')
-																                ->setMessageSeparatorString('</div><div class="help-block warning">')
-																                ->setMessageCloseString('</div>')
-																                ->render($element); ?>
+											<?php
+							
+echo $this->formElementErrors ()->setMessageOpenFormat ( '<div class="help-block">' )->setMessageSeparatorString ( '</div><div class="help-block warning">' )->setMessageCloseString ( '</div>' )->render ( $element );
+							?>
 											<?php if(count($element->getMessages())): ?>
 												<span class="fa fa-times form-control-feedback"></span>
 											<?php endif; ?>
@@ -79,16 +84,16 @@
 				                        <?php endif; ?>
 				                	<?php endforeach;?>
 				                </div>
-			                </div>
-		                </div>
+					</div>
+				</div>
 			        <?php endforeach;?>   
 			   	</div>
-			</div>
 		</div>
 	</div>
-	
+</div>
+
 <?php echo $this->formElement($form->get('uid')); ?>
 <?php echo $this->formElement($form->get('attribute_set_id')); ?>
 <?php echo $this->formElement($form->get('type_id')); ?>
 <?php echo $this->formElement($form->get('id')); ?>
-<?php echo $this->form()->closeTag() ?>
+<?php echo $this->form()->closeTag()?>

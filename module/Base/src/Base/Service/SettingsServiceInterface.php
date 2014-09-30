@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,66 +41,71 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Base\Service;
 
-interface SettingsServiceInterface
-{
-    /**
-     * Should return all the records 
-     *
-     * @return array|\Traversable
-     */
-    public function findAll();
-
-    /**
-     * Should return a single record
-     *
-     * @param  int $id Identifier of the Record that should be returned
-     * @return \Base\Entity\Settings
-     */
-    public function find($id);
-    
-    /**
-     * Should return a single record
-     *
-     * @param  string $module of the Record that should be returned
-     * @param  string $parameter of the Record that should be returned
-     * @return \Base\Entity\Settings
-     */
-    public function findByParameter($module, $parameter);
-    
-    
-    /**
-     * Should return a single value
-     *
-     * @param  string $module of the Record that should be returned
-     * @param  string $parameter of the Record that should be returned
-     * @return string
-     */
-    public function getValueByParameter($module, $parameter);
-    
-    /**
-     * Should delete a single record
-     *
-     * @param  int $id Identifier of the Record that should be deleted
-     * @return \Base\Entity\Settings
-     */
-    public function delete($id);
-    
-    /**
-     * Should clean up all the settings saved of a specific module
-     *
-     * @param  int $module Identifier of the module that should be cleaned up
-     * @return boolean
-     */
-    public function cleanup($module);
-    
-    /**
-     * Should save a single record
-     *
-     * @param  \Base\Entity\Settings $record object that should be saved
-     * @return \Base\Entity\Settings
-     */
-    public function save(\Base\Entity\Settings $record);
+interface SettingsServiceInterface {
+	/**
+	 * Should return all the records
+	 *
+	 * @return array|\Traversable
+	 */
+	public function findAll();
+	
+	/**
+	 * Should return a single record
+	 *
+	 * @param int $id
+	 *        	Identifier of the Record that should be returned
+	 * @return \Base\Entity\Settings
+	 */
+	public function find($id);
+	
+	/**
+	 * Should return a single record
+	 *
+	 * @param string $module
+	 *        	of the Record that should be returned
+	 * @param string $parameter
+	 *        	of the Record that should be returned
+	 * @return \Base\Entity\Settings
+	 */
+	public function findByParameter($module, $parameter);
+	
+	/**
+	 * Should return a single value
+	 *
+	 * @param string $module
+	 *        	of the Record that should be returned
+	 * @param string $parameter
+	 *        	of the Record that should be returned
+	 * @return string
+	 */
+	public function getValueByParameter($module, $parameter);
+	
+	/**
+	 * Should delete a single record
+	 *
+	 * @param int $id
+	 *        	Identifier of the Record that should be deleted
+	 * @return \Base\Entity\Settings
+	 */
+	public function delete($id);
+	
+	/**
+	 * Should clean up all the settings saved of a specific module
+	 *
+	 * @param int $module
+	 *        	Identifier of the module that should be cleaned up
+	 * @return boolean
+	 */
+	public function cleanup($module);
+	
+	/**
+	 * Should save a single record
+	 *
+	 * @param \Base\Entity\Settings $record
+	 *        	object that should be saved
+	 * @return \Base\Entity\Settings
+	 */
+	public function save(\Base\Entity\Settings $record);
 }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * Copyright (c) 2014 Shine Software.
@@ -41,7 +41,6 @@
  * @link http://shinesoftware.com
  * @version @@PACKAGE_VERSION@@
  */
-
 namespace CmsAdmin\Model;
 
 use \Base\Service\SettingsServiceInterface;
@@ -75,12 +74,11 @@ class PageDatagrid {
 	
 	/**
 	 * Datagrid Constructor
-	 * 
-	 * @param \Zend\Db\Adapter\Adapter $dbAdapter
-	 * @param \ZfcDatagrid\Datagrid $datagrid
+	 *
+	 * @param \Zend\Db\Adapter\Adapter $dbAdapter        	
+	 * @param \ZfcDatagrid\Datagrid $datagrid        	
 	 */
-	public function __construct(\Zend\Db\Adapter\Adapter $dbAdapter, \ZfcDatagrid\Datagrid $datagrid, SettingsServiceInterface $settings )
-	{
+	public function __construct(\Zend\Db\Adapter\Adapter $dbAdapter, \ZfcDatagrid\Datagrid $datagrid, SettingsServiceInterface $settings) {
 		$this->adapter = $dbAdapter;
 		$this->grid = $datagrid;
 		$this->settings = $settings;
@@ -90,8 +88,7 @@ class PageDatagrid {
 	 *
 	 * @return \ZfcDatagrid\Datagrid
 	 */
-	public function getGrid()
-	{
+	public function getGrid() {
 		return $this->grid;
 	}
 	
@@ -100,87 +97,87 @@ class PageDatagrid {
 	 *
 	 * @return \ZfcDatagrid\Datagrid
 	 */
-	public function getDatagrid()
-	{
-		$grid = $this->getGrid();
-		$grid->setId('cmspageGrid');
+	public function getDatagrid() {
+		$grid = $this->getGrid ();
+		$grid->setId ( 'cmspageGrid' );
 		
 		$dbAdapter = $this->adapter;
-		$select = new Select();
-    	$select->from(array ('p' => 'cms_page'));
-
-    	$RecordsPerPage = $this->settings->getValueByParameter('Cms', 'recordsperpage');
-    	
-    	$grid->setDefaultItemsPerPage($RecordsPerPage);
-    	$grid->setDataSource($select, $dbAdapter);
-    
-    	$colId = new Column\Select('id', 'p');
-    	$colId->setLabel('Id');
-    	$colId->setIdentity();
-    	$grid->addColumn($colId);
-    	
-    	$col = new Column\Select('title', 'p');
-    	$col->setLabel(_('Title'));
-    	$col->setWidth(15);
-    	$grid->addColumn($col);
-    	
-    	$col = new Column\Select('tags', 'p');
-    	$col->setLabel(_('Tags'));
-    	$grid->addColumn($col);
-    	
-    	$colType = new Type\DateTime('Y-m-d H:i:s', \IntlDateFormatter::SHORT, \IntlDateFormatter::SHORT);
-    	$colType->setSourceTimezone('Europe/Rome');
-    	$colType->setOutputTimezone('UTC');
-    	$colType->setLocale('it_IT');
-    
-    	$col = new Column\Select('createdat', 'p');
-    	$col->setType($colType);
-    	$col->setLabel(_('Created At'));
-    	$grid->addColumn($col);
-    
-    	$col = new Column\Select('updatedat', 'p');
-    	$col->setType($colType);
-    	$col->setLabel(_('Updated At'));
-    	$grid->addColumn($col);
-    
-    	$col = new Column\Select('visible', 'p');
-    	$col->setType(new \ZfcDatagrid\Column\Type\String());
-    	$col->setLabel(_('Visible'));
-    	$col->setTranslationEnabled(true);
-    	$col->setFilterSelectOptions(array (
-    			'' => '-',
-    			'0' => 'No',
-    			'1' => 'Yes'
-    	));
-    	$col->setReplaceValues(array (
-    			'' => '-',
-    			'0' => 'No',
-    			'1' => 'Yes'
-    	));
-    	$grid->addColumn($col);
-    
-    	// Add actions to the grid
-    	$showaction = new Column\Action\Button();
-    	$showaction->setAttribute('href', "/admin/cmspages/edit/" . $showaction->getColumnValuePlaceholder(new Column\Select('id', 'p')));
-    	$showaction->setAttribute('class', 'btn btn-xs btn-success');
-    	$showaction->setLabel(_('edit'));
-    
-    	$delaction = new Column\Action\Button();
-    	$delaction->setAttribute('href', '/admin/cmspages/delete/' . $delaction->getRowIdPlaceholder());
-    	$delaction->setAttribute('onclick', "return confirm('Are you sure?')");
-    	$delaction->setAttribute('class', 'btn btn-xs btn-danger');
-    	$delaction->setLabel(_('delete'));
-    
-    	$col = new Column\Action();
-    	$col->addAction($showaction);
-    	$col->addAction($delaction);
-    	$grid->addColumn($col);
-    
-    	$grid->setToolbarTemplate('');
-    
+		$select = new Select ();
+		$select->from ( array (
+				'p' => 'cms_page' 
+		) );
+		
+		$RecordsPerPage = $this->settings->getValueByParameter ( 'Cms', 'recordsperpage' );
+		
+		$grid->setDefaultItemsPerPage ( $RecordsPerPage );
+		$grid->setDataSource ( $select, $dbAdapter );
+		
+		$colId = new Column\Select ( 'id', 'p' );
+		$colId->setLabel ( 'Id' );
+		$colId->setIdentity ();
+		$grid->addColumn ( $colId );
+		
+		$col = new Column\Select ( 'title', 'p' );
+		$col->setLabel ( _ ( 'Title' ) );
+		$col->setWidth ( 15 );
+		$grid->addColumn ( $col );
+		
+		$col = new Column\Select ( 'tags', 'p' );
+		$col->setLabel ( _ ( 'Tags' ) );
+		$grid->addColumn ( $col );
+		
+		$colType = new Type\DateTime ( 'Y-m-d H:i:s', \IntlDateFormatter::SHORT, \IntlDateFormatter::SHORT );
+		$colType->setSourceTimezone ( 'Europe/Rome' );
+		$colType->setOutputTimezone ( 'UTC' );
+		$colType->setLocale ( 'it_IT' );
+		
+		$col = new Column\Select ( 'createdat', 'p' );
+		$col->setType ( $colType );
+		$col->setLabel ( _ ( 'Created At' ) );
+		$grid->addColumn ( $col );
+		
+		$col = new Column\Select ( 'updatedat', 'p' );
+		$col->setType ( $colType );
+		$col->setLabel ( _ ( 'Updated At' ) );
+		$grid->addColumn ( $col );
+		
+		$col = new Column\Select ( 'visible', 'p' );
+		$col->setType ( new \ZfcDatagrid\Column\Type\String () );
+		$col->setLabel ( _ ( 'Visible' ) );
+		$col->setTranslationEnabled ( true );
+		$col->setFilterSelectOptions ( array (
+				'' => '-',
+				'0' => 'No',
+				'1' => 'Yes' 
+		) );
+		$col->setReplaceValues ( array (
+				'' => '-',
+				'0' => 'No',
+				'1' => 'Yes' 
+		) );
+		$grid->addColumn ( $col );
+		
+		// Add actions to the grid
+		$showaction = new Column\Action\Button ();
+		$showaction->setAttribute ( 'href', "/admin/cmspages/edit/" . $showaction->getColumnValuePlaceholder ( new Column\Select ( 'id', 'p' ) ) );
+		$showaction->setAttribute ( 'class', 'btn btn-xs btn-success' );
+		$showaction->setLabel ( _ ( 'edit' ) );
+		
+		$delaction = new Column\Action\Button ();
+		$delaction->setAttribute ( 'href', '/admin/cmspages/delete/' . $delaction->getRowIdPlaceholder () );
+		$delaction->setAttribute ( 'onclick', "return confirm('Are you sure?')" );
+		$delaction->setAttribute ( 'class', 'btn btn-xs btn-danger' );
+		$delaction->setLabel ( _ ( 'delete' ) );
+		
+		$col = new Column\Action ();
+		$col->addAction ( $showaction );
+		$col->addAction ( $delaction );
+		$grid->addColumn ( $col );
+		
+		$grid->setToolbarTemplate ( '' );
+		
 		return $grid;
 	}
-
 }
 
 ?>

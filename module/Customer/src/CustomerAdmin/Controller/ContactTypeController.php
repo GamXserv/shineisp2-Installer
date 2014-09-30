@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,27 +41,19 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace CustomerAdmin\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\InputFilter\InputFilter;
 
-class ContactTypeController extends AbstractActionController
-{
+class ContactTypeController extends AbstractActionController {
 	protected $contactTypeService;
 	protected $datagrid;
 	protected $form;
 	protected $filter;
 	protected $settings;
-	
-	public function __construct(\Customer\Service\ContactTypeServiceInterface $recordService,
-								\CustomerAdmin\Form\ContactTypeForm $form,
-								\CustomerAdmin\Form\ContactTypeFilter $formfilter,
-								\ZfcDatagrid\Datagrid $datagrid,
-								\Base\Service\SettingsServiceInterface $settings)
-	{
+	public function __construct(\Customer\Service\ContactTypeServiceInterface $recordService, \CustomerAdmin\Form\ContactTypeForm $form, \CustomerAdmin\Form\ContactTypeFilter $formfilter, \ZfcDatagrid\Datagrid $datagrid, \Base\Service\SettingsServiceInterface $settings) {
 		$this->contactTypeService = $recordService;
 		$this->datagrid = $datagrid;
 		$this->form = $form;
@@ -71,130 +64,126 @@ class ContactTypeController extends AbstractActionController
 	/**
 	 * List of all records
 	 */
-	public function indexAction ()
-	{
+	public function indexAction() {
 		// prepare the datagrid
-		$this->datagrid->render();
+		$this->datagrid->render ();
 		
 		// get the datagrid ready to be shown in the template view
-		$response = $this->datagrid->getResponse();
-	
-		if ($this->datagrid->isHtmlInitReponse()) {
-			$view = new ViewModel();
-			$view->addChild($response, 'grid');
+		$response = $this->datagrid->getResponse ();
+		
+		if ($this->datagrid->isHtmlInitReponse ()) {
+			$view = new ViewModel ();
+			$view->addChild ( $response, 'grid' );
 			return $view;
 		} else {
 			return $response;
 		}
 	}
 	
-    /**
-     * Add new information
-     */
-    public function addAction ()
-    {
-    	 
-    	$form = $this->form;
-    
-    	$viewModel = new ViewModel(array (
-    			'form' => $form,
-    	));
-    
-    	$viewModel->setTemplate('customer-admin/contact-type/edit');
-    	return $viewModel;
-    }
-    
-    /**
-     * Edit the main customer information
-     */
-    public function editAction ()
-    {
-    	$id = $this->params()->fromRoute('id');
-    	
-    	$form = $this->form;
-    
-    	// Get the record by its id
-    	$record = $this->contactTypeService->find($id);
-    	
-    	// Bind the data in the form
-    	if (! empty($record)) {
-    		$form->bind($record);
-    	}
-    
-    	$viewModel = new ViewModel(array (
-    			'form' => $form,
-    	));
-    
-    	return $viewModel;
-    }
-    
-    /**
-     * Prepare the data and then save them
-     *
-     * @return \Zend\View\Model\ViewModel
-     */
-    public function processAction ()
-    {
-    	
-    	if (! $this->request->isPost()) {
-    		return $this->redirect()->toRoute(NULL, array (
-    				'controller' => 'customer',
-    				'action' => 'index'
-    		));
-    	}
-    	
-    	$request = $this->getRequest();
-    	$post = $this->request->getPost();
-    	$form = $this->form;
-    	
-    	$form->setData($post);
-    	
-    	$inputFilter = $this->filter;
-    	
-    	// set the input filter
-    	$form->setInputFilter($inputFilter);
-    	
-    	if (!$form->isValid()) {
-    		$viewModel = new ViewModel(array (
-    				'error' => true,
-    				'form' => $form,
-    		));
-    		
-    		$viewModel->setTemplate('customer-admin/contact-type/edit');
-    		return $viewModel;
-    	}
-    
-    	// Get the posted vars
-    	$data = $form->getData();
-
-    	// Save the data in the database
-    	$record = $this->contactTypeService->save($data);
-    	
-    	$this->flashMessenger()->setNamespace('success')->addMessage('The information have been saved.');
-    
-    	return $this->redirect()->toRoute('zfcadmin/customer/contacttype', array ('action' => 'edit', 'id' => $record->getId()));
-    }
-    
-    /**
-     * Delete the contact type record 
-     *
-     * @return \Zend\Http\Response
-     */
-    public function deleteAction ()
-    {
-    	$id = $this->params()->fromRoute('id');
-    
-    	if (is_numeric($id)) {
-    
-    		// Delete the record information
-    		$this->contactTypeService->delete($id);
-    
-    		// Go back showing a message
-    		$this->flashMessenger()->setNamespace('success')->addMessage('The record has been deleted!');
-    		return $this->redirect()->toRoute('zfcadmin/customer/contacttype');
-    	}
-    
-    	$this->flashMessenger()->setNamespace('danger')->addMessage('The record has been not found!');
-    	return $this->redirect()->toRoute('zfcadmin/customer/contacttype');
-    }
+	/**
+	 * Add new information
+	 */
+	public function addAction() {
+		$form = $this->form;
+		
+		$viewModel = new ViewModel ( array (
+				'form' => $form 
+		) );
+		
+		$viewModel->setTemplate ( 'customer-admin/contact-type/edit' );
+		return $viewModel;
+	}
+	
+	/**
+	 * Edit the main customer information
+	 */
+	public function editAction() {
+		$id = $this->params ()->fromRoute ( 'id' );
+		
+		$form = $this->form;
+		
+		// Get the record by its id
+		$record = $this->contactTypeService->find ( $id );
+		
+		// Bind the data in the form
+		if (! empty ( $record )) {
+			$form->bind ( $record );
+		}
+		
+		$viewModel = new ViewModel ( array (
+				'form' => $form 
+		) );
+		
+		return $viewModel;
+	}
+	
+	/**
+	 * Prepare the data and then save them
+	 *
+	 * @return \Zend\View\Model\ViewModel
+	 */
+	public function processAction() {
+		if (! $this->request->isPost ()) {
+			return $this->redirect ()->toRoute ( NULL, array (
+					'controller' => 'customer',
+					'action' => 'index' 
+			) );
+		}
+		
+		$request = $this->getRequest ();
+		$post = $this->request->getPost ();
+		$form = $this->form;
+		
+		$form->setData ( $post );
+		
+		$inputFilter = $this->filter;
+		
+		// set the input filter
+		$form->setInputFilter ( $inputFilter );
+		
+		if (! $form->isValid ()) {
+			$viewModel = new ViewModel ( array (
+					'error' => true,
+					'form' => $form 
+			) );
+			
+			$viewModel->setTemplate ( 'customer-admin/contact-type/edit' );
+			return $viewModel;
+		}
+		
+		// Get the posted vars
+		$data = $form->getData ();
+		
+		// Save the data in the database
+		$record = $this->contactTypeService->save ( $data );
+		
+		$this->flashMessenger ()->setNamespace ( 'success' )->addMessage ( 'The information have been saved.' );
+		
+		return $this->redirect ()->toRoute ( 'zfcadmin/customer/contacttype', array (
+				'action' => 'edit',
+				'id' => $record->getId () 
+		) );
+	}
+	
+	/**
+	 * Delete the contact type record
+	 *
+	 * @return \Zend\Http\Response
+	 */
+	public function deleteAction() {
+		$id = $this->params ()->fromRoute ( 'id' );
+		
+		if (is_numeric ( $id )) {
+			
+			// Delete the record information
+			$this->contactTypeService->delete ( $id );
+			
+			// Go back showing a message
+			$this->flashMessenger ()->setNamespace ( 'success' )->addMessage ( 'The record has been deleted!' );
+			return $this->redirect ()->toRoute ( 'zfcadmin/customer/contacttype' );
+		}
+		
+		$this->flashMessenger ()->setNamespace ( 'danger' )->addMessage ( 'The record has been not found!' );
+		return $this->redirect ()->toRoute ( 'zfcadmin/customer/contacttype' );
+	}
 }

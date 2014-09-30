@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,22 +41,20 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Product\Entity;
 
 use DateTime;
 
-interface ProductInterface
-{
-    public function getId();
-    public function getUid();
-    public function setUid($uid);
-    public function getTypeId();
-    public function setTypeId($type_id);
-    public function getAttributeSetId();
-    public function setAttributeSetId($attribute_set_id);
-    public function getCreatedat();
-    public function setCreatedat(DateTime $createdat = null);
-    public function getUpdatedat();
-    public function setUpdatedat(DateTime $updatedat = null);
+interface ProductInterface {
+	public function getId();
+	public function getUid();
+	public function setUid($uid);
+	public function getTypeId();
+	public function setTypeId($type_id);
+	public function getAttributeSetId();
+	public function setAttributeSetId($attribute_set_id);
+	public function getCreatedat();
+	public function setCreatedat(DateTime $createdat = null);
+	public function getUpdatedat();
+	public function setUpdatedat(DateTime $updatedat = null);
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,15 +41,13 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Customer\Entity;
 
-interface ContactTypeInterface
-{
-    public function getId();
-    public function getName();
-    public function getEnabled();
-    public function setId($id);
-    public function setName($name);
-    public function setEnabled($enabled);
+interface ContactTypeInterface {
+	public function getId();
+	public function getName();
+	public function getEnabled();
+	public function setId($id);
+	public function setName($name);
+	public function setEnabled($enabled);
 }

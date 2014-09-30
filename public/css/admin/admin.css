@@ -4,15 +4,15 @@ body {
 }
 
 /* TAB Panel */
-.tab-pane{
+.tab-pane {
 	padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 18px;
+	padding-right: 10px;
+	padding-top: 18px;
 }
 
 /* TAGS input */
 .bootstrap-tagsinput {
-    width: 100%;
+	width: 100%;
 }
 
 /* Large desktop */
@@ -28,11 +28,10 @@ body {
 	.left-column {
 		text-align: left;
 	}
-	
 	.border-bottom {
-	    border-bottom: 0px;;
-	    margin-bottom: 0px;
-	    margin-top: 20px;
+		border-bottom: 0px;;
+		margin-bottom: 0px;
+		margin-top: 20px;
 	}
 }
 

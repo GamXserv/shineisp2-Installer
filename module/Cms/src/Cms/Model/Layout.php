@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Copyright (c) 2014 Shine Software.
 * All rights reserved.
@@ -40,68 +41,62 @@
 * @link http://shinesoftware.com
 * @version @@PACKAGE_VERSION@@
 */
-
 namespace Cms\Model;
 
 class Layout {
-	
 	protected $page;
 	protected $settings;
 	protected $blocks;
 	
 	/**
 	 * Layout Constructor
-	 * 
-	 * @param \Cms\Entity\Page $page
+	 *
+	 * @param \Cms\Entity\Page $page        	
 	 */
-	public function __construct(\Cms\Entity\Page $page, \Base\Service\SettingsServiceInterface $settings){
-		$this->page = $page;	
-		$this->settings = $settings;	
+	public function __construct(\Cms\Entity\Page $page, \Base\Service\SettingsServiceInterface $settings) {
+		$this->page = $page;
+		$this->settings = $settings;
 	}
 	
 	/**
 	 * Get the xml string and revert it as xml object
-	 *  
-	 * @param string $xml
+	 *
+	 * @param string $xml        	
 	 * @return SimpleXMLElement or Null
 	 */
-	private function getXmlData($xml){
-		
-		if(!empty($xml)){
-			return simplexml_load_string($xml);
+	private function getXmlData($xml) {
+		if (! empty ( $xml )) {
+			return simplexml_load_string ( $xml );
 		}
 		
 		return Null;
 	}
 	
 	/**
-	 * Get the blocks from the xml 
-	 *  
-	 * @param \SimpleXMLElement $xml
+	 * Get the blocks from the xml
+	 *
+	 * @param \SimpleXMLElement $xml        	
 	 * @return multitype:
 	 */
-	public function getBlocks(){
-		
-		$xmlLayout = $this->getXmlData($this->page->getLayout());
+	public function getBlocks() {
+		$xmlLayout = $this->getXmlData ( $this->page->getLayout () );
 		
 		// Clear the array to avoid double results
 		$this->blocks = array ();
 		
-		if(!empty($xmlLayout)){		
+		if (! empty ( $xmlLayout )) {
 			// Adding all the commons blocks
 			$xmlobject = $xmlLayout->xpath ( "default/commons/blocks" );
-			$this->getBlockItems($xmlobject);
+			$this->getBlockItems ( $xmlobject );
 		}
 		
 		return $this->blocks;
 	}
 	
-	
-	
 	/**
 	 * Get the block items
 	 *
-	 * @param simple_xml $xmlobject
+	 * @param simple_xml $xmlobject        	
 	 */
 	private function getBlockItems($xmlobject) {
 		$data = array ();
@@ -117,7 +112,7 @@ class Layout {
 				}
 			}
 		}
-	
+		
 		if (! empty ( $data ) && is_array ( $data )) {
 			$this->blocks = array_merge ( $this->blocks, $data );
 			return true;
@@ -127,16 +122,15 @@ class Layout {
 	
 	/**
 	 * Get template file from the xml configuration
-	 *  
+	 *
 	 * @return string
 	 */
-	public function getTemplate(){
+	public function getTemplate() {
+		$xmlLayout = $this->getXmlData ( $this->page->getLayout () );
 		
-		$xmlLayout = $this->getXmlData($this->page->getLayout());
+		$defaultLayout = $this->settings->getValueByParameter ( 'Cms', 'defaultlayout' );
 		
-		$defaultLayout = $this->settings->getValueByParameter('Cms', 'defaultlayout');
-		
-		if(!empty($xmlLayout)){
+		if (! empty ( $xmlLayout )) {
 			// Adding all the commons blocks
 			$xmlobject = $xmlLayout->xpath ( "default" );
 			
@@ -145,8 +139,7 @@ class Layout {
 			}
 		}
 		
-		return !empty($defaultLayout) ? $defaultLayout : "1column";
+		return ! empty ( $defaultLayout ) ? $defaultLayout : "1column";
 	}
-	
 }
 ?>

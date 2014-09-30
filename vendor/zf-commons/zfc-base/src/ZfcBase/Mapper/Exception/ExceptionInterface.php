@@ -2,5 +2,5 @@
 
 namespace ZfcBase\Mapper\Exception;
 
-interface ExceptionInterface
-{}
+interface ExceptionInterface {
+}

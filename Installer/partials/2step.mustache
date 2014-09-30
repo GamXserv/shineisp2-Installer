@@ -1,0 +1,51 @@
+<div class="container isp2-flat-bg">
+	<div class="page-header">
+		<h1> {{{ STEP2_TITLE }}} </h1>
+    
+		<p class="lead"> {{{STEP2_MSG}}} </p>
+	
+	</div>
+
+	<form role="form" method="post" action="?step=3">
+	
+	  <div class="form-group">
+	    <label for="adminusr">{{{STEP2_ADMINUSER}}}</label>
+	    <div class="input-group">
+	    	<div class="input-group-addon"><i class="fa fa-user"></i></div>
+	  		<input type="text" name="adminusr" class="form-control input-lg" id="adminusr" placeholder="{{{STEP2_ADMINUSER_PLACEHOLDER}}}" required> 	
+	    </div>
+	    <p class="suggestion">{{{STEP2_ADMINUSER_SUGGESTION}}}</p>
+	  </div>
+
+	  <div class="form-group">
+	    <label for="adminpwd">{{{STEP2_ADMINPASS}}}</label>
+	    <div class="input-group">
+	    	<div class="input-group-addon"><i class="fa fa-key"></i></div>
+	    	<input type="text" name="adminpwd" class="form-control input-lg" id="adminpwd" placeholder="{{{STEP2_ADMINPASS_PLACEHOLDER}}}" required>
+	    </div>
+	    <p class="suggestion">{{{STEP2_ADMINPASS_SUGGESTION}}}</p>
+	  </div>	  
+	  
+	  <div class="form-group">
+	    <label for="adminema">{{{STEP2_ADMINEMAIL}}}</label>
+	    <div class="input-group">
+	    	<div class="input-group-addon"><i class="fa fa-user"></i></div>
+	  		<input type="text" name="adminema" class="form-control input-lg" id="adminema" placeholder="{{{STEP2_ADMINEMAIL_PLACEHOLDER}}}" required> 	
+	    </div>
+	    <p class="suggestion">{{{STEP2_ADMINEMAIL_SUGGESTION}}}</p>
+	  </div>
+	  
+	  <div class="form-group">
+	    <label for="adminnam">{{{STEP2_ADMINNAME}}}</label>
+	    <div class="input-group">
+	    	<div class="input-group-addon"><i class="fa fa-user"></i></div>
+	  		<input type="text" name="adminnam" class="form-control input-lg" id="adminnam" placeholder="{{{STEP2_ADMINNAME_PLACEHOLDER}}}" required> 	
+	    </div>
+	    <p class="suggestion">{{{STEP2_ADMINNAME_SUGGESTION}}}</p>
+	  </div>
+
+	  <button type="submit" name="adminopt" class="btn btn-success btn-lg pull-right">{{{ BUTTON_NEXT }}}</button>
+	</form>
+		
+	</div>
+</div>
