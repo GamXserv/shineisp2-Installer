@@ -260,40 +260,21 @@ if (file_exists ( 'composer.json' )) {
 	);
 }
 $installedPackages = array ();
-$installAction = 'install';
-if (file_exists ( 'composer.lock' )) {
-	$lock = json_decode ( file_get_contents ( 'composer.lock' ), true );
-	if (isset ( $lock ['packages'] )) {
-		foreach ( $lock ['packages'] as $p ) {
-			$installedPackages [$p ['name']] = $p;
-		}
-	}
-	$installAction = 'update';
-}
 //$suggestions = json_decode ( download ( $serviceUrl . '/?' . http_build_query ( $_GET ) ), true );
-$suggestions = json_decode ( file_get_contents ( $serviceUrl . '/composer.json' ), true );
+$suggestions = json_decode ( file_get_contents ( 'composer.json' ), true );
 if (! empty ( $_POST ['action'] )) {
-	if (isset ( $suggestions ['packages'] [$_POST ['name']] )) {
-		if ($_POST ['action'] == 'true') {
-			$composerJson ['require'] [$_POST ['name']] = $suggestions ['packages'] [$_POST ['name']] ['version'];
-			if (isset ( $suggestions ['packages'] [$_POST ['name']] ['require'] )) {
-				foreach ( $suggestions ['packages'] [$_POST ['name']] ['require'] as $k => $v ) {
-					if (! isset ( $composerJson ['require'] [$k] )) {
-						$composerJson ['require'] [$k] = $v;
-					}
-				}
+	
+	if (file_exists ( 'composer.lock' )) {
+		$lock = json_decode ( file_get_contents ( 'composer.lock' ), true );
+		if (isset ( $lock ['packages'] )) {
+			foreach ( $lock ['packages'] as $p ) {
+				$installedPackages [$p ['name']] = $p;
 			}
-			echo L ( 'element_added' ) . "\n";
 		}
-		if ($_POST ['action'] == 'false') {
-			unset ( $composerJson ['require'] [$_POST ['name']] );
-			if (isset ( $suggestions ['packages'] [$_POST ['name']] ['require'] )) {
-				foreach ( $suggestions ['packages'] [$_POST ['name']] ['require'] as $k => $v ) {
-					unset ( $composerJson ['require'] [$k] );
-				}
-			}
-			echo L ( 'element_removed' ) . "\n";
-		}
+		$installAction = 'update';
+	}else{
+		$installAction = 'install';
+	}
 		// not in use still playing around
 		//$json = stripslashes ( json_encode ( $composerJson ) );
 		//file_put_contents ( 'composer.json', $json );
@@ -313,14 +294,14 @@ if (! empty ( $_POST ['action'] )) {
 		}
 		unlink ( '.htaccess' );
 		exit ();
-	}
+	
 }
 $body .= '<table class="table table-striped table-condensed table-hover"><tbody><form id="packageheader" method="get" action="install.php">' . '<span style="float:right">' . (! empty ( $suggestions ['stat'] ['back'] ) ? '<button type="button" rel="circle-triangle-w" type="button">' . L ( 'back' ) . '</button>' : '') . (! empty ( $suggestions ['stat'] ['next'] ) ? '<button type="button" rel="circle-triangle-e" type="button">' . L ( 'next' ) . '</button>' : '') . '</span>' . '</form>';
-$c = 0;
-foreach ( $suggestions ['packages'] as $k => $v ) {
-	$body .= '<tr><td>' . '<button class="package btn btn-lg btn-default pull-left" id="cb' . $c . '" type="button" ' . 'data-name="' . $k . '" data-version="' . $v ['version'] . '" ' . 'rel="' . (isset ( $composerJson ['require'] [$k] ) ? 'trash">' . L ( 'uninstall' ) : 'disk">' . L ( 'install' )) . '</button>' . '</td> <td>' . (empty ( $v ['description'] ) ? L ( 'no_description_available' ) : $v ['description']) . '</td></tr>';
-	$c ++;
-}
+
+
+	$body .= '<tr><td>' . '<button class="package btn btn-lg btn-default pull-left" id="cb' . $suggestions ['name'] . '" type="button" ' . 'data-name="' . $suggestions ['name'] . '" data-version="' . $suggestions ['version'] . '" ' . 'rel="' . (isset ( $composerJson ['require'] [$k] ) ? 'trash">' . L ( 'uninstall' ) : 'disk">' . L ( 'install' )) . '</button>' . '</td> <td>' . (empty ( $suggestions ['description']  ) ? L ( 'no_description_available' ) : $suggestions  ['description']) . '</td></tr>';
+	
+
 $body .= '</tbody></table>';
 $body .= '<img id="spinner" src="vendor/isp1-installer/images/spinner.gif" title="' . L ( 'please_wait' ) . '" />';
 echo $html [0] . $body . $html [1];
